@@ -1,0 +1,72 @@
+/* Custom Properties / Tokens */
+
+:root {
+  /* Color Palette - Light Mode (Default) */
+  --primary: #123B3A;      /* Midnight Teal */
+  --secondary: #3F8F7B;    /* Jade */
+  --accent: #D6B77C;       /* Champagne */
+  --bg-color: #F8F8F5;     /* Cloud White */
+  --surface: #DCE7E3;      /* Mist */
+  --text-color: #252A2A;   /* Charcoal */
+  --text-muted: #5e6b6a;
+  
+  --error: #e63946;
+  --success: #2a9d8f;
+  --warning: #f4a261;
+  --info: #457b9d;
+
+  /* Typography */
+  --font-heading: 'DM Serif Display', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  
+  /* Layout & Spacing */
+  --container-width: 1280px;
+  --section-padding: 5rem;
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 1rem;
+  --border-radius-xl: 2rem;
+
+  /* Shadows (Refined) */
+  --shadow-sm: 0 2px 4px rgba(18, 59, 58, 0.05);
+  --shadow-md: 0 4px 12px rgba(18, 59, 58, 0.08);
+  --shadow-lg: 0 12px 24px rgba(18, 59, 58, 0.12);
+  --shadow-hover: 0 20px 40px rgba(18, 59, 58, 0.15);
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(248, 248, 245, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-blur: 12px;
+}
+
+/* Dark Mode Theme */
+[data-theme="dark"] {
+  --primary: #DCE7E3;      /* Light primary for text */
+  --secondary: #3F8F7B;
+  --accent: #D6B77C;
+  --bg-color: #121919;     /* Deep dark background */
+  --surface: #1e2928;      /* Slightly lighter for cards */
+  --text-color: #F8F8F5;   
+  --text-muted: #9ba8a7;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.6);
+
+  --glass-bg: rgba(30, 41, 40, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+/* RTL Layout */
+[dir="rtl"] {
+  --margin-start: margin-right;
+  --margin-end: margin-left;
+  --padding-start: padding-right;
+  --padding-end: padding-left;
+}

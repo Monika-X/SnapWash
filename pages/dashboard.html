@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapWash | Customer Dashboard</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../assets/css/variables.css">
+  <link rel="stylesheet" href="../assets/css/global.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  
+  <style>
+    /* Dashboard Layout */
+    body {
+      background-color: var(--surface);
+    }
+    
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+    
+    .dashboard-sidebar {
+      background-color: var(--bg-color);
+      border-right: 1px solid var(--glass-border);
+      padding: 2rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    
+    .dashboard-main {
+      padding: 3rem;
+      overflow-y: auto;
+    }
+    
+    .sidebar-menu {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      border-radius: var(--border-radius-md);
+      color: var(--text-muted);
+      transition: all var(--transition-fast);
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .menu-item:hover, .menu-item.active {
+      background-color: var(--primary);
+      color: var(--bg-color);
+    }
+    
+    .menu-item i {
+      font-size: 1.25rem;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+    
+    /* Dashboard Cards */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    
+    .stat-card {
+      padding: 2rem;
+      border-radius: var(--border-radius-lg);
+      background-color: var(--bg-color);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .stat-info h5 {
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-info h2 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--surface);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    /* Order Tracking Visualizer */
+    .tracking-card {
+      background-color: var(--bg-color);
+      border-radius: var(--border-radius-lg);
+      padding: 3rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3rem;
+    }
+    
+    .stages-wrapper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-top: 3rem;
+    }
+    
+    .stages-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 10%;
+      width: 80%;
+      height: 4px;
+      background-color: var(--surface);
+      z-index: 1;
+    }
+    
+    .progress-bar {
+      position: absolute;
+      top: 25px;
+      left: 10%;
+      height: 4px;
+      background-color: var(--secondary);
+      z-index: 2;
+      transition: width 1s ease;
+    }
+    
+    .stage {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      width: 120px;
+    }
+    
+    .stage-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background-color: var(--surface);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.5rem;
+      border: 4px solid var(--bg-color);
+      transition: all var(--transition-normal);
+    }
+    
+    .stage.completed .stage-icon {
+      background-color: var(--secondary);
+      color: var(--bg-color);
+    }
+    
+    .stage.active .stage-icon {
+      background-color: var(--accent);
+      color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(214, 183, 124, 0.3);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(214, 183, 124, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(214, 183, 124, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(214, 183, 124, 0); }
+    }
+    
+    .stage-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    
+    .stage.active .stage-label {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Tab Content Area */
+    .tab-content {
+      display: none;
+      animation: fadeIn var(--transition-normal);
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    @media (max-width: 992px) {
+      .dashboard-layout { grid-template-columns: 1fr; }
+      .dashboard-sidebar { display: none; } /* Mobile menu needed */
+      .stages-wrapper { flex-direction: column; gap: 2rem; align-items: flex-start; padding-left: 20px; }
+      .stages-wrapper::before, .progress-bar { width: 4px; height: 100%; top: 0; left: 47px; }
+      .stage { display: flex; align-items: center; width: auto; gap: 1rem; text-align: left; }
+      .stage-icon { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <a href="../index.html" class="logo">
+        <i class="ri-drop-fill text-accent"></i>
+        Snap<span>Wash</span>
+      </a>
+      
+      <div class="sidebar-menu">
+        <div class="menu-item active" data-tab="overview">
+          <i class="ri-dashboard-line"></i> Overview
+        </div>
+        <div class="menu-item" data-tab="schedule">
+          <i class="ri-calendar-event-line"></i> Schedule Pickup
+        </div>
+        <div class="menu-item" data-tab="tracking">
+          <i class="ri-route-line"></i> Order Tracking
+        </div>
+        <div class="menu-item" data-tab="billing">
+          <i class="ri-file-list-3-line"></i> Billing History
+        </div>
+        <div class="menu-item" data-tab="profile">
+          <i class="ri-user-settings-line"></i> Profile & Settings
+        </div>
+        <a href="../index.html" class="menu-item" style="margin-top: 2rem; color: var(--error);">
+          <i class="ri-logout-box-r-line"></i> Sign Out
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <div>
+          <h2 style="margin: 0;">Welcome Back, Elena.</h2>
+          <p class="text-muted">Here is the status of your premium garment care.</p>
+        </div>
+        
+        <div class="user-profile">
+          <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
+          <div class="avatar">E</div>
+        </div>
+      </header>
+
+      <!-- Overview Tab -->
+      <section id="tab-overview" class="tab-content active">
+        <div class="dashboard-grid">
+          <div class="stat-card">
+            <div class="stat-info">
+              <h5>Active Orders</h5>
+              <h2>1</h2>
+            </div>
+            <div class="stat-icon"><i class="ri-shopping-bag-3-line"></i></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h5>Garments Cleaned</h5>
+              <h2>42</h2>
+            </div>
+            <div class="stat-icon"><i class="ri-shirt-line"></i></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h5>Rewards Points</h5>
+              <h2>850</h2>
+            </div>
+            <div class="stat-icon" style="color: var(--accent);"><i class="ri-vip-diamond-line"></i></div>
+          </div>
+        </div>
+        
+        <div class="tracking-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h3>Current Order #SW-8942</h3>
+            <span class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View Details</span>
+          </div>
+          
+          <div class="stages-wrapper">
+            <div class="progress-bar" style="width: 60%;" id="order-progress"></div>
+            
+            <div class="stage completed">
+              <div class="stage-icon"><i class="ri-check-line"></i></div>
+              <div class="stage-label">Order Placed</div>
+            </div>
+            <div class="stage completed">
+              <div class="stage-icon"><i class="ri-truck-line"></i></div>
+              <div class="stage-label">Picked Up</div>
+            </div>
+            <div class="stage completed">
+              <div class="stage-icon"><i class="ri-drop-line"></i></div>
+              <div class="stage-label">Washing</div>
+            </div>
+            <div class="stage active">
+              <div class="stage-icon"><i class="ri-steam-line"></i></div>
+              <div class="stage-label">Ironing</div>
+            </div>
+            <div class="stage">
+              <div class="stage-icon"><i class="ri-home-heart-line"></i></div>
+              <div class="stage-label">Delivering</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Schedule Pickup Tab (Placeholder for complexity) -->
+      <section id="tab-schedule" class="tab-content">
+        <div class="tracking-card">
+          <h3>Schedule a Pickup</h3>
+          <p class="text-muted" style="margin-bottom: 2rem;">Select your services and preferred time.</p>
+          
+          <form>
+            <div class="dashboard-grid">
+              <div class="form-group">
+                <label class="form-label">Service Type</label>
+                <select class="form-control">
+                  <option>Wash & Fold</option>
+                  <option>Dry Cleaning</option>
+                  <option>Premium Ironing</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pickup Date</label>
+                <input type="date" class="form-control">
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary mt-3">Confirm Schedule</button>
+          </form>
+        </div>
+      </section>
+      
+      <!-- Other tabs can be expanded similarly -->
+      <section id="tab-tracking" class="tab-content"><div class="tracking-card"><h3>Order History & Tracking</h3><p>Detailed timeline of past orders.</p></div></section>
+      <section id="tab-billing" class="tab-content"><div class="tracking-card"><h3>Billing History</h3><p>Invoices and payment settings.</p></div></section>
+      <section id="tab-profile" class="tab-content"><div class="tracking-card"><h3>Profile Settings</h3><p>Manage your account.</p></div></section>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/theme.js"></script>
+  <script>
+    // Simple Tab Switching Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuItems = document.querySelectorAll('.menu-item[data-tab]');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+          // Remove active from all
+          menuItems.forEach(m => m.classList.remove('active'));
+          tabContents.forEach(t => t.classList.remove('active'));
+          
+          // Add active to clicked
+          item.classList.add('active');
+          document.getElementById('tab-' + item.dataset.tab).classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
