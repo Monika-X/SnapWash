@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapWash | Membership Application</title>
+  
+  <link rel="stylesheet" href="../assets/css/variables.css">
+  <link rel="stylesheet" href="../assets/css/global.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  
+  <style>
+    .auth-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    .auth-image {
+      flex: 1;
+      background: url('../assets/images/service_ironing_1786960923928.png') center/cover no-repeat;
+      display: none;
+    }
+    
+    .auth-form-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem;
+      background-color: var(--bg-color);
+    }
+    
+    .auth-form {
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    .auth-title {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    @media (min-width: 992px) {
+      .auth-image { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-form-wrapper">
+      <div class="auth-form reveal">
+        <a href="../index.html" class="logo" style="margin-bottom: 3rem; display: inline-flex;">
+          <i class="ri-drop-fill text-accent"></i> Snap<span>Wash</span>
+        </a>
+        
+        <h1 class="auth-title">Become a Member</h1>
+        <p class="text-muted" style="margin-bottom: 2.5rem;">Join our exclusive circle for priority garment care and doorstep convenience.</p>
+        
+        <form action="dashboard.html">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" required>
+          </div>
+          
+          <div style="margin-top: 1rem; display: flex; gap: 0.5rem; align-items: flex-start;">
+            <input type="checkbox" id="terms" required style="margin-top: 5px;">
+            <label for="terms" class="text-muted" style="font-size: 0.9rem;">
+              I agree to the <a href="terms.html" class="text-accent">Terms & Conditions</a> and <a href="privacy.html" class="text-accent">Privacy Policy</a>.
+            </label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Apply for Membership</button>
+        </form>
+        
+        <p class="text-center text-muted" style="margin-top: 2rem;">
+          Already a member? <a href="login.html" class="text-accent" style="font-weight: 600;">Sign In</a>
+        </p>
+      </div>
+    </div>
+    <div class="auth-image"></div>
+  </div>
+
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
