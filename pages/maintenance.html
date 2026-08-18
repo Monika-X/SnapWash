@@ -8,30 +8,241 @@
   
   <link rel="stylesheet" href="../assets/css/variables.css">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
   <style>
-    body { display: flex; align-items: center; justify-content: center; height: 100vh; text-align: center; background: var(--bg-color); }
-    .maintenance-box { max-width: 600px; padding: 3rem; }
-    .maintenance-icon { font-size: 5rem; color: var(--accent); margin-bottom: 2rem; }
+    /* ============================================================
+       SnapWash Maintenance — light editorial luxury (step below Atelier)
+       ============================================================ */
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .center-eyebrow { justify-content: center; }
+
+    .maintenance-wrap {
+      min-height: calc(100vh - 390px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .maintenance-wrap::before {
+      content: 'SNAPWASH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-heading);
+      font-size: clamp(8rem, 18vw, 16rem);
+      letter-spacing: 0.08em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(214, 183, 124, 0.1);
+      pointer-events: none;
+      z-index: 0;
+      white-space: nowrap;
+    }
+    .maintenance-inner { position: relative; z-index: 1; max-width: 640px; }
+
+    /* Animated spinner */
+    .spin-wrap {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .spin-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(214, 183, 124, 0.4);
+      border-top-color: var(--accent);
+      animation: spin 2.4s linear infinite;
+    }
+    .spin-ring.ring-2 {
+      inset: 14px;
+      border-color: rgba(214, 183, 124, 0.25);
+      border-bottom-color: var(--accent);
+      animation-duration: 3.4s;
+      animation-direction: reverse;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin-core {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 1px solid rgba(214, 183, 124, 0.55);
+      background: var(--bg-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1.6rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .maintenance-wrap h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1.1;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+    .maintenance-wrap h1 em { font-style: italic; color: var(--accent); }
+    .ph-divider {
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      margin: 0 auto 1.5rem;
+      opacity: 0.8;
+    }
+    .maintenance-wrap .mm-copy {
+      font-size: 1.15rem;
+      line-height: 1.9;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .mm-chips {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .mm-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(214, 183, 124, 0.5);
+      background: var(--bg-color);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+    .mm-chip i { color: var(--accent); }
+
+    /* Progress bar */
+    .mm-progress {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .mm-progress .mp-track {
+      height: 3px;
+      border-radius: 999px;
+      background: var(--surface);
+      overflow: hidden;
+      position: relative;
+    }
+    .mm-progress .mp-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--accent), #e8d5a8, var(--accent));
+      background-size: 200% 100%;
+      animation: shimmer 1.8s linear infinite;
+    }
+    @keyframes shimmer {
+      from { background-position: 0% 0; }
+      to { background-position: -200% 0; }
+    }
+    .mm-progress .mp-label {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.85rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .mm-progress .mp-label span:last-child { color: var(--accent); }
+
+    .mm-assure {
+      margin-top: 2.5rem;
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    /* RTL */
+    [dir="rtl"] .center-eyebrow::before { display: none; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .maintenance-wrap { padding: 4rem 1.5rem; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="maintenance-box reveal">
-    <div class="maintenance-icon">⚙️</div>
-    <h1 style="font-size: 3rem; margin-bottom: 1rem; font-family: var(--font-heading); color: var(--primary);">Upgrading Our Services</h1>
-    <p style="font-size: 1.2rem; color: var(--text-muted);">We are currently performing scheduled maintenance on our digital concierge systems to serve you better. We will be back online shortly.</p>
+  <div class="maintenance-wrap reveal">
+    <div class="maintenance-inner">
+      <div class="spin-wrap">
+        <div class="spin-ring"></div>
+        <div class="spin-ring ring-2"></div>
+        <div class="spin-core"><i class="ri-shirt-line"></i></div>
+      </div>
+
+      <div class="eyebrow center-eyebrow">Scheduled Maintenance</div>
+      <h1>Polishing the <em>Details</em></h1>
+      <div class="ph-divider"></div>
+      <p class="mm-copy">Our digital concierge systems are receiving a scheduled upgrade — new booking flows, faster tracking, and a few quiet refinements. The atelier will reopen shortly.</p>
+
+      <div class="mm-chips">
+        <span class="mm-chip"><i class="ri-tools-line"></i> Maintenance in progress</span>
+        <span class="mm-chip"><i class="ri-time-line"></i> Estimated return · 6:00 PM</span>
+      </div>
+
+      <div class="mm-progress">
+        <div class="mp-track">
+          <div class="mp-fill"></div>
+        </div>
+        <div class="mp-label">
+          <span>Refreshing systems</span>
+          <span>Almost there</span>
+        </div>
+      </div>
+
+      <p class="mm-assure">Your garments are safe. So is your data.</p>
+    </div>
   </div>
 
-<footer class="footer" style="position: relative;">
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+  <!-- Footer -->
+  <footer class="footer" style="position: relative;">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+          <a href="../index.html" class="logo" style="color: #F8F8F5; margin-bottom: 1.5rem;">
             <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
             <div class="logo-text">
               <div>Snap<span style="color: var(--accent)">Wash</span></div>
-              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+              <div class="logo-tagline" style="color: rgba(248, 248, 245, 0.72)">Premium Care, Delivered.</div>
             </div>
           </a>
           <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
@@ -95,7 +306,5 @@
       <i class="ri-arrow-up-line"></i>
     </button>
   </footer>
-
-  <script src="../assets/js/main.js"></script>
 </body>
 </html>

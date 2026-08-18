@@ -9,12 +9,197 @@
   <link rel="stylesheet" href="../assets/css/variables.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <link rel="stylesheet" href="../assets/css/components.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
   <style>
-    .page-header { padding: 150px 0 80px; text-align: center; background: linear-gradient(to bottom, var(--surface), var(--bg-color)); }
-    .content-wrapper { max-width: 800px; margin: 4rem auto; background: var(--bg-color); padding: 4rem; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-sm); }
-    .content-wrapper h2 { margin-top: 2rem; margin-bottom: 1rem; }
-    .content-wrapper p, .content-wrapper li { color: var(--text-muted); margin-bottom: 1rem; }
+    /* ============================================================
+       SnapWash Terms — light editorial luxury (step below Atelier)
+       ============================================================ */
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .center-eyebrow { justify-content: center; }
+    .center-eyebrow::before { display: none; }
+
+    /* --- Page Header --- */
+    .page-header {
+      padding: 180px 0 110px;
+      text-align: center;
+      position: relative;
+      background: linear-gradient(to bottom, var(--surface), var(--bg-color));
+    }
+    .page-header h1 {
+      color: var(--primary);
+      font-family: var(--font-heading);
+      font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+      line-height: 1.05;
+      margin-bottom: 1.75rem;
+    }
+    .page-header h1 em { font-style: italic; color: var(--accent); }
+    .page-header .ph-divider {
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      margin: 0 auto 1.75rem;
+      opacity: 0.8;
+    }
+    .ph-chips {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .ph-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(214, 183, 124, 0.5);
+      background: var(--bg-color);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+    .ph-chip i { color: var(--accent); }
+
+    /* --- Document --- */
+    .doc-wrap { max-width: 820px; margin: 4rem auto; }
+    .doc-card {
+      background: var(--bg-color);
+      padding: 4.5rem;
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--surface);
+      position: relative;
+    }
+    .doc-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent 70%);
+    }
+    .doc-lead {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      line-height: 1.8;
+      color: var(--primary);
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px dashed rgba(214, 183, 124, 0.35);
+    }
+    .doc-lead em { font-style: italic; color: var(--accent); }
+    .doc-section { display: grid; grid-template-columns: 70px 1fr; gap: 1.75rem; margin-bottom: 3rem; }
+    .ds-num {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--accent);
+      padding-top: 0.15rem;
+    }
+    .doc-section h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    .doc-section p {
+      color: var(--text-muted);
+      line-height: 1.9;
+      font-size: 1.02rem;
+      margin: 0;
+    }
+    .doc-section p + p { margin-top: 1.25rem; }
+    .doc-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 1.25rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .doc-section ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-size: 1.02rem;
+    }
+    .doc-section ul li i { color: var(--accent); margin-top: 0.3rem; flex-shrink: 0; }
+
+    .doc-contact {
+      margin-top: 2rem;
+      padding: 2.25rem 2.5rem;
+      border: 1px solid rgba(214, 183, 124, 0.5);
+      border-radius: var(--border-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .doc-contact .dc-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .doc-contact h3 {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin: 0;
+    }
+    .doc-contact .btn {
+      border-radius: 999px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.9rem 2rem;
+    }
+
+    /* RTL */
+    [dir="rtl"] .eyebrow::before { display: none; }
+    [dir="rtl"] .eyebrow::after {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .doc-card { padding: 2.25rem 1.75rem; }
+      .doc-section { grid-template-columns: 1fr; gap: 0.75rem; }
+      .doc-contact { flex-direction: column; text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -36,47 +221,134 @@
         <a href="services.html" class="nav-link">Services</a>
         <a href="blog.html" class="nav-link">Blog</a>
         <a href="contact.html" class="nav-link">Contact</a>
+        <a href="dashboard.html" class="btn btn-primary mobile-book-now">Book Now</a>
       </div>
       <div class="nav-actions">
-        <a href="dashboard.html" class="theme-toggle profile-icon" aria-label="My Account">
-          <i class="ri-user-line"></i>
-        </a>
+        <div class="profile-menu">
+          <button class="theme-toggle profile-icon" aria-label="My Account" type="button">
+            <i class="ri-user-line"></i>
+          </button>
+          <div class="profile-dropdown">
+            <div class="pd-head">
+              <div class="pd-greet">Welcome to</div>
+              <div class="pd-name">SnapWash Member</div>
+            </div>
+            <a href="dashboard.html" class="pd-link">
+              <i class="ri-dashboard-3-line"></i>
+              <span>User Dashboard<small class="pd-sub">Schedule, track &amp; pay</small></span>
+            </a>
+            <a href="login.html" class="pd-link">
+              <i class="ri-login-box-line"></i>
+              <span>Login / Sign Up<small class="pd-sub">Member access</small></span>
+            </a>
+          </div>
+        </div>
         <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
         <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
         <a href="dashboard.html" class="btn btn-primary">Book Now</a>
       </div>
+
+      <button class="mobile-menu-btn" aria-label="Menu">
+        <i class="ri-menu-3-line"></i>
+      </button>
     </div>
   </nav>
 
+  <!-- Page Header -->
   <header class="page-header reveal">
     <div class="container">
-      <h1 style="font-size: 3rem;">Terms & Conditions</h1>
+      <div class="eyebrow center-eyebrow">Legal</div>
+      <h1>Terms &amp; <em>Conditions</em></h1>
+      <div class="ph-divider"></div>
+      <div class="ph-chips">
+        <span class="ph-chip"><i class="ri-time-line"></i> Effective October 1, 2026</span>
+        <span class="ph-chip"><i class="ri-file-shield-line"></i> Last reviewed September 2026</span>
+      </div>
     </div>
   </header>
 
   <div class="container reveal">
-    <div class="content-wrapper">
-      <h2>1. Service Agreement</h2>
-      <p>By scheduling a pickup, you agree to our premium garment care protocols. We exercise utmost care in processing articles entrusted to us and use processes which, in our opinion, are best suited to the nature and condition of each individual article.</p>
-      
-      <h2>2. Liability Limitations</h2>
-      <p>While we treat every garment with luxury standard care, we cannot assume responsibility for inherent weaknesses or defects in materials which may result in tears or development of small holes in fabric that are not readily apparent prior to processing.</p>
-      
-      <h2>3. Billing & Payment</h2>
-      <p>All services must be paid via the dashboard portal prior to delivery, unless you hold an active Premium Corporate Membership.</p>
+    <div class="doc-wrap">
+      <div class="doc-card">
+        <p class="doc-lead">By scheduling a pickup, you place your garments in our <em>care</em> — and our care in your trust. These terms define the standard of that agreement, plainly and without fine print.</p>
+
+        <div class="doc-section">
+          <div class="ds-num">01</div>
+          <div>
+            <h2>Service Agreement</h2>
+            <p>By scheduling a pickup, you agree to our premium garment care protocols. We exercise utmost care in processing articles entrusted to us and use processes which, in our opinion, are best suited to the nature and condition of each individual article.</p>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <div class="ds-num">02</div>
+          <div>
+            <h2>Liability Limitations</h2>
+            <p>While we treat every garment with luxury standard care, we cannot assume responsibility for inherent weaknesses or defects in materials which may result in tears or development of small holes in fabric that are not readily apparent prior to processing.</p>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <div class="ds-num">03</div>
+          <div>
+            <h2>Billing &amp; Payment</h2>
+            <p>All services must be paid via the dashboard portal prior to delivery, unless you hold an active Premium Corporate Membership. Pricing is confirmed transparently before any processing begins.</p>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <div class="ds-num">04</div>
+          <div>
+            <h2>Damage Claims</h2>
+            <p>Should an article be damaged during processing, we will review every claim with the seriousness it deserves:</p>
+            <ul>
+              <li><i class="ri-check-line"></i> Claims must be submitted within 14 days of delivery</li>
+              <li><i class="ri-check-line"></i> Each claim is assessed by our master technician</li>
+              <li><i class="ri-check-line"></i> Compensation is issued in service credit or full refund</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <div class="ds-num">05</div>
+          <div>
+            <h2>Membership Terms</h2>
+            <p>Membership is complimentary and may be suspended or terminated at our discretion in the event of misuse or repeated missed collections. Members retain priority scheduling, wardrobe consultations, and seasonal care benefits for as long as their account remains in good standing.</p>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <div class="ds-num">06</div>
+          <div>
+            <h2>Changes to These Terms</h2>
+            <p>We may update these terms from time to time. Any material changes will be communicated by email and take effect 30 days after notice, unless you object beforehand. Continued use of our services constitutes acceptance of the updated terms.</p>
+          </div>
+        </div>
+
+        <div class="doc-contact">
+          <div>
+            <div class="dc-eyebrow">Questions?</div>
+            <h3>Our Concierge Desk</h3>
+          </div>
+          <a href="contact.html" class="btn btn-outline">Contact Us</a>
+        </div>
+      </div>
     </div>
   </div>
 
   <script src="../assets/js/theme.js"></script>
-<footer class="footer" style="position: relative;">
+  <script src="../assets/js/main.js"></script>
+
+  <!-- Footer -->
+  <footer class="footer" style="position: relative;">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+          <a href="../index.html" class="logo" style="color: #F8F8F5; margin-bottom: 1.5rem;">
             <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
             <div class="logo-text">
               <div>Snap<span style="color: var(--accent)">Wash</span></div>
-              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+              <div class="logo-tagline" style="color: rgba(248, 248, 245, 0.72)">Premium Care, Delivered.</div>
             </div>
           </a>
           <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
@@ -140,7 +412,5 @@
       <i class="ri-arrow-up-line"></i>
     </button>
   </footer>
-
-  <script src="../assets/js/main.js"></script>
 </body>
 </html>

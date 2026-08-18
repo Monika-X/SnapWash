@@ -12,17 +12,120 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
   <style>
+    /* ============================================================
+       SnapWash Sign Up — light editorial luxury (step below Atelier)
+       ============================================================ */
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* Floating toggles */
+    .auth-toggles {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.6rem;
+      z-index: 1000;
+    }
+    .auth-toggle {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(214, 183, 124, 0.4);
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      box-shadow: var(--shadow-sm);
+    }
+    .auth-toggle:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    #dir-toggle.auth-toggle { width: auto; padding: 0 1.05rem; font-size: 0.78rem; }
+    [dir="rtl"] .auth-toggles { right: auto; left: 1.5rem; }
+
+    /* --- Layout --- */
     .auth-container {
       display: flex;
       min-height: 100vh;
     }
-    
+
+    /* --- Image panel --- */
     .auth-image {
       flex: 1;
-      background: url('../assets/images/steampress.jpg') center/cover no-repeat;
+      background: url('../assets/images/auth-signup.jpg') center/cover no-repeat;
       display: none;
+      position: relative;
     }
-    
+    .auth-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(18, 59, 58, 0.25), rgba(18, 59, 58, 0.55));
+    }
+    .auth-image::after {
+      content: '';
+      position: absolute;
+      top: 1.75rem;
+      left: 1.75rem;
+      right: 1.75rem;
+      bottom: 1.75rem;
+      border: 1px solid rgba(214, 183, 124, 0.45);
+      pointer-events: none;
+    }
+    .ai-caption {
+      position: absolute;
+      left: 50%;
+      bottom: 5.5rem;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      z-index: 1;
+    }
+    .ai-caption .ai-eyebrow {
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .ai-caption .ai-quote {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.6rem;
+      line-height: 1.5;
+      color: #F8F8F5;
+      margin-bottom: 1.5rem;
+    }
+    .ai-caption .ai-line {
+      width: 56px;
+      height: 2px;
+      background: var(--accent);
+      margin: 0 auto;
+    }
+
+    /* --- Form panel --- */
     .auth-form-wrapper {
       flex: 1;
       display: flex;
@@ -31,17 +134,276 @@
       padding: 4rem;
       background-color: var(--bg-color);
     }
-    
-    .auth-form {
-      width: 100%;
-      max-width: 500px;
-    }
-    
+    .auth-form { width: 100%; max-width: 460px; }
+
+    .auth-form .logo { margin-bottom: 3rem; }
     .auth-title {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 4vw, 2.9rem);
+      color: var(--primary);
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
     }
-    
+    .auth-title em { font-style: italic; color: var(--accent); }
+    .auth-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .form-group { margin-bottom: 1.75rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-color);
+      margin-bottom: 0.6rem;
+    }
+    .form-control {
+      border-radius: var(--border-radius-sm);
+      border: 1px solid var(--surface);
+      transition: all var(--transition-fast);
+    }
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(214, 183, 124, 0.18);
+    }
+
+    .form-terms {
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+      margin-top: 0.25rem;
+    }
+    .form-terms input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      margin-top: 3px;
+      border: 1px solid rgba(214, 183, 124, 0.55);
+      border-radius: 3px;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+    }
+    .form-terms input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .form-terms input[type="checkbox"]:checked::after {
+      content: '✓';
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .form-terms label {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+    .form-terms a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(214, 183, 124, 0.4);
+      padding-bottom: 1px;
+    }
+    .form-terms a:hover { border-color: var(--accent); }
+
+    .btn-submit {
+      width: 100%;
+      border-radius: 999px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.25rem 0;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--surface);
+    }
+    .auth-social {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2.25rem;
+    }
+    .auth-social a {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(214, 183, 124, 0.5);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: all var(--transition-normal);
+    }
+    .auth-social a:hover {
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .auth-perks {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2.75rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--surface);
+    }
+    .auth-perks span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+    .auth-perks span i { color: var(--accent); }
+
+    .auth-switch {
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+    .auth-switch a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(214, 183, 124, 0.4);
+      padding-bottom: 2px;
+    }
+    .auth-switch a:hover { border-color: var(--accent); }
+
+    /* RTL */
+    [dir="rtl"] .auth-container { flex-direction: row-reverse; }
+    [dir="rtl"] .eyebrow::before { display: none; }
+    [dir="rtl"] .eyebrow::after {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* --- Social sign-in modal --- */
+    .social-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(18, 59, 58, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .social-modal.open { opacity: 1; visibility: visible; }
+    .sm-card {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      background: var(--bg-color);
+      border: 1px solid rgba(214, 183, 124, 0.35);
+      padding: 3rem 2.5rem;
+      text-align: center;
+      transform: translateY(24px);
+      transition: transform 0.35s ease;
+    }
+    .social-modal.open .sm-card { transform: translateY(0); }
+    .sm-card::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px solid rgba(214, 183, 124, 0.25);
+      pointer-events: none;
+    }
+    .sm-eyebrow {
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+    .sm-title {
+      font-family: var(--font-heading);
+      font-size: 1.9rem;
+      color: var(--primary);
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+    }
+    .sm-title em { font-style: italic; color: var(--accent); }
+    .sm-copy {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.8;
+      margin-bottom: 2.25rem;
+    }
+    .sm-btn {
+      display: inline-block;
+      width: 100%;
+      border-radius: 999px;
+      padding: 0.95rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .sm-close {
+      display: inline-block;
+      margin-top: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      border-bottom: 1px solid var(--surface);
+      padding-bottom: 2px;
+    }
+    .sm-close:hover { color: var(--accent); border-color: var(--accent); }
+
+    @media (max-width: 576px) {
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+    }
+
     @media (min-width: 992px) {
       .auth-image { display: block; }
     }
@@ -49,131 +411,115 @@
 </head>
 <body>
 
+  <div class="auth-toggles">
+    <button id="theme-toggle" class="auth-toggle" aria-label="Toggle theme"><i class="ri-moon-line"></i></button>
+    <button id="dir-toggle" class="auth-toggle" aria-label="Toggle RTL/LTR">RTL</button>
+  </div>
+
   <div class="auth-container">
+    <div class="auth-image">
+      <div class="ai-caption">
+        <div class="ai-eyebrow">The House of SnapWash</div>
+        <div class="ai-quote">"Membership is reserved for those who believe a pressed seam is a finished thought."</div>
+        <div class="ai-line"></div>
+      </div>
+    </div>
     <div class="auth-form-wrapper">
       <div class="auth-form reveal">
         <a href="../index.html" class="logo">
-        <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
-        <div class="logo-text">
-          <div>Snap<span>Wash</span></div>
-          <div class="logo-tagline">Premium Care, Delivered.</div>
-        </div>
-      </a>
-        
-        <h1 class="auth-title">Become a Member</h1>
-        <p class="text-muted" style="margin-bottom: 2.5rem;">Join our exclusive circle for priority garment care and doorstep convenience.</p>
-        
-        <form action="dashboard.html">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+          <div class="logo-text">
+            <div>Snap<span>Wash</span></div>
+            <div class="logo-tagline">Premium Care, Delivered.</div>
+          </div>
+        </a>
+
+        <div class="eyebrow">Membership Application</div>
+        <h1 class="auth-title">Join the <em>Private List</em></h1>
+        <p class="auth-sub">Begin your membership for priority scheduling, real-time tracking, and garment care refined to a science.</p>
+
+        <form id="auth-form">
+          <div class="form-row">
             <div class="form-group">
               <label class="form-label">First Name</label>
-              <input type="text" class="form-control" required>
+              <input type="text" class="form-control" placeholder="Jane" required>
             </div>
             <div class="form-group">
               <label class="form-label">Last Name</label>
-              <input type="text" class="form-control" required>
+              <input type="text" class="form-control" placeholder="Doe" required>
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-control" required>
+            <input type="email" class="form-control" placeholder="client@example.com" required>
           </div>
           <div class="form-group">
             <label class="form-label">Password</label>
-            <input type="password" class="form-control" required>
+            <input type="password" class="form-control" placeholder="••••••••" required>
           </div>
-          
-          <div style="margin-top: 1rem; display: flex; gap: 0.5rem; align-items: flex-start;">
-            <input type="checkbox" id="terms" required style="margin-top: 5px;">
-            <label for="terms" class="text-muted" style="font-size: 0.9rem;">
-              I agree to the <a href="terms.html" class="text-accent">Terms & Conditions</a> and <a href="privacy.html" class="text-accent">Privacy Policy</a>.
+
+          <div class="form-terms">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">
+              I agree to the <a href="terms.html">Terms & Conditions</a> and <a href="privacy.html">Privacy Policy</a>.
             </label>
           </div>
-          
-          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Apply for Membership</button>
+
+          <button type="submit" class="btn btn-primary btn-submit">Apply for Membership</button>
         </form>
-        
-        <p class="text-center text-muted" style="margin-top: 2rem;">
-          Already a member? <a href="login.html" class="text-accent" style="font-weight: 600;">Sign In</a>
+
+        <div class="auth-divider">or continue with</div>
+        <div class="auth-social">
+          <a href="#" aria-label="Sign up with Google"><i class="ri-google-fill"></i></a>
+          <a href="#" aria-label="Sign up with Apple"><i class="ri-apple-fill"></i></a>
+        </div>
+
+        <div class="auth-perks">
+          <span><i class="ri-timer-line"></i> Priority Scheduling</span>
+          <span><i class="ri-radar-line"></i> Real-Time Tracking</span>
+          <span><i class="ri-shield-check-line"></i> Care Guarantee</span>
+        </div>
+
+        <p class="auth-switch">
+          Already a member? <a href="login.html">Sign In</a>
         </p>
       </div>
     </div>
-    <div class="auth-image"></div>
+  </div>
+
+  <div class="social-modal" id="social-modal" role="dialog" aria-modal="true">
+    <div class="sm-card">
+      <div class="sm-eyebrow">The Private List</div>
+      <h2 class="sm-title">Social Sign-Up, <em>Soon</em></h2>
+      <p class="sm-copy">Google and Apple sign-up are reserved for the full launch build of SnapWash. For now, continue with your member details — the experience is identical.</p>
+      <a href="#" class="btn btn-primary sm-btn" id="sm-continue">Continue with Email</a>
+      <br>
+      <a href="#" class="sm-close">Close</a>
+    </div>
   </div>
 
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/main.js"></script>
-<footer class="footer" style="position: relative;">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
-            <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
-            <div class="logo-text">
-              <div>Snap<span style="color: var(--accent)">Wash</span></div>
-              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
-            </div>
-          </a>
-          <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
-          <div class="social-links">
-            <a href="#" class="social-icon" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
-            <a href="#" class="social-icon" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
-            <a href="#" class="social-icon" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
-            <a href="#" class="social-icon" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
-          </div>
-        </div>
-        
-        <div class="footer-col">
-          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Services</h4>
-          <div class="footer-links">
-            <a href="../pages/services.html">Luxury Wash & Fold</a>
-            <a href="../pages/services.html">Executive Dry Cleaning</a>
-            <a href="../pages/services.html">Artisan Steam Press</a>
-            <a href="../pages/services.html">Couture Care</a>
-            <a href="../pages/services.html">Leather & Suede</a>
-          </div>
-        </div>
-        
-        <div class="footer-col">
-          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Company</h4>
-          <div class="footer-links">
-            <a href="../index.html">Home</a>
-            <a href="../pages/home2.html">Home 2</a>
-            <a href="../pages/about.html">About Us</a>
-            <a href="../pages/services.html">Services</a>
-            <a href="../pages/blog.html">Journal</a>
-            <a href="../pages/contact.html">Contact</a>
-          </div>
-        </div>
-        
-        <div class="footer-col">
-          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">The Private List</h4>
-          <p style="opacity: 0.7; font-size: 0.9rem; line-height: 1.6;">Receive exclusive service previews, private membership invitations, and garment care insights before anyone else.</p>
-          <form class="newsletter-form" onsubmit="event.preventDefault();">
-            <input type="email" class="newsletter-input" placeholder="Your email" required>
-            <button type="submit" class="newsletter-btn">JOIN</button>
-          </form>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <div>&copy; 2026 SnapWash. All rights reserved. Established 2026, London.</div>
-        <div class="center-dot-wrapper" style="text-align: center;">
-            <div style="display: inline-block; padding: 6px; border: 1px solid rgba(214, 183, 124, 0.3); border-radius: 50%;">
-                <div class="center-dot"></div>
-            </div>
-        </div>
-        <div class="footer-bottom-links">
-          <a href="../pages/privacy.html">Privacy Policy</a>
-          <a href="../pages/terms.html">Terms & Conditions</a>
-          <a href="../pages/sitemap.html">Sitemap</a>
-        </div>
-      </div>
-    </div>
-    
-    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
-      <i class="ri-arrow-up-line"></i>
-    </button>
-  </footer>
+  <script>
+    const socialModal = document.getElementById('social-modal');
+    document.querySelectorAll('.auth-social a').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        socialModal.classList.add('open');
+      });
+    });
+    const closeSocial = () => socialModal.classList.remove('open');
+    document.querySelectorAll('#sm-continue, .sm-close').forEach(el => el.addEventListener('click', (e) => { e.preventDefault(); closeSocial(); }));
+    socialModal.addEventListener('click', (e) => { if (e.target === socialModal) closeSocial(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSocial(); });
+  </script>
+  <script>
+    document.getElementById('auth-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = document.querySelector('.btn-submit');
+      btn.textContent = 'Applying…';
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 600);
+    });
+  </script>
 </body>
 </html>

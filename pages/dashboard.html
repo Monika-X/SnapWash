@@ -233,21 +233,128 @@
       display: block;
     }
 
+    .dashboard-menu-btn {
+      display: none;
+      background: var(--primary);
+      color: var(--bg-color);
+      border: none;
+      border-radius: var(--border-radius-md);
+      width: 44px;
+      height: 44px;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .sidebar-overlay {
+      display: none;
+    }
+
+    /* Status chips */
+    .status-chip {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .status-chip.paid, .status-chip.delivered { background: rgba(42, 157, 143, 0.15); color: var(--success); }
+    .status-chip.pending, .status-chip.in-progress { background: rgba(214, 183, 124, 0.2); color: var(--accent); }
+    .status-chip.unpaid { background: rgba(230, 57, 70, 0.12); color: var(--error); }
+
+    /* Orders & invoices tables */
+    .orders-list, .invoice-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .order-row, .invoice-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-md);
+      background: var(--bg-color);
+      flex-wrap: wrap;
+    }
+    .order-row h4, .invoice-row h4 { margin: 0; }
+    .order-meta, .invoice-meta { font-size: 0.85rem; color: var(--text-muted); }
+    .track-btn {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 0.5rem 1.1rem;
+      border-radius: 20px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .track-btn:hover { background: var(--primary); color: var(--bg-color); }
+
     @media (max-width: 992px) {
       .dashboard-layout { grid-template-columns: 1fr; }
-      .dashboard-sidebar { display: none; } /* Mobile menu needed */
+      .dashboard-sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+        transition: left 0.3s ease;
+      }
+      .dashboard-sidebar.open { left: 0; }
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+      }
+      .sidebar-overlay.show { display: block; }
+      .dashboard-menu-btn { display: flex; align-items: center; justify-content: center; }
       .stages-wrapper { flex-direction: column; gap: 2rem; align-items: flex-start; padding-left: 20px; }
       .stages-wrapper::before, .progress-bar { width: 4px; height: 100%; top: 0; left: 47px; }
       .stage { display: flex; align-items: center; width: auto; gap: 1rem; text-align: left; }
       .stage-icon { margin: 0; }
     }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      width: 90%;
+      max-width: 500px;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+    .modal-overlay.show .modal-content {
+      transform: translateY(0);
+    }
+    .payment-step { display: none; }
+    .payment-step.active { display: block; }
   </style>
 </head>
 <body>
 
   <div class="dashboard-layout">
     <!-- Sidebar -->
-    <aside class="dashboard-sidebar">
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <aside class="dashboard-sidebar" id="dashboard-sidebar">
       <a href="../index.html" class="logo">
         <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
         <div class="logo-text">
@@ -281,13 +388,19 @@
     <!-- Main Content -->
     <main class="dashboard-main">
       <header class="dashboard-header">
-        <div>
-          <h2 style="margin: 0;">Welcome Back, Elena.</h2>
-          <p class="text-muted">Here is the status of your premium garment care.</p>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button id="dashboard-menu-btn" class="dashboard-menu-btn" aria-label="Menu">
+            <i class="ri-menu-3-line"></i>
+          </button>
+          <div>
+            <h2 style="margin: 0;">Welcome Back, Elena.</h2>
+            <p class="text-muted">Here is the status of your premium garment care.</p>
+          </div>
         </div>
         
         <div class="user-profile">
           <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
+          <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
           <div class="avatar">E</div>
         </div>
       </header>
@@ -321,7 +434,7 @@
         <div class="tracking-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
             <h3>Current Order #SW-8942</h3>
-            <span class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View Details</span>
+            <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;" onclick="openTab('tracking')">View Details</button>
           </div>
           
           <div class="stages-wrapper">
@@ -351,7 +464,7 @@
         </div>
       </section>
 
-      <!-- Schedule Pickup Tab (Placeholder for complexity) -->
+      <!-- Schedule Pickup Tab -->
       <section id="tab-schedule" class="tab-content">
         <div class="tracking-card">
           <h3>Schedule a Pickup</h3>
@@ -361,7 +474,7 @@
             <div class="dashboard-grid">
               <div class="form-group">
                 <label class="form-label">Service Type</label>
-                <select class="form-control">
+                <select class="form-control" id="schedule-service">
                   <option>Wash & Fold</option>
                   <option>Dry Cleaning</option>
                   <option>Premium Ironing</option>
@@ -369,7 +482,19 @@
               </div>
               <div class="form-group">
                 <label class="form-label">Pickup Date</label>
-                <input type="date" class="form-control" required>
+                <input type="date" class="form-control" id="pickup-date" required onfocus="this.min=new Date().toISOString().split('T')[0]">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Preferred Time</label>
+                <select class="form-control">
+                  <option>Morning (8 AM – 12 PM)</option>
+                  <option>Afternoon (12 PM – 4 PM)</option>
+                  <option>Evening (4 PM – 8 PM)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pickup Address</label>
+                <input type="text" class="form-control" placeholder="e.g. 12 Mayfair Lane, London" required>
               </div>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Confirm Schedule</button>
@@ -377,106 +502,453 @@
         </div>
       </section>
       
-      <!-- Other tabs can be expanded similarly -->
-      <section id="tab-tracking" class="tab-content"><div class="tracking-card"><h3>Order History & Tracking</h3><p>Detailed timeline of past orders.</p></div></section>
-      <section id="tab-billing" class="tab-content"><div class="tracking-card"><h3>Billing History</h3><p>Invoices and payment settings.</p></div></section>
-      <section id="tab-profile" class="tab-content"><div class="tracking-card"><h3>Profile Settings</h3><p>Manage your account.</p></div></section>
+      <!-- Order Tracking Tab -->
+      <section id="tab-tracking" class="tab-content">
+        <h3 style="margin-bottom: 1.5rem;">Order History & Tracking</h3>
 
+        <div class="orders-list">
+          <div class="order-row">
+            <div>
+              <h4>#SW-8942 — Dry Cleaning & Press</h4>
+              <div class="order-meta">8 items · Placed Jul 21, 2026 · ETA Jul 24</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <span class="status-chip in-progress">In Progress</span>
+              <button class="track-btn" onclick="trackOrder(0)">Track</button>
+            </div>
+          </div>
+          <div class="order-row">
+            <div>
+              <h4>#SW-8856 — Wash & Fold</h4>
+              <div class="order-meta">5 items · Placed Jul 14, 2026 · Delivered Jul 16</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <span class="status-chip delivered">Delivered</span>
+              <button class="track-btn" onclick="trackOrder(1)">Track</button>
+            </div>
+          </div>
+          <div class="order-row">
+            <div>
+              <h4>#SW-8771 — Artisan Steam Press</h4>
+              <div class="order-meta">3 items · Placed Jul 02, 2026 · Delivered Jul 03</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <span class="status-chip delivered">Delivered</span>
+              <button class="track-btn" onclick="trackOrder(2)">Track</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tracking-card" id="tracking-timeline" style="display: none; margin-top: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h3 id="timeline-title">Track Order</h3>
+            <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;" onclick="closeTimeline()">Close</button>
+          </div>
+          <div class="stages-wrapper" id="timeline-stages"></div>
+        </div>
+      </section>
+      
+      <!-- Billing Tab -->
+      <section id="tab-billing" class="tab-content">
+        <h3 style="margin-bottom: 1.5rem;">Billing History</h3>
+
+        <div class="invoice-list">
+          <div class="invoice-row">
+            <div>
+              <h4>Invoice #INV-8902</h4>
+              <div class="invoice-meta">Silk Garment Care · Aug 10, 2026</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 80px 90px; gap: 1.5rem; align-items: center; justify-items: end;">
+              <strong>$55.00</strong>
+              <span class="status-chip paid">Paid</span>
+            </div>
+          </div>
+          <div class="invoice-row">
+            <div>
+              <h4>Invoice #INV-8847</h4>
+              <div class="invoice-meta">Dry Cleaning & Press · Jul 21, 2026</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 80px 90px; gap: 1.5rem; align-items: center; justify-items: end;">
+              <strong>$64.00</strong>
+              <span class="status-chip pending">Pending</span>
+            </div>
+          </div>
+          <div class="invoice-row">
+            <div>
+              <h4>Invoice #INV-8761</h4>
+              <div class="invoice-meta">Wash & Fold · Jul 14, 2026</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 80px 90px; gap: 1.5rem; align-items: center; justify-items: end;">
+              <strong>$32.50</strong>
+              <span class="status-chip paid">Paid</span>
+            </div>
+          </div>
+          <div class="invoice-row">
+            <div>
+              <h4>Invoice #INV-8693</h4>
+              <div class="invoice-meta">Artisan Steam Press · Jul 02, 2026</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 80px 90px; gap: 1.5rem; align-items: center; justify-items: end;">
+              <strong>$48.00</strong>
+              <span class="status-chip paid">Paid</span>
+            </div>
+          </div>
+          <div class="invoice-row">
+            <div>
+              <h4>Invoice #INV-8619</h4>
+              <div class="invoice-meta">Couture Care · Jun 25, 2026</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 80px 90px; gap: 1.5rem; align-items: center; justify-items: end;">
+              <strong>$96.00</strong>
+              <span class="status-chip unpaid">Unpaid</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary mt-3" style="margin-top: 2rem;" onclick="payOutstanding(this)">Pay Outstanding Balance</button>
+      </section>
+      
+      <!-- Profile Tab -->
+      <section id="tab-profile" class="tab-content">
+        <div class="tracking-card">
+          <h3>Profile Settings</h3>
+          <p class="text-muted" style="margin-bottom: 2rem;">Update your personal details and delivery preferences.</p>
+          <form id="profile-form">
+            <div class="dashboard-grid">
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" value="Elena Vasquez" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" value="elena@example.com" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-control" value="+44 7700 900123">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Default Pickup Address</label>
+                <input type="text" class="form-control" value="12 Mayfair Lane, London">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Payment Modal -->
+      <div class="modal-overlay" id="payment-modal">
+        <div class="modal-content tracking-card" style="margin-bottom: 0;">
+          <button onclick="closePaymentModal()" style="position: absolute; right: 1.5rem; top: 1.5rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);"><i class="ri-close-line"></i></button>
+          
+          <!-- Step 1: Review -->
+          <div id="payment-step-1" class="payment-step active">
+            <h3 style="margin-bottom: 1.5rem;">Review Payment</h3>
+            <div class="order-row" style="margin-bottom: 2rem; border-color: var(--primary);">
+              <div>
+                <h4 style="margin: 0;">Invoice #INV-8619</h4>
+                <div class="order-meta" style="margin-top: 0.25rem;">Couture Care &middot; Jun 25, 2026</div>
+              </div>
+              <strong>$96.00</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 600; margin-bottom: 2rem;">
+              <span>Total Due</span>
+              <span class="text-accent">$96.00</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="goToPaymentStep(2)">Proceed to Payment <i class="ri-arrow-right-line" style="margin-left: 0.5rem;"></i></button>
+          </div>
+
+          <!-- Step 2: Card Details -->
+          <form id="payment-step-2" class="payment-step" onsubmit="event.preventDefault(); processFinalPayment();">
+            <h3 style="margin-bottom: 1.5rem;">Payment Details</h3>
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label class="form-label">Cardholder Name <span style="color:var(--error);">*</span></label>
+              <input type="text" class="form-control" value="Elena Vasquez" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label class="form-label">Card Number <span style="color:var(--error);">*</span></label>
+              <div style="position: relative;">
+                <i class="ri-bank-card-line" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                <input type="text" class="form-control" placeholder="0000 0000 0000 0000" style="padding-left: 2.5rem;" required maxlength="19" pattern="\d{4}\s?\d{4}\s?\d{4}\s?\d{4}" title="Please enter 16 digits" oninput="let v1 = this.value.replace(/\D/g, ''); this.value = v1.length > 0 ? v1.match(/.{1,4}/g).join(' ') : '';">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Expiry Date <span style="color:var(--error);">*</span></label>
+                <input type="text" class="form-control" placeholder="MM/YY" required maxlength="5" pattern="(0[1-9]|1[0-2])\/(2[6-9]|[3-9]\d)" title="Enter a valid, unexpired date (Year 26+)" oninput="let v2 = this.value.replace(/\D/g, ''); if(v2.length > 2) { v2 = v2.substring(0, 2) + '/' + v2.substring(2, 4); } this.value = v2;">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">CVC <span style="color:var(--error);">*</span></label>
+                <input type="text" class="form-control" placeholder="123" required maxlength="4" pattern="\d{3,4}" title="3 or 4 digits" oninput="this.value = this.value.replace(/\D/g, '')">
+              </div>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+              <button type="button" class="btn btn-outline" style="width: 50%;" onclick="goToPaymentStep(1)">Back</button>
+              <button type="submit" class="btn btn-primary" id="confirm-pay-btn" style="width: 50%;">Pay $96.00</button>
+            </div>
+          </form>
+          
+        </div>
+      </div>
     </main>
   </div>
 
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/main.js"></script>
   <script>
-    // Simple Tab Switching Logic
+    // Tab switching + tracking + billing + mobile sidebar
     document.addEventListener('DOMContentLoaded', () => {
       const menuItems = document.querySelectorAll('.menu-item[data-tab]');
       const tabContents = document.querySelectorAll('.tab-content');
-      
+
+      window.openTab = (tabName) => {
+        menuItems.forEach(m => m.classList.toggle('active', m.dataset.tab === tabName));
+        tabContents.forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + tabName).classList.add('active');
+      };
+
       menuItems.forEach(item => {
-        item.addEventListener('click', () => {
-          // Remove active from all
-          menuItems.forEach(m => m.classList.remove('active'));
-          tabContents.forEach(t => t.classList.remove('active'));
-          
-          // Add active to clicked
-          item.classList.add('active');
-          document.getElementById('tab-' + item.dataset.tab).classList.add('active');
+        item.addEventListener('click', () => openTab(item.dataset.tab));
+      });
+
+      // Mobile sidebar
+      const sidebar = document.getElementById('dashboard-sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      const menuBtn = document.getElementById('dashboard-menu-btn');
+
+      const closeSidebar = () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      };
+
+      menuBtn.addEventListener('click', () => {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+      });
+      overlay.addEventListener('click', closeSidebar);
+
+      menuItems.forEach(item => {
+        item.addEventListener('click', closeSidebar);
+      });
+    });
+
+    // Order stages data
+    const ORDER_STAGES = [
+      { title: 'Order Placed', icon: 'ri-check-line' },
+      { title: 'Picked Up', icon: 'ri-truck-line' },
+      { title: 'Washing', icon: 'ri-drop-line' },
+      { title: 'Ironing', icon: 'ri-steam-line' },
+      { title: 'Delivering', icon: 'ri-home-heart-line' }
+    ];
+
+    const ORDERS = [
+      { id: 'SW-8942', stage: 3 },
+      { id: 'SW-8856', stage: 5 },
+      { id: 'SW-8771', stage: 5 }
+    ];
+
+    function trackOrder(index) {
+      const order = ORDERS[index];
+      const timeline = document.getElementById('tracking-timeline');
+      const stagesBox = document.getElementById('timeline-stages');
+
+      document.getElementById('timeline-title').textContent = 'Track Order #' + order.id;
+
+      let html = '<div class="progress-bar" style="width: ' + (order.stage === 5 ? 80 : order.stage * 20) + '%;"></div>';
+      ORDER_STAGES.forEach((stage, i) => {
+        const state = i < order.stage ? 'completed' : (i === order.stage ? 'active' : '');
+        html += '<div class="stage ' + state + '"><div class="stage-icon"><i class="' + stage.icon + '"></i></div><div class="stage-label">' + stage.title + '</div></div>';
+      });
+      stagesBox.innerHTML = html;
+      timeline.style.display = 'block';
+      timeline.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeTimeline() {
+      document.getElementById('tracking-timeline').style.display = 'none';
+    }
+
+    let payBtnRef = null;
+
+    function payOutstanding(btn) {
+      payBtnRef = btn;
+      document.getElementById('payment-modal').classList.add('show');
+      goToPaymentStep(1);
+    }
+
+    function closePaymentModal() {
+      document.getElementById('payment-modal').classList.remove('show');
+    }
+
+    function goToPaymentStep(step) {
+      document.querySelectorAll('.payment-step').forEach(el => el.classList.remove('active'));
+      document.getElementById('payment-step-' + step).classList.add('active');
+    }
+
+    function processFinalPayment() {
+      const btn = document.getElementById('confirm-pay-btn');
+      btn.innerHTML = '<i class="ri-loader-4-line"></i> Processing...';
+      
+      if (!document.getElementById('spin-style')) {
+        const style = document.createElement('style');
+        style.id = 'spin-style';
+        style.textContent = '@keyframes spin { 100% { transform: rotate(360deg); } } .ri-loader-4-line { display: inline-block; animation: spin 1s linear infinite; margin-right: 8px; }';
+        document.head.appendChild(style);
+      }
+
+      btn.disabled = true;
+      
+      setTimeout(() => {
+        btn.innerHTML = 'Payment Successful <i class="ri-checkbox-circle-line" style="margin-left: 4px;"></i>';
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.borderColor = 'var(--success)';
+        
+        document.querySelectorAll('.status-chip.unpaid').forEach(chip => {
+          chip.className = 'status-chip paid';
+          chip.textContent = 'Paid';
         });
+        localStorage.setItem('inv_8619_paid', 'true');
+
+        setTimeout(() => {
+          closePaymentModal();
+          if (payBtnRef) {
+            payBtnRef.style.opacity = '0';
+            payBtnRef.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => payBtnRef.style.display = 'none', 500);
+          }
+        }, 1500);
+      }, 1500);
+    }
+
+    // Profile & Settings Logic (Real-time & localStorage)
+    document.addEventListener('DOMContentLoaded', () => {
+      const profileForm = document.getElementById('profile-form');
+      const headerName = document.querySelector('.dashboard-header h2');
+      const avatar = document.querySelector('.dashboard-header .avatar');
+      
+      // 1. Load saved profile or use default
+      let profile = JSON.parse(localStorage.getItem('snapwash_profile')) || {
+        name: 'Elena Vasquez',
+        email: 'elena@example.com',
+        phone: '+44 7700 900123',
+        address: '12 Mayfair Lane, London'
+      };
+
+      // 2. Populate UI on page load
+      if (profileForm) {
+        const inputs = profileForm.querySelectorAll('input');
+        if(inputs.length >= 4) {
+          inputs[0].value = profile.name;
+          inputs[1].value = profile.email;
+          inputs[2].value = profile.phone;
+          inputs[3].value = profile.address;
+        }
+      }
+      if (headerName) headerName.textContent = `Welcome Back, ${profile.name.split(' ')[0]}.`;
+      if (avatar) avatar.textContent = profile.name.charAt(0).toUpperCase();
+
+      // 3. Handle Form Submit (Save & Real-time Update)
+      profileForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const inputs = profileForm.querySelectorAll('input');
+        profile = {
+          name: inputs[0].value,
+          email: inputs[1].value,
+          phone: inputs[2].value,
+          address: inputs[3].value
+        };
+        
+        // Save to memory
+        localStorage.setItem('snapwash_profile', JSON.stringify(profile));
+        
+        // Real-time update UI
+        if (headerName) headerName.textContent = `Welcome Back, ${profile.name.split(' ')[0]}.`;
+        if (avatar) avatar.textContent = profile.name.charAt(0).toUpperCase();
+        
+        // Show success message
+        let success = profileForm.parentElement.querySelector('.form-success');
+        if (!success) {
+          success = document.createElement('div');
+          success.className = 'form-success';
+          success.innerHTML = '<i class="ri-checkbox-circle-line"></i><span>Profile updated successfully!</span>';
+          profileForm.after(success);
+        }
+        success.style.display = 'flex';
+        setTimeout(() => success.style.display = 'none', 3000); // hide after 3 seconds
+      });
+
+      // Schedule form success
+      const scheduleForm = document.getElementById('schedule-form');
+      scheduleForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const service = document.getElementById('schedule-service').value;
+        const dateVal = document.getElementById('pickup-date').value;
+        const dateObj = new Date(dateVal);
+        const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        
+        const newOrderId = 'SW-' + Math.floor(1000 + Math.random() * 9000);
+        const newIndex = ORDERS.length;
+        ORDERS.push({ id: newOrderId.replace('SW-', ''), stage: 0 });
+        
+        const newOrderHtml = `
+          <div class="order-row" style="animation: slideUp 0.3s ease; border-color: var(--primary);">
+            <div>
+              <h4>#${newOrderId} — ${service}</h4>
+              <div class="order-meta">To be collected &middot; Scheduled for ${dateStr}</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <span class="status-chip pending" style="background: rgba(214, 183, 124, 0.2); color: var(--accent);">Scheduled</span>
+              <button class="track-btn" onclick="trackOrder(${newIndex})">Track</button>
+            </div>
+          </div>
+        `;
+        
+        document.querySelector('.orders-list').insertAdjacentHTML('afterbegin', newOrderHtml);
+        
+        // Add invoice to Billing History
+        const newInvoiceId = newOrderId.replace('SW-', 'INV-');
+        const randomPrice = (Math.random() * 50 + 30).toFixed(2);
+        const newInvoiceHtml = `
+          <div class="invoice-row" style="animation: slideUp 0.3s ease; border-left: 3px solid var(--accent);">
+            <div>
+              <h4>Invoice #${newInvoiceId}</h4>
+              <div class="invoice-meta">${service} &middot; ${dateStr}</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 80px 90px; gap: 1.5rem; align-items: center; justify-items: end;">
+              <strong>$${randomPrice}</strong>
+              <span class="status-chip pending">Pending</span>
+            </div>
+          </div>
+        `;
+        document.querySelector('.invoice-list').insertAdjacentHTML('afterbegin', newInvoiceHtml);
+
+        // Update stats
+        const activeOrdersEl = document.querySelector('.stat-card h2');
+        if (activeOrdersEl && activeOrdersEl.textContent === '1') {
+          activeOrdersEl.textContent = '2';
+        }
+        
+        // Button Feedback
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.textContent;
+        btn.textContent = 'Pickup Scheduled ✓';
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.borderColor = 'var(--success)';
+        btn.disabled = true;
+        
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.backgroundColor = '';
+          btn.style.borderColor = '';
+          btn.disabled = false;
+          e.target.reset();
+          if(window.openTab) window.openTab('tracking'); 
+        }, 1500);
       });
     });
   </script>
-<footer class="footer" style="position: relative;">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
-            <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
-            <div class="logo-text">
-              <div>Snap<span style="color: var(--accent)">Wash</span></div>
-              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
-            </div>
-          </a>
-          <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
-          <div class="social-links">
-            <a href="#" class="social-icon" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
-            <a href="#" class="social-icon" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
-            <a href="#" class="social-icon" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
-            <a href="#" class="social-icon" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
-          </div>
-        </div>
-        
-        <div class="footer-col">
-          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Services</h4>
-          <div class="footer-links">
-            <a href="../pages/services.html">Luxury Wash & Fold</a>
-            <a href="../pages/services.html">Executive Dry Cleaning</a>
-            <a href="../pages/services.html">Artisan Steam Press</a>
-            <a href="../pages/services.html">Couture Care</a>
-            <a href="../pages/services.html">Leather & Suede</a>
-          </div>
-        </div>
-        
-        <div class="footer-col">
-          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Company</h4>
-          <div class="footer-links">
-            <a href="../index.html">Home</a>
-            <a href="../pages/home2.html">Home 2</a>
-            <a href="../pages/about.html">About Us</a>
-            <a href="../pages/services.html">Services</a>
-            <a href="../pages/blog.html">Journal</a>
-            <a href="../pages/contact.html">Contact</a>
-          </div>
-        </div>
-        
-        <div class="footer-col">
-          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">The Private List</h4>
-          <p style="opacity: 0.7; font-size: 0.9rem; line-height: 1.6;">Receive exclusive service previews, private membership invitations, and garment care insights before anyone else.</p>
-          <form class="newsletter-form" onsubmit="event.preventDefault();">
-            <input type="email" class="newsletter-input" placeholder="Your email" required>
-            <button type="submit" class="newsletter-btn">JOIN</button>
-          </form>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <div>&copy; 2026 SnapWash. All rights reserved. Established 2026, London.</div>
-        <div class="center-dot-wrapper" style="text-align: center;">
-            <div style="display: inline-block; padding: 6px; border: 1px solid rgba(214, 183, 124, 0.3); border-radius: 50%;">
-                <div class="center-dot"></div>
-            </div>
-        </div>
-        <div class="footer-bottom-links">
-          <a href="../pages/privacy.html">Privacy Policy</a>
-          <a href="../pages/terms.html">Terms & Conditions</a>
-          <a href="../pages/sitemap.html">Sitemap</a>
-        </div>
-      </div>
-    </div>
-    
-    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
-      <i class="ri-arrow-up-line"></i>
-    </button>
-  </footer>
 </body>
 </html>

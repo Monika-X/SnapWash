@@ -9,47 +9,228 @@
   <link rel="stylesheet" href="../assets/css/variables.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <link rel="stylesheet" href="../assets/css/components.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
   <style>
+    /* ============================================================
+       SnapWash 404 — light editorial luxury (step below Atelier)
+       ============================================================ */
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .center-eyebrow { justify-content: center; }
+    .center-eyebrow::before { display: none; }
+
     .error-container {
-      height: 100vh;
+      min-height: calc(100vh - 400px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2rem;
+      padding: 5rem 2rem;
+      position: relative;
+      overflow: hidden;
     }
-    
-    .error-code {
-      font-size: 10rem;
+    .error-container::before {
+      content: '404';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       font-family: var(--font-heading);
-      color: var(--primary);
+      font-size: clamp(18rem, 40vw, 34rem);
       line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(214, 183, 124, 0.18);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .error-inner { position: relative; z-index: 1; }
+
+    .error-code {
+      font-family: var(--font-heading);
+      font-size: clamp(6rem, 12vw, 9rem);
+      line-height: 1;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .error-code em { font-style: italic; color: var(--accent); }
+    .ph-divider {
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      margin: 1.5rem auto;
+      opacity: 0.8;
+    }
+    .error-container h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      color: var(--primary);
       margin-bottom: 1rem;
+    }
+    .error-container h2 em { font-style: italic; color: var(--accent); }
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2.25rem;
+    }
+    .error-actions .btn {
+      border-radius: 999px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.95rem 2.2rem;
+    }
+    .error-search {
+      display: flex;
+      max-width: 460px;
+      width: 100%;
+      margin: 2.25rem auto 0;
+      border: 1px solid rgba(214, 183, 124, 0.4);
+      border-radius: 999px;
+      overflow: hidden;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .error-search:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(214, 183, 124, 0.18);
+    }
+    .error-search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 0.95rem 1.5rem;
+      color: var(--text-color);
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+    }
+    .error-search button {
+      background: transparent;
+      border: none;
+      padding: 0 1.5rem;
+      color: var(--accent);
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .error-search button:hover { background: var(--accent); color: var(--primary); }
+
+    /* RTL */
+    [dir="rtl"] .eyebrow::before { display: none; }
+    [dir="rtl"] .eyebrow::after {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
     }
   </style>
 </head>
 <body>
 
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+        <div class="logo-text">
+          <div>Snap<span>Wash</span></div>
+          <div class="logo-tagline">Premium Care, Delivered.</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="home2.html" class="nav-link">Home2</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="dashboard.html" class="btn btn-primary mobile-book-now">Book Now</a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile-menu">
+          <button class="theme-toggle profile-icon" aria-label="My Account" type="button">
+            <i class="ri-user-line"></i>
+          </button>
+          <div class="profile-dropdown">
+            <div class="pd-head">
+              <div class="pd-greet">Welcome to</div>
+              <div class="pd-name">SnapWash Member</div>
+            </div>
+            <a href="dashboard.html" class="pd-link">
+              <i class="ri-dashboard-3-line"></i>
+              <span>User Dashboard<small class="pd-sub">Schedule, track &amp; pay</small></span>
+            </a>
+            <a href="login.html" class="pd-link">
+              <i class="ri-login-box-line"></i>
+              <span>Login / Sign Up<small class="pd-sub">Member access</small></span>
+            </a>
+          </div>
+        </div>
+        <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
+        <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
+        <a href="dashboard.html" class="btn btn-primary">Book Now</a>
+      </div>
+
+      <button class="mobile-menu-btn" aria-label="Menu">
+        <i class="ri-menu-3-line"></i>
+      </button>
+    </div>
+  </nav>
+
   <div class="error-container reveal">
-    <h1 class="error-code">404</h1>
-    <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Page Not Found</h2>
-    <p class="text-muted" style="max-width: 500px; margin-bottom: 2rem;">The page you are looking for has been misplaced, much like a stray sock. Let's get you back to our impeccably organized homepage.</p>
-    <a href="../index.html" class="btn btn-primary">Return to Homepage</a>
+    <div class="error-inner">
+      <div class="eyebrow center-eyebrow">Lost &amp; Found</div>
+      <h1 class="error-code">4<em>0</em>4</h1>
+      <div class="ph-divider"></div>
+      <h2>This Page Has Gone <em>Missing</em></h2>
+      <p class="text-muted" style="max-width: 500px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8;">The page you are looking for has been misplaced, much like a stray sock. Let's get you back to our impeccably organized homepage.</p>
+      <div class="error-actions">
+        <a href="../index.html" class="btn btn-primary">Return Home</a>
+        <a href="blog.html" class="btn btn-outline">Browse the Journal</a>
+      </div>
+      <form class="error-search" onsubmit="event.preventDefault();">
+        <input type="text" placeholder="Search the site...">
+        <button type="submit" aria-label="Search"><i class="ri-search-line"></i></button>
+      </form>
+    </div>
   </div>
 
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/main.js"></script>
-<footer class="footer" style="position: relative;">
+
+  <!-- Footer -->
+  <footer class="footer" style="position: relative;">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+          <a href="../index.html" class="logo" style="color: #F8F8F5; margin-bottom: 1.5rem;">
             <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
             <div class="logo-text">
               <div>Snap<span style="color: var(--accent)">Wash</span></div>
-              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+              <div class="logo-tagline" style="color: rgba(248, 248, 245, 0.72)">Premium Care, Delivered.</div>
             </div>
           </a>
           <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>

@@ -12,15 +12,330 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
   <style>
-    .article-header { padding: 150px 0 80px; text-align: center; }
-    .article-img { width: 100%; height: 500px; object-fit: cover; border-radius: var(--border-radius-xl); margin-bottom: 3rem; }
-    .article-content { max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8; }
-    .article-content h2 { margin-top: 3rem; margin-bottom: 1rem; }
-    .article-meta { display: flex; justify-content: center; gap: 2rem; color: var(--text-muted); margin-top: 2rem; }
+    /* ============================================================
+       SnapWash Journal Article — light editorial luxury
+       (step below Atelier)
+       ============================================================ */
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .center-eyebrow { justify-content: center; }
+    .center-eyebrow::before { display: none; }
+
+    /* --- Article Header --- */
+    .article-header {
+      padding: 170px 0 110px;
+      text-align: center;
+      background: linear-gradient(to bottom, var(--surface), var(--bg-color));
+    }
+    .article-cat {
+      display: inline-block;
+      padding: 0.45rem 1.1rem;
+      border: 1px solid rgba(214, 183, 124, 0.5);
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--bg-color);
+      margin-bottom: 1.5rem;
+    }
+    .article-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+      line-height: 1.08;
+      color: var(--primary);
+      margin-bottom: 1.75rem;
+    }
+    .ph-divider {
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      margin: 0 auto 1.75rem;
+      opacity: 0.8;
+    }
+    .article-meta {
+      display: flex;
+      justify-content: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      align-items: center;
+    }
+    .article-meta .am-date {
+      font-family: var(--font-heading);
+      font-style: italic;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+    .article-meta .am-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+    .article-meta i { color: var(--accent); }
+
+    /* --- Article Body --- */
+    .article-body { max-width: 800px; margin: 0 auto; }
+    .article-img-wrap {
+      position: relative;
+      margin-bottom: 4rem;
+    }
+    .article-img-wrap::before {
+      content: '';
+      position: absolute;
+      top: -1.4rem;
+      left: -1.4rem;
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--accent);
+      border-radius: var(--border-radius-xl);
+      opacity: 0.4;
+      z-index: 0;
+    }
+    .article-img {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: var(--border-radius-xl);
+      box-shadow: var(--shadow-lg);
+      display: block;
+      z-index: 1;
+    }
+    .article-content { max-width: 760px; margin: 0 auto; }
+    .article-content > p:first-child {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      line-height: 1.85;
+      color: var(--primary);
+      margin-bottom: 3rem;
+    }
+    .article-content > p:first-child::first-letter {
+      font-style: italic;
+      color: var(--accent);
+      font-size: 3.4em;
+      float: left;
+      line-height: 0.85;
+      padding-right: 0.6rem;
+      padding-top: 0.15rem;
+    }
+    .article-content h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.7rem, 3vw, 2.1rem);
+      color: var(--primary);
+      margin: 3.5rem 0 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px dashed rgba(214, 183, 124, 0.35);
+      position: relative;
+    }
+    .article-content h2 .sec-num {
+      font-style: italic;
+      color: var(--accent);
+      margin-right: 0.5rem;
+    }
+    .article-content p {
+      color: var(--text-muted);
+      font-size: 1.08rem;
+      line-height: 1.95;
+      margin-bottom: 1.5rem;
+    }
+
+    /* --- Share Bar --- */
+    .share-bar {
+      max-width: 760px;
+      margin: 3.5rem auto 0;
+      padding-top: 2.25rem;
+      border-top: 1px solid var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .share-bar .sb-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .share-links {
+      display: flex;
+      gap: 0.85rem;
+      align-items: center;
+    }
+    .share-links a {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(214, 183, 124, 0.5);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      transition: all var(--transition-normal);
+    }
+    .share-links a:hover {
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+    .share-links .share-copy {
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid rgba(214, 183, 124, 0.5);
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      color: var(--accent);
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-normal);
+    }
+    .share-links .share-copy:hover {
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+    .share-copy-done {
+      font-size: 0.8rem;
+      color: var(--success);
+      display: none;
+      font-weight: 600;
+    }
+
+    /* --- Related Posts --- */
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .related-card {
+      display: block;
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--surface);
+      background: var(--bg-color);
+      transition: all var(--transition-normal);
+      position: relative;
+    }
+    .related-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.45s ease;
+      z-index: 2;
+    }
+    .related-card:hover::before { transform: scaleX(1); }
+    .related-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(214, 183, 124, 0.45);
+    }
+    .related-img-wrap { position: relative; overflow: hidden; }
+    .related-img-wrap img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+      transition: transform var(--transition-slow);
+    }
+    .related-card:hover .related-img-wrap img { transform: scale(1.06); }
+    .related-cat {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bg-color);
+      background: rgba(18, 59, 58, 0.85);
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+    }
+    .related-body { padding: 1.5rem 1.5rem 1.75rem; }
+    .related-body h3 {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      line-height: 1.3;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      transition: color var(--transition-fast);
+    }
+    .related-card:hover .related-body h3 { color: var(--accent); }
+    .related-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .related-link i { transition: transform 0.3s ease; }
+    .related-card:hover .related-link i { transform: translateX(4px); }
+
+    /* RTL */
+    [dir="rtl"] .eyebrow::before { display: none; }
+    [dir="rtl"] .eyebrow::after {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    [dir="rtl"] .article-img-wrap::before { left: auto; right: -1.4rem; }
+    [dir="rtl"] .article-content h2 .sec-num { margin-right: 0; margin-left: 0.5rem; }
+    [dir="rtl"] .related-link:hover i, [dir="rtl"] .related-card:hover .related-link i { transform: translateX(-4px); }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .related-grid { grid-template-columns: 1fr 1fr; }
+      .article-img-wrap::before { display: none; }
+    }
+    @media (max-width: 768px) {
+      .related-grid { grid-template-columns: 1fr; }
+      .article-img { height: 340px; }
+    }
   </style>
 </head>
 <body>
 
+  <!-- Navbar -->
   <nav class="navbar scrolled">
     <div class="container">
       <a href="../index.html" class="logo">
@@ -30,41 +345,114 @@
           <div class="logo-tagline">Premium Care, Delivered.</div>
         </div>
       </a>
-      <div class="nav-links"><a href="blog.html" class="nav-link active">Back to Blog</a></div>
-      <div class="nav-actions">
-        <a href="dashboard.html" class="theme-toggle profile-icon" aria-label="My Account">
-          <i class="ri-user-line"></i>
-        </a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="home2.html" class="nav-link">Home2</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="blog.html" class="nav-link active">Blog</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="dashboard.html" class="btn btn-primary mobile-book-now">Book Now</a>
       </div>
+      <div class="nav-actions">
+        <div class="profile-menu">
+          <button class="theme-toggle profile-icon" aria-label="My Account" type="button">
+            <i class="ri-user-line"></i>
+          </button>
+          <div class="profile-dropdown">
+            <div class="pd-head">
+              <div class="pd-greet">Welcome to</div>
+              <div class="pd-name">SnapWash Member</div>
+            </div>
+            <a href="dashboard.html" class="pd-link">
+              <i class="ri-dashboard-3-line"></i>
+              <span>User Dashboard<small class="pd-sub">Schedule, track &amp; pay</small></span>
+            </a>
+            <a href="login.html" class="pd-link">
+              <i class="ri-login-box-line"></i>
+              <span>Login / Sign Up<small class="pd-sub">Member access</small></span>
+            </a>
+          </div>
+        </div>
+        <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
+        <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
+        <a href="dashboard.html" class="btn btn-primary">Book Now</a>
+      </div>
+
+      <button class="mobile-menu-btn" aria-label="Menu">
+        <i class="ri-menu-3-line"></i>
+      </button>
     </div>
   </nav>
 
+  <!-- Article Header -->
   <header class="article-header reveal">
     <div class="container" style="max-width: 900px;">
-      <span id="post-category" class="text-accent" style="font-weight: 600; text-transform: uppercase; letter-spacing: 2px;"></span>
-      <h1 id="post-title" style="font-size: 4rem; margin-top: 1rem;"></h1>
+      <span id="post-category" class="article-cat"></span>
+      <h1 id="post-title"></h1>
+      <div class="ph-divider"></div>
       <div class="article-meta">
-        <span><i class="ri-calendar-line"></i> <span id="post-date"></span></span>
-        <span><i class="ri-user-line"></i> Master Cleaner team</span>
+        <span><i class="ri-calendar-line"></i> <span id="post-date" class="am-date"></span></span>
+        <span class="am-dot"></span>
+        <span><i class="ri-user-line"></i> Master Cleaner Team</span>
       </div>
     </div>
   </header>
 
-  <div class="container reveal">
-    <img id="post-image" src="" class="article-img" alt="">
-    
-    <div id="post-content" class="article-content"></div>
+  <!-- Article Body -->
+  <div class="container reveal" style="padding-top: 4rem;">
+    <div class="article-body">
+      <div class="article-img-wrap">
+        <img id="post-image" src="" class="article-img" alt="">
+      </div>
+      <div id="post-content" class="article-content"></div>
+
+      <!-- Share -->
+      <div class="share-bar">
+        <span class="sb-label">Share This Article</span>
+        <div class="share-links">
+          <span class="share-copy-done" id="share-done">Link copied</span>
+          <button class="share-copy" id="share-copy" aria-label="Copy link"><i class="ri-link"></i></button>
+          <a href="#" aria-label="Share on X"><i class="ri-twitter-x-line"></i></a>
+          <a href="#" aria-label="Share on Facebook"><i class="ri-facebook-fill"></i></a>
+          <a href="#" aria-label="Share on LinkedIn"><i class="ri-linkedin-fill"></i></a>
+        </div>
+      </div>
+
+      <!-- Related -->
+      <div style="text-align: center; margin: 5rem 0 0;">
+        <div class="eyebrow center-eyebrow">Continue Reading</div>
+        <h2 style="font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 2.8rem); color: var(--primary); margin: 0;">From the <em style="font-style: italic; color: var(--accent);">Journal</em></h2>
+      </div>
+      <div class="related-grid" id="related-posts"></div>
+    </div>
   </div>
 
+  <!-- Newsletter CTA -->
+  <section class="section container reveal" style="margin-top: 5rem;">
+    <div class="premium-banner" style="justify-content: center; text-align: center;">
+      <div class="banner-content" style="max-width: 600px;">
+        <div class="eyebrow">The Private List</div>
+        <h2 style="font-family: var(--font-heading); font-size: clamp(1.8rem, 3.5vw, 2.8rem); margin: 0 0 1.25rem;">Never Miss a <em style="font-style: italic; color: var(--accent);">Care Secret</em></h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">Join The Private List for garment care insights, seasonal wardrobe guides, and exclusive service previews.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();" style="max-width: 480px; margin: 0 auto;">
+          <input type="email" class="newsletter-input" placeholder="Your email" required>
+          <button type="submit" class="newsletter-btn">JOIN</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer class="footer" style="position: relative;">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+          <a href="../index.html" class="logo" style="color: #F8F8F5; margin-bottom: 1.5rem;">
             <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
             <div class="logo-text">
               <div>Snap<span style="color: var(--accent)">Wash</span></div>
-              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+              <div class="logo-tagline" style="color: rgba(248, 248, 245, 0.72)">Premium Care, Delivered.</div>
             </div>
           </a>
           <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
@@ -341,7 +729,8 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
-      const post = POSTS[params.get('post')] || POSTS['silk-preservation'];
+      const slug = params.get('post') || 'silk-preservation';
+      const post = POSTS[slug] || POSTS['silk-preservation'];
 
       document.title = 'SnapWash | ' + post.title;
       document.getElementById('post-category').textContent = post.category;
@@ -355,9 +744,34 @@
       const content = document.getElementById('post-content');
       let html = '<p>' + post.intro + '</p>';
       post.sections.forEach(section => {
-        html += '<h2>' + section.h + '</h2><p>' + section.p + '</p>';
+        const numbered = section.h.replace(/^\d+\./, match => '<span class="sec-num">' + match + '</span>');
+        html += '<h2>' + numbered + '</h2><p>' + section.p + '</p>';
       });
       content.innerHTML = html;
+
+      const relatedWrap = document.getElementById('related-posts');
+      if (relatedWrap) {
+        const related = Object.keys(POSTS).filter(k => k !== slug).slice(0, 3);
+        relatedWrap.innerHTML = related.map(k => {
+          const p = POSTS[k];
+          return '<a class="related-card" href="blog-details.html?post=' + k + '">' +
+            '<div class="related-img-wrap"><img src="' + p.image + '" alt="' + p.title + '">' +
+            '<span class="related-cat">' + p.category + '</span></div>' +
+            '<div class="related-body"><h3>' + p.title + '</h3>' +
+            '<span class="related-link">Read Article <i class="ri-arrow-right-line"></i></span></div></a>';
+        }).join('');
+      }
+
+      const shareCopy = document.getElementById('share-copy');
+      shareCopy?.addEventListener('click', () => {
+        const done = document.getElementById('share-done');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(window.location.href).then(() => {
+            done.style.display = 'inline';
+            setTimeout(() => { done.style.display = 'none'; }, 2000);
+          });
+        }
+      });
     });
   </script>
 </body>

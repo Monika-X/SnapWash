@@ -12,30 +12,204 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
   <style>
+    /* ============================================================
+       SnapWash Journal — editorial luxury (step below Atelier)
+       ============================================================ */
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .center-eyebrow { justify-content: center; }
+    .center-eyebrow::before { display: none; }
+
+    /* --- Page Header --- */
     .page-header {
-      padding: 220px 0 120px;
+      padding: 230px 0 130px;
       text-align: center;
       position: relative;
       background:
-        linear-gradient(rgba(18, 59, 58, 0.75), rgba(18, 59, 58, 0.6)),
+        linear-gradient(rgba(18, 59, 58, 0.8), rgba(18, 59, 58, 0.65)),
         url('../assets/images/hero-blog.jpg') center/cover no-repeat;
     }
-
+    .page-header .ph-eyebrow { color: var(--accent); letter-spacing: 0.42em; margin-bottom: 1.5rem; }
     .page-header h1 {
       color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: 1.05;
+      margin-bottom: 1.75rem;
     }
-
-    .page-header .text-muted {
-      color: rgba(255, 255, 255, 0.9);
+    .page-header h1 em { font-style: italic; color: var(--accent); }
+    .page-header .ph-divider {
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      margin: 0 auto 1.75rem;
+      opacity: 0.8;
     }
+    .page-header .text-muted { color: rgba(255, 255, 255, 0.9); }
 
+    /* --- Featured Article --- */
+    .featured-post {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      overflow: hidden;
+      padding: 0;
+      margin: 4rem 0 0;
+      background: var(--bg-color);
+    }
+    .featured-img {
+      position: relative;
+      min-height: 460px;
+    }
+    .featured-img::before {
+      content: '';
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      width: calc(100% - 2.5rem);
+      height: calc(100% - 2.5rem);
+      border: 1px solid var(--accent);
+      opacity: 0.45;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .featured-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      transition: transform var(--transition-slow);
+    }
+    .featured-post:hover .featured-img img { transform: scale(1.04); }
+    .featured-badge {
+      position: absolute;
+      top: 2.4rem;
+      left: 2.4rem;
+      z-index: 5;
+      background: var(--accent);
+      color: var(--primary);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(18, 59, 58, 0.35);
+    }
+    .featured-content {
+      padding: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .featured-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent), transparent 80%);
+      opacity: 0.6;
+    }
+    .featured-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .featured-meta .fm-date {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 0.98rem;
+      color: var(--accent);
+    }
+    .featured-meta .fm-cat {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0.35rem 0.9rem;
+      border: 1px solid var(--surface);
+      border-radius: 999px;
+    }
+    .featured-content h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 3.2vw, 2.7rem);
+      line-height: 1.12;
+      color: var(--primary);
+      margin-bottom: 1.25rem;
+    }
+    .featured-content h2 em { font-style: italic; color: var(--accent); }
+    .featured-content .btn { border-radius: 999px; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.82rem; font-weight: 600; padding: 0.95rem 2.1rem; }
+
+    /* --- Filters --- */
+    .blog-filters {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin: 3rem 0 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--surface);
+    }
+    .filter-btn {
+      padding: 0.65rem 1.7rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      transition: all var(--transition-fast);
+    }
+    .filter-btn::after {
+      content: '';
+      position: absolute;
+      bottom: -0.45rem;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 60%;
+      height: 2px;
+      background: var(--accent);
+      transition: transform 0.35s ease;
+    }
+    .filter-btn:hover { color: var(--accent); }
+    .filter-btn.active { color: var(--accent); }
+    .filter-btn.active::after { transform: translateX(-50%) scaleX(1); }
+
+    /* --- Blog Grid --- */
     .blog-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 2rem;
-      margin: 4rem 0;
+      margin: 0 0 3rem;
     }
-
     .blog-card {
       border-radius: var(--border-radius-lg);
       overflow: hidden;
@@ -45,143 +219,180 @@
       border: 1px solid var(--surface);
       display: flex;
       flex-direction: column;
+      position: relative;
     }
-
+    .blog-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.45s ease;
+      z-index: 2;
+    }
+    .blog-card:hover::before { transform: scaleX(1); }
     .blog-card:hover {
       box-shadow: var(--shadow-lg);
-      transform: translateY(-5px);
+      transform: translateY(-6px);
+      border-color: rgba(214, 183, 124, 0.45);
     }
-
+    .blog-img-wrap { position: relative; overflow: hidden; }
     .blog-img {
       width: 100%;
       height: 250px;
       object-fit: cover;
       transition: transform var(--transition-slow);
     }
-
-    .blog-card:hover .blog-img {
-      transform: scale(1.05);
+    .blog-card:hover .blog-img { transform: scale(1.06); }
+    .post-index {
+      position: absolute;
+      top: 1.1rem;
+      left: 1.1rem;
+      z-index: 2;
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--primary);
+      background: rgba(248, 248, 245, 0.92);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(214, 183, 124, 0.5);
+      backdrop-filter: blur(4px);
+      line-height: 1;
     }
-
+    .blog-cat {
+      position: absolute;
+      top: 1.1rem;
+      right: 1.1rem;
+      z-index: 2;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bg-color);
+      background: rgba(18, 59, 58, 0.85);
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
     .blog-content {
-      padding: 2rem;
+      padding: 1.75rem 1.75rem 2rem;
       display: flex;
       flex-direction: column;
       flex: 1;
     }
-
     .blog-meta {
-      font-size: 0.9rem;
+      font-size: 0.86rem;
       color: var(--text-muted);
-      margin-bottom: 1rem;
+      margin-bottom: 0.9rem;
       display: flex;
-      gap: 1rem;
+      gap: 1.25rem;
+      align-items: center;
     }
-
+    .blog-meta .bm-date {
+      font-family: var(--font-heading);
+      font-style: italic;
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
     .blog-title {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      line-height: 1.25;
+      color: var(--primary);
+      margin-bottom: 0.85rem;
+      transition: color var(--transition-fast);
     }
-
+    .blog-card:hover .blog-title { color: var(--accent); }
     .blog-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.55rem;
       color: var(--accent);
       font-weight: 600;
       margin-top: auto;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
+    .blog-link i { transition: transform 0.3s ease; }
+    .blog-link:hover i { transform: translateX(5px); }
 
-    .blog-filters {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin: 2rem 0 0;
+    /* --- Load More --- */
+    .blog-load-more {
+      text-align: center;
+      margin: 1rem 0 0;
     }
-
-    .filter-btn {
-      padding: 0.6rem 1.6rem;
-      border-radius: 30px;
-      border: 1px solid var(--surface);
+    .load-more-btn {
+      padding: 0.95rem 3.2rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
       background: transparent;
-      color: var(--text-muted);
+      color: var(--accent);
       font-family: var(--font-body);
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
       transition: all var(--transition-fast);
     }
-
-    .filter-btn:hover {
-      border-color: var(--accent);
-      color: var(--primary);
-    }
-
-    .filter-btn.active {
-      background: var(--primary);
-      color: var(--bg-color);
-      border-color: var(--primary);
-    }
-
-    .featured-post {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      overflow: hidden;
-      padding: 0;
-      margin: 4rem 0 0;
-    }
-
-    .featured-img {
-      position: relative;
-      min-height: 400px;
-    }
-
-    .featured-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      inset: 0;
-    }
-
-    .featured-badge {
-      position: absolute;
-      top: 1.5rem;
-      left: 1.5rem;
+    .load-more-btn:hover {
       background: var(--accent);
       color: var(--primary);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
 
-    .featured-content {
-      padding: 3rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
+    /* --- Categories --- */
     .category-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 2rem;
     }
-
     .category-card {
       text-align: center;
       display: block;
+      position: relative;
+      overflow: hidden;
+      padding: 2.75rem 1.75rem;
     }
-
+    .category-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      opacity: 0.5;
+      transition: width 0.4s ease, opacity 0.4s ease;
+    }
+    .category-card:hover::after { width: 100%; opacity: 1; }
+    .cat-num {
+      position: absolute;
+      top: 1rem;
+      right: 1.4rem;
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.5rem;
+      color: rgba(18, 59, 58, 0.28);
+    }
     .category-icon {
-      width: 70px;
-      height: 70px;
+      width: 72px;
+      height: 72px;
       margin: 0 auto 1.5rem;
       border-radius: 50%;
-      background: var(--surface);
+      border: 1px solid rgba(214, 183, 124, 0.5);
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -189,48 +400,58 @@
       color: var(--accent);
       transition: all var(--transition-normal);
     }
-
     .category-card:hover .category-icon {
       background: var(--accent);
       color: var(--primary);
       transform: translateY(-5px);
     }
-
-    .blog-load-more {
-      text-align: center;
-      margin: 2rem 0 0;
+    .category-card h4 {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      margin-bottom: 0.6rem;
     }
-
-    .load-more-btn {
-      padding: 0.9rem 3rem;
-      border-radius: 30px;
-      border: 2px solid var(--primary);
-      background: transparent;
-      color: var(--primary);
-      font-family: var(--font-body);
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
-      cursor: pointer;
+    .cat-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
-      transition: all var(--transition-fast);
+      gap: 0.45rem;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-top: 0.75rem;
     }
+    .cat-link i { transition: transform 0.3s ease; }
+    .category-card:hover .cat-link i { transform: translateX(5px); }
 
-    .load-more-btn:hover {
-      background: var(--primary);
-      color: var(--bg-color);
+    /* RTL */
+    [dir="rtl"] .eyebrow::before { display: none; }
+    [dir="rtl"] .eyebrow::after {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
     }
+    [dir="rtl"] .featured-content::before { left: auto; right: 0; }
+    [dir="rtl"] .featured-badge { left: auto; right: 2.4rem; }
+    [dir="rtl"] .featured-img::before { left: auto; right: 1.25rem; }
+    [dir="rtl"] .post-index { left: auto; right: 1.1rem; }
+    [dir="rtl"] .blog-cat { right: auto; left: 1.1rem; }
+    [dir="rtl"] .cat-num { right: auto; left: 1.4rem; }
+    [dir="rtl"] .blog-link:hover i { transform: translateX(-5px); }
+    [dir="rtl"] .cat-link i, [dir="rtl"] .category-card:hover .cat-link i { transform: translateX(-5px); }
 
+    /* Responsive */
     @media (max-width: 992px) {
       .blog-grid { grid-template-columns: 1fr 1fr; }
       .featured-post { grid-template-columns: 1fr; }
-      .featured-img { min-height: 300px; }
+      .featured-img { min-height: 320px; }
     }
 
     @media (max-width: 768px) {
       .blog-grid { grid-template-columns: 1fr; }
+      .featured-content { padding: 2.25rem; }
     }
   </style>
 </head>
@@ -252,22 +473,46 @@
         <a href="services.html" class="nav-link">Services</a>
         <a href="blog.html" class="nav-link active">Blog</a>
         <a href="contact.html" class="nav-link">Contact</a>
+        <a href="dashboard.html" class="btn btn-primary mobile-book-now">Book Now</a>
       </div>
       <div class="nav-actions">
-        <a href="dashboard.html" class="theme-toggle profile-icon" aria-label="My Account">
-          <i class="ri-user-line"></i>
-        </a>
+        <div class="profile-menu">
+          <button class="theme-toggle profile-icon" aria-label="My Account" type="button">
+            <i class="ri-user-line"></i>
+          </button>
+          <div class="profile-dropdown">
+            <div class="pd-head">
+              <div class="pd-greet">Welcome to</div>
+              <div class="pd-name">SnapWash Member</div>
+            </div>
+            <a href="dashboard.html" class="pd-link">
+              <i class="ri-dashboard-3-line"></i>
+              <span>User Dashboard<small class="pd-sub">Schedule, track &amp; pay</small></span>
+            </a>
+            <a href="login.html" class="pd-link">
+              <i class="ri-login-box-line"></i>
+              <span>Login / Sign Up<small class="pd-sub">Member access</small></span>
+            </a>
+          </div>
+        </div>
         <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
         <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
         <a href="dashboard.html" class="btn btn-primary">Book Now</a>
       </div>
+
+      <button class="mobile-menu-btn" aria-label="Menu">
+        <i class="ri-menu-3-line"></i>
+      </button>
     </div>
   </nav>
 
+  <!-- Page Header -->
   <header class="page-header reveal">
     <div class="container">
-      <h1 style="font-size: 4rem;">The Journal</h1>
-      <p class="text-muted" style="max-width: 600px; margin: 0 auto; font-size: 1.2rem;">Insights on garment care, style, and sustainable living.</p>
+      <div class="eyebrow ph-eyebrow center-eyebrow">Since 2026 · London</div>
+      <h1>The <em>Journal</em></h1>
+      <div class="ph-divider"></div>
+      <p class="text-muted" style="max-width: 600px; margin: 0 auto; font-size: 1.2rem;">Insights on garment care, style, and sustainable living — written by our master cleaners.</p>
     </div>
   </header>
 
@@ -276,14 +521,14 @@
     <div class="card featured-post">
       <div class="featured-img">
         <img src="../assets/images/blog-silk.jpg" alt="The Essential Guide to Silk Preservation">
-        <span class="featured-badge">FEATURED</span>
+        <span class="featured-badge">The Feature</span>
       </div>
       <div class="featured-content">
-        <div class="blog-meta">
-          <span><i class="ri-calendar-line"></i> Oct 12, 2026</span>
-          <span><i class="ri-price-tag-3-line"></i> Fabric Care</span>
+        <div class="featured-meta">
+          <span class="fm-date">Oct 12, 2026</span>
+          <span class="fm-cat">Fabric Care</span>
         </div>
-        <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">The Essential Guide to Silk Preservation</h2>
+        <h2>The Essential Guide to <em>Silk Preservation</em></h2>
         <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 2rem;">Silk is the most delicate of luxury fibers — and the most rewarding to preserve. In this comprehensive guide, our master cleaners walk you through washing temperatures, drying techniques, storage rituals, and the professional treatments that keep heirloom silks lustrous for decades.</p>
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
           <a href="blog-details.html?post=silk-preservation" class="btn btn-primary">Read Full Guide</a>
@@ -301,15 +546,18 @@
       <button class="filter-btn" data-filter="laundry-basics">Laundry Basics</button>
       <button class="filter-btn" data-filter="sustainability">Sustainability</button>
     </div>
-<div class="blog-grid">
+
+    <div class="blog-grid">
       <div class="blog-card" data-category="fabric-care">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-vintage.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-vintage.jpg" class="blog-img" alt="Reviving Vintage Garments">
+          <span class="post-index">01</span>
+          <span class="blog-cat">Fabric Care</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Oct 05, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Fabric Care</span>
+            <span class="bm-date">Oct 05, 2026</span>
+            <span>8 min read</span>
           </div>
           <h3 class="blog-title">Reviving Vintage Garments</h3>
           <p class="text-muted">Expert techniques for safely restoring and reviving heirloom vintage clothing without damaging fragile fibers.</p>
@@ -318,13 +566,15 @@
       </div>
       
       <div class="blog-card" data-category="sustainability">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-eco.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-eco.jpg" class="blog-img" alt="Eco-Friendly Solvents">
+          <span class="post-index">02</span>
+          <span class="blog-cat">Sustainability</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Sep 28, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Sustainability</span>
+            <span class="bm-date">Sep 28, 2026</span>
+            <span>6 min read</span>
           </div>
           <h3 class="blog-title">Eco-Friendly Solvents: The Future of Clean</h3>
           <p class="text-muted">How modern dry cleaning technology is shifting away from harsh chemicals toward gentle, plant-based alternatives.</p>
@@ -333,13 +583,15 @@
       </div>
 
       <div class="blog-card" data-category="style">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-suit.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-suit.jpg" class="blog-img" alt="The Anatomy of a Perfectly Pressed Suit">
+          <span class="post-index">03</span>
+          <span class="blog-cat">Style</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Sep 15, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Style</span>
+            <span class="bm-date">Sep 15, 2026</span>
+            <span>10 min read</span>
           </div>
           <h3 class="blog-title">The Anatomy of a Perfectly Pressed Suit</h3>
           <p class="text-muted">Why artisan hand-ironing makes all the difference when preparing for high-stakes corporate meetings and events.</p>
@@ -348,13 +600,15 @@
       </div>
 
       <div class="blog-card" data-category="laundry-basics">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/washfold.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/washfold.jpg" class="blog-img" alt="The Art of Folding">
+          <span class="post-index">04</span>
+          <span class="blog-cat">Laundry Basics</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Sep 02, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Laundry Basics</span>
+            <span class="bm-date">Sep 02, 2026</span>
+            <span>7 min read</span>
           </div>
           <h3 class="blog-title">The Art of Folding: Why It Matters</h3>
           <p class="text-muted">Perfect folds preserve fabric structure and keep your drawers organized. Learn the methods our artisans swear by.</p>
@@ -363,13 +617,15 @@
       </div>
 
       <div class="blog-card" data-category="fabric-care">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-labels.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-labels.jpg" class="blog-img" alt="How to Read Care Labels">
+          <span class="post-index">05</span>
+          <span class="blog-cat">Fabric Care</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Aug 24, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Fabric Care</span>
+            <span class="bm-date">Aug 24, 2026</span>
+            <span>5 min read</span>
           </div>
           <h3 class="blog-title">How to Read Care Labels Like a Pro</h3>
           <p class="text-muted">Those tiny symbols hold the key to garment longevity. Decode them with our comprehensive guide.</p>
@@ -378,13 +634,15 @@
       </div>
 
       <div class="blog-card" data-category="style">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-steam.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-steam.jpg" class="blog-img" alt="Steam vs. Iron">
+          <span class="post-index">06</span>
+          <span class="blog-cat">Style</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Aug 10, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Style</span>
+            <span class="bm-date">Aug 10, 2026</span>
+            <span>6 min read</span>
           </div>
           <h3 class="blog-title">Steam vs. Iron: Which Is Right for Your Wardrobe?</h3>
           <p class="text-muted">A practical breakdown of when to steam, when to press, and how each technique protects your fabrics.</p>
@@ -393,13 +651,15 @@
       </div>
 
       <div class="blog-card" data-category="sustainability">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-lowwater.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-lowwater.jpg" class="blog-img" alt="The Low-Water Revolution">
+          <span class="post-index">07</span>
+          <span class="blog-cat">Sustainability</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Jul 28, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Sustainability</span>
+            <span class="bm-date">Jul 28, 2026</span>
+            <span>8 min read</span>
           </div>
           <h3 class="blog-title">The Low-Water Revolution in Laundry</h3>
           <p class="text-muted">Modern machines and methods are cutting water usage dramatically without compromising on cleanliness.</p>
@@ -408,13 +668,15 @@
       </div>
 
       <div class="blog-card" data-category="laundry-basics">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-grey.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-grey.jpg" class="blog-img" alt="Why White Shirts Turn Grey">
+          <span class="post-index">08</span>
+          <span class="blog-cat">Laundry Basics</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Jul 14, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Laundry Basics</span>
+            <span class="bm-date">Jul 14, 2026</span>
+            <span>7 min read</span>
           </div>
           <h3 class="blog-title">Why White Shirts Turn Grey — and How to Stop It</h3>
           <p class="text-muted">The science behind dulling whites and the professional techniques that keep them brilliant for years.</p>
@@ -423,13 +685,15 @@
       </div>
 
       <div class="blog-card" data-category="laundry-basics">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-playbook.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-playbook.jpg" class="blog-img" alt="Room-by-Room Laundry Playbook">
+          <span class="post-index">09</span>
+          <span class="blog-cat">Laundry Basics</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Jun 30, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Laundry Basics</span>
+            <span class="bm-date">Jun 30, 2026</span>
+            <span>9 min read</span>
           </div>
           <h3 class="blog-title">A Room-by-Room Laundry Playbook</h3>
           <p class="text-muted">From delicates to heavy linens, the ultimate guide to sorting your entire home's laundry efficiently.</p>
@@ -438,13 +702,15 @@
       </div>
 
       <div class="blog-card" data-category="sustainability">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-craft.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-craft.jpg" class="blog-img" alt="The Century-Old Craft of Textile Care">
+          <span class="post-index">10</span>
+          <span class="blog-cat">Sustainability</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Jun 15, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Sustainability</span>
+            <span class="bm-date">Jun 15, 2026</span>
+            <span>8 min read</span>
           </div>
           <h3 class="blog-title">The Century-Old Craft of Textile Care</h3>
           <p class="text-muted">How garment care evolved from hand-scrubbing riverside to the precision dry cleaning we know today.</p>
@@ -453,13 +719,15 @@
       </div>
 
       <div class="blog-card" data-category="fabric-care">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-lace.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-lace.jpg" class="blog-img" alt="How to Care for Delicate Lace">
+          <span class="post-index">11</span>
+          <span class="blog-cat">Fabric Care</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Jun 01, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Fabric Care</span>
+            <span class="bm-date">Jun 01, 2026</span>
+            <span>6 min read</span>
           </div>
           <h3 class="blog-title">How to Care for Delicate Lace and Embroidery</h3>
           <p class="text-muted">Heirloom pieces deserve heirloom care. Gentle handling techniques to protect intricate detailing.</p>
@@ -468,13 +736,15 @@
       </div>
 
       <div class="blog-card" data-category="style">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-capsule.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-capsule.jpg" class="blog-img" alt="Building a Capsule Wardrobe">
+          <span class="post-index">12</span>
+          <span class="blog-cat">Style</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> May 20, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Style</span>
+            <span class="bm-date">May 20, 2026</span>
+            <span>7 min read</span>
           </div>
           <h3 class="blog-title">Building a Capsule Wardrobe That Lasts</h3>
           <p class="text-muted">Fewer, better pieces, properly maintained. How premium care multiplies the life of every investment.</p>
@@ -483,13 +753,15 @@
       </div>
 
       <div class="blog-card" data-category="fabric-care">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-cashmere.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-cashmere.jpg" class="blog-img" alt="Cashmere Care">
+          <span class="post-index">13</span>
+          <span class="blog-cat">Fabric Care</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> May 06, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Fabric Care</span>
+            <span class="bm-date">May 06, 2026</span>
+            <span>5 min read</span>
           </div>
           <h3 class="blog-title">Cashmere Care: Softness That Endures</h3>
           <p class="text-muted">From washing to storage, the complete routine for keeping your cashmere cloud-soft season after season.</p>
@@ -498,13 +770,15 @@
       </div>
 
       <div class="blog-card" data-category="sustainability">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-zerowaste.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-zerowaste.jpg" class="blog-img" alt="Zero-Waste Laundry">
+          <span class="post-index">14</span>
+          <span class="blog-cat">Sustainability</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Apr 22, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Sustainability</span>
+            <span class="bm-date">Apr 22, 2026</span>
+            <span>6 min read</span>
           </div>
           <h3 class="blog-title">Zero-Waste Laundry: Habits That Help</h3>
           <p class="text-muted">Small changes — from detergents to hangers — that dramatically reduce your laundry's footprint.</p>
@@ -513,13 +787,15 @@
       </div>
 
       <div class="blog-card" data-category="style">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-storage.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-storage.jpg" class="blog-img" alt="Wardrobe Storage Secrets">
+          <span class="post-index">15</span>
+          <span class="blog-cat">Style</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Apr 08, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Style</span>
+            <span class="bm-date">Apr 08, 2026</span>
+            <span>8 min read</span>
           </div>
           <h3 class="blog-title">Wardrobe Storage Secrets of the Pros</h3>
           <p class="text-muted">The right hangers, folds, and climate control can double the lifespan of your finest pieces.</p>
@@ -528,13 +804,15 @@
       </div>
 
       <div class="blog-card" data-category="laundry-basics">
-        <div style="overflow: hidden;">
-          <img src="../assets/images/blog-stain.jpg" class="blog-img" alt="Blog Post">
+        <div class="blog-img-wrap">
+          <img src="../assets/images/blog-stain.jpg" class="blog-img" alt="Stain Removal 101">
+          <span class="post-index">16</span>
+          <span class="blog-cat">Laundry Basics</span>
         </div>
         <div class="blog-content">
           <div class="blog-meta">
-            <span><i class="ri-calendar-line"></i> Mar 25, 2026</span>
-            <span><i class="ri-price-tag-3-line"></i> Laundry Basics</span>
+            <span class="bm-date">Mar 25, 2026</span>
+            <span>7 min read</span>
           </div>
           <h3 class="blog-title">Stain Removal 101: Act Fast, Dress Well</h3>
           <p class="text-muted">A field guide to the most common stains and the professional pre-treatments that save the day.</p>
@@ -548,11 +826,50 @@
     </div>
   </section>
 
+  <!-- Categories -->
+  <section class="section container reveal" style="padding-top: 0;">
+    <div class="text-center" style="margin-bottom: 3rem;">
+      <div class="eyebrow center-eyebrow">Explore by Topic</div>
+      <h2 style="font-family: var(--font-heading); font-size: clamp(2.2rem, 4vw, 3.2rem); color: var(--primary); margin: 0;">Browse the <em style="font-style: italic; color: var(--accent);">Categories</em></h2>
+    </div>
+    <div class="category-grid">
+      <a href="#all-articles" class="card category-card" onclick="filterBlog('fabric-care')">
+        <span class="cat-num">01</span>
+        <div class="category-icon"><i class="ri-vip-diamond-line"></i></div>
+        <h4>Fabric Care</h4>
+        <p class="text-muted">Silk, cashmere, lace, and heirloom textiles.</p>
+        <span class="cat-link">4 Articles <i class="ri-arrow-right-line"></i></span>
+      </a>
+      <a href="#all-articles" class="card category-card" onclick="filterBlog('style')">
+        <span class="cat-num">02</span>
+        <div class="category-icon"><i class="ri-shirt-line"></i></div>
+        <h4>Style</h4>
+        <p class="text-muted">Suits, wardrobes, and living your best-dressed life.</p>
+        <span class="cat-link">4 Articles <i class="ri-arrow-right-line"></i></span>
+      </a>
+      <a href="#all-articles" class="card category-card" onclick="filterBlog('laundry-basics')">
+        <span class="cat-num">03</span>
+        <div class="category-icon"><i class="ri-bubble-chart-line"></i></div>
+        <h4>Laundry Basics</h4>
+        <p class="text-muted">Stains, folding, sorting, and everyday wins.</p>
+        <span class="cat-link">4 Articles <i class="ri-arrow-right-line"></i></span>
+      </a>
+      <a href="#all-articles" class="card category-card" onclick="filterBlog('sustainability')">
+        <span class="cat-num">04</span>
+        <div class="category-icon"><i class="ri-leaf-line"></i></div>
+        <h4>Sustainability</h4>
+        <p class="text-muted">Eco solvents, low-water washing, zero-waste habits.</p>
+        <span class="cat-link">4 Articles <i class="ri-arrow-right-line"></i></span>
+      </a>
+    </div>
+  </section>
+
   <!-- Newsletter CTA -->
   <section class="section container reveal">
     <div class="premium-banner" style="justify-content: center; text-align: center;">
       <div class="banner-content" style="max-width: 600px;">
-        <h2>Never Miss a Care Secret.</h2>
+        <div class="eyebrow">The Private List</div>
+        <h2 style="font-family: var(--font-heading); font-size: clamp(1.8rem, 3.5vw, 2.8rem); margin: 0 0 1.25rem;">Never Miss a <em style="font-style: italic; color: var(--accent);">Care Secret</em></h2>
         <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">Join The Private List for garment care insights, seasonal wardrobe guides, and exclusive service previews — delivered before anyone else.</p>
         <form class="newsletter-form" onsubmit="event.preventDefault();" style="max-width: 480px; margin: 0 auto;">
           <input type="email" class="newsletter-input" placeholder="Your email" required>
@@ -562,49 +879,15 @@
     </div>
   </section>
 
-  <!-- Categories -->
-  <section class="section container reveal" style="padding-top: 0;">
-    <div class="text-center" style="margin-bottom: 3rem;">
-      <h2 class="text-accent" style="font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Explore by Topic</h2>
-      <h3 style="font-size: 3rem;">Browse the Categories</h3>
-    </div>
-    <div class="category-grid">
-      <a href="#all-articles" class="card category-card" onclick="filterBlog('fabric-care')">
-        <div class="category-icon"><i class="ri-vip-diamond-line"></i></div>
-        <h4>Fabric Care</h4>
-        <p class="text-muted">Silk, cashmere, lace, and heirloom textiles.</p>
-        <span class="text-accent" style="font-weight: 600;">4 Articles <i class="ri-arrow-right-line"></i></span>
-      </a>
-      <a href="#all-articles" class="card category-card" onclick="filterBlog('style')">
-        <div class="category-icon"><i class="ri-shirt-line"></i></div>
-        <h4>Style</h4>
-        <p class="text-muted">Suits, wardrobes, and living your best-dressed life.</p>
-        <span class="text-accent" style="font-weight: 600;">4 Articles <i class="ri-arrow-right-line"></i></span>
-      </a>
-      <a href="#all-articles" class="card category-card" onclick="filterBlog('laundry-basics')">
-        <div class="category-icon"><i class="ri-bubble-chart-line"></i></div>
-        <h4>Laundry Basics</h4>
-        <p class="text-muted">Stains, folding, sorting, and everyday wins.</p>
-        <span class="text-accent" style="font-weight: 600;">4 Articles <i class="ri-arrow-right-line"></i></span>
-      </a>
-      <a href="#all-articles" class="card category-card" onclick="filterBlog('sustainability')">
-        <div class="category-icon"><i class="ri-leaf-line"></i></div>
-        <h4>Sustainability</h4>
-        <p class="text-muted">Eco solvents, low-water washing, zero-waste habits.</p>
-        <span class="text-accent" style="font-weight: 600;">4 Articles <i class="ri-arrow-right-line"></i></span>
-      </a>
-    </div>
-  </section>
-
   <footer class="footer" style="position: relative;">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+          <a href="../index.html" class="logo" style="color: #F8F8F5; margin-bottom: 1.5rem;">
             <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
             <div class="logo-text">
               <div>Snap<span style="color: var(--accent)">Wash</span></div>
-              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+              <div class="logo-tagline" style="color: rgba(248, 248, 245, 0.72)">Premium Care, Delivered.</div>
             </div>
           </a>
           <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>

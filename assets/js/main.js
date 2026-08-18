@@ -47,15 +47,62 @@ function initMain() {
     });
   });
 
-  // Mobile Menu Toggle (Placeholder logic)
+  // Mobile Menu — premium side drawer with overlay, icon swap + concierge block
   const mobileBtn = document.querySelector('.mobile-menu-btn');
   const navLinks = document.querySelector('.nav-links');
-  
+
+  const closeMobileMenu = () => {
+    if (navLinks?.classList.contains('active')) setMenuState(false);
+  };
+
+  const setMenuState = (isOpen) => {
+    navLinks.classList.toggle('active', isOpen);
+    document.querySelector('.navbar')?.classList.toggle('scrolled', isOpen);
+    mobileBtn?.setAttribute('aria-expanded', String(isOpen));
+    const icon = mobileBtn?.querySelector('i');
+    if (icon) icon.className = isOpen ? 'ri-close-line' : 'ri-menu-3-line';
+    let overlay = document.querySelector('.mobile-menu-overlay');
+    if (isOpen && !overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'mobile-menu-overlay';
+      overlay.addEventListener('click', closeMobileMenu);
+      document.body.appendChild(overlay);
+    }
+    if (overlay) overlay.classList.toggle('show', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  };
+
   if (mobileBtn && navLinks) {
+    mobileBtn.setAttribute('aria-expanded', 'false');
     mobileBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-      // Additional mobile menu styling would be added here
+      setMenuState(!navLinks.classList.contains('active'));
     });
+
+    navLinks.addEventListener('click', (e) => {
+      if (e.target.closest('a')) closeMobileMenu();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMobileMenu();
+    });
+
+    if (!navLinks.querySelector('.mobile-menu-extra')) {
+      const extra = document.createElement('div');
+      extra.className = 'mobile-menu-extra';
+      const dashLink = location.pathname.includes('/pages/') ? 'dashboard.html' : 'pages/dashboard.html';
+      extra.innerHTML =
+        '<div class="mme-label">Concierge</div>' +
+        '<a class="mme-link" href="tel:+442071234567"><i class="ri-phone-line"></i>+44 20 7123 4567</a>' +
+        '<a class="mme-link" href="mailto:concierge@snapwash.com"><i class="ri-mail-line"></i>concierge@snapwash.com</a>' +
+        '<a class="mme-link" href="' + dashLink + '"><i class="ri-user-3-line"></i>My Account</a>' +
+        '<div class="mme-socials">' +
+        '<a href="#" aria-label="Instagram"><i class="ri-instagram-line"></i></a>' +
+        '<a href="#" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>' +
+        '<a href="#" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>' +
+        '<a href="#" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>' +
+        '</div>';
+      navLinks.appendChild(extra);
+    }
   }
 
   // Form Success Messages (no page refresh)
@@ -106,6 +153,31 @@ function initMain() {
     e.preventDefault();
     scheduleForm.reset();
     showFormSuccess(scheduleForm, 'Pickup scheduled! Our concierge will confirm shortly.');
+  });
+
+  // Profile dropdown menu
+  const profileMenus = document.querySelectorAll('.profile-menu');
+  profileMenus.forEach(menu => {
+    const btn = menu.querySelector('.profile-icon');
+    btn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const wasOpen = menu.classList.contains('open');
+      document.querySelectorAll('.profile-menu.open').forEach(m => m.classList.remove('open'));
+      if (!wasOpen) menu.classList.add('open');
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.profile-menu') || e.target.closest('.profile-menu a')) {
+      document.querySelectorAll('.profile-menu.open').forEach(m => m.classList.remove('open'));
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.profile-menu.open').forEach(m => m.classList.remove('open'));
+    }
   });
 }
 
