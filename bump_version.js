@@ -9,15 +9,15 @@ const updateFiles = (dir) => {
             updateFiles(filepath);
         } else if (filename.endsWith('.html')) {
             let content = fs.readFileSync(filepath, 'utf8');
-            content = content.replace(/assets\/css\/components\.css\?v=\d+/g, 'assets/css/components.css?v=8');
-            content = content.replace(/assets\/css\/variables\.css\?v=\d+/g, 'assets/css/variables.css?v=8');
-            content = content.replace(/assets\/css\/global\.css\?v=\d+/g, 'assets/css/global.css?v=8');
+            content = content.replace(/assets\/css\/components\.css\?v=\d+/g, 'assets/css/components.css?v=15');
+            content = content.replace(/assets\/css\/variables\.css\?v=\d+/g, 'assets/css/variables.css?v=15');
+            content = content.replace(/assets\/css\/global\.css\?v=\d+/g, 'assets/css/global.css?v=15');
             // also match without ?v= just in case
-            content = content.replace(/assets\/css\/components\.css(?![\?])/g, 'assets/css/components.css?v=8');
+            content = content.replace(/assets\/css\/components\.css(?![\?])/g, 'assets/css/components.css?v=15');
             
             // Bump JS cache too
-            content = content.replace(/assets\/js\/main\.js\?v=\d+/g, 'assets/js/main.js?v=8');
-            content = content.replace(/assets\/js\/main\.js(?![\?])/g, 'assets/js/main.js?v=8');
+            content = content.replace(/assets\/js\/main\.js\?v=\d+/g, 'assets/js/main.js?v=15');
+            content = content.replace(/assets\/js\/main\.js(?![\?])/g, 'assets/js/main.js?v=15');
 
             fs.writeFileSync(filepath, content, 'utf8');
         }
@@ -25,4 +25,4 @@ const updateFiles = (dir) => {
 };
 
 updateFiles('.');
-console.log("Version bumped to v=8");
+console.log("Version bumped to v=15");

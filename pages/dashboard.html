@@ -7,9 +7,9 @@
   <title>SnapWash | Customer Dashboard</title>
   
   <!-- CSS -->
-  <link rel="stylesheet" href="../assets/css/variables.css?v=8">
-  <link rel="stylesheet" href="../assets/css/global.css?v=8">
-  <link rel="stylesheet" href="../assets/css/components.css?v=8">
+  <link rel="stylesheet" href="../assets/css/variables.css?v=15">
+  <link rel="stylesheet" href="../assets/css/global.css?v=15">
+  <link rel="stylesheet" href="../assets/css/components.css?v=15">
   
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
@@ -23,6 +23,7 @@
       display: grid;
       grid-template-columns: 280px 1fr;
       min-height: 100vh;
+      min-height: 100dvh;
     }
     
     .dashboard-sidebar {
@@ -57,11 +58,13 @@
       transition: all var(--transition-fast);
       font-weight: 500;
       cursor: pointer;
+      border-inline-start: 4px solid transparent;
     }
     
     .menu-item:hover, .menu-item.active {
       background-color: var(--primary);
       color: var(--bg-color);
+      border-inline-start-color: var(--accent);
     }
     
     .menu-item i {
@@ -73,6 +76,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 3rem;
+      gap: 1.5rem;
     }
     
     .user-profile {
@@ -168,9 +172,10 @@
       top: 25px;
       left: 10%;
       height: 4px;
+      width: var(--progress, 0%);
       background-color: var(--secondary);
       z-index: 2;
-      transition: width 1s ease;
+      transition: all 1s ease;
     }
     
     .stage {
@@ -332,17 +337,64 @@
       .sidebar-overlay.show { display: block; }
       .dashboard-menu-btn { display: flex; align-items: center; justify-content: center; }
       .stages-wrapper { flex-direction: column; gap: 2rem; align-items: flex-start; padding-left: 20px; }
-      .stages-wrapper::before, .progress-bar { width: 4px; height: 100%; top: 0; left: 47px; }
+      .stages-wrapper::before, .progress-bar { width: 4px !important; top: 0; left: 47px; }
+      .stages-wrapper::before { height: 100%; }
+      .progress-bar { height: var(--progress, 0%); }
       .stage { display: flex; align-items: center; width: auto; gap: 1rem; text-align: left; }
       .stage-icon { margin: 0; }
     }
     
+    .dashboard-title-text {
+      flex: 1;
+      min-width: 0;
+    }
+
     @media (max-width: 768px) {
       .dashboard-grid { grid-template-columns: 1fr; }
-      .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
-      .user-profile { width: 100%; justify-content: flex-end; }
       .order-history th, .order-history td { padding: 0.75rem 0.5rem; font-size: 0.85rem; }
+      .dashboard-main { padding: 2rem 1.5rem; }
+      .tracking-card { padding: 2rem; }
     }
+
+    @media (max-width: 576px) {
+      .dashboard-main { padding: 1.5rem 1rem; }
+      .tracking-card { padding: 1.5rem; }
+      .stat-card { padding: 1.5rem; }
+      .stages-wrapper { padding-left: 14px; }
+      .stages-wrapper::before, .progress-bar { left: 41px; }
+      
+      .dashboard-header {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+      .dashboard-menu-btn {
+        order: 1;
+      }
+      .user-profile {
+        order: 2;
+        margin-inline-start: auto;
+      }
+      .dashboard-title-text {
+        order: 3;
+        width: 100%;
+        flex: none;
+      }
+      .dashboard-header h2 { font-size: 1.5rem; margin-bottom: 0.5rem !important; }
+    }
+    
+    /* RTL Mobile Support */
+    @media (max-width: 992px) {
+      html[dir="rtl"] .stages-wrapper { padding-left: 0; padding-right: 20px; }
+      html[dir="rtl"] .stages-wrapper::before,
+      html[dir="rtl"] .progress-bar { left: auto; right: 47px; }
+      html[dir="rtl"] .stage { text-align: right; }
+    }
+    @media (max-width: 576px) {
+      html[dir="rtl"] .stages-wrapper { padding-right: 14px; }
+      html[dir="rtl"] .stages-wrapper::before,
+      html[dir="rtl"] .progress-bar { right: 41px; }
+    }
+
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -416,14 +468,13 @@
     <!-- Main Content -->
     <main class="dashboard-main">
       <header class="dashboard-header">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <button id="dashboard-menu-btn" class="dashboard-menu-btn" aria-label="Menu">
-            <i class="ri-menu-3-line"></i>
-          </button>
-          <div>
-            <h2 style="margin: 0;">Welcome Back, Elena.</h2>
-            <p class="text-muted">Here is the status of your premium garment care.</p>
-          </div>
+        <button id="dashboard-menu-btn" class="dashboard-menu-btn" aria-label="Menu" style="flex-shrink: 0;">
+          <i class="ri-menu-3-line"></i>
+        </button>
+        
+        <div class="dashboard-title-text">
+          <h2 style="margin: 0;" dir="auto">Welcome Back, Elena.</h2>
+          <p class="text-muted" dir="auto">Here is the status of your premium garment care.</p>
         </div>
         
         <div class="user-profile">
@@ -460,7 +511,7 @@
         </div>
         
         <div class="tracking-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <h3>Current Order #SW-8942</h3>
             <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;" onclick="openTab('tracking')">View Details</button>
           </div>
@@ -568,7 +619,7 @@
         </div>
 
         <div class="tracking-card" id="tracking-timeline" style="display: none; margin-top: 2rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <h3 id="timeline-title">Track Order</h3>
             <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;" onclick="closeTimeline()">Close</button>
           </div>
@@ -723,7 +774,7 @@
   </div>
 
   <script src="../assets/js/theme.js"></script>
-  <script src="../assets/js/main.js?v=8"></script>
+  <script src="../assets/js/main.js?v=15"></script>
   <script>
     // Tab switching + tracking + billing + mobile sidebar
     document.addEventListener('DOMContentLoaded', () => {
@@ -785,7 +836,7 @@
 
       document.getElementById('timeline-title').textContent = 'Track Order #' + order.id;
 
-      let html = '<div class="progress-bar" style="width: ' + (order.stage === 5 ? 80 : order.stage * 20) + '%;"></div>';
+      let html = '<div class="progress-bar" style="--progress: ' + (order.stage === 5 ? 80 : order.stage * 20) + '%;"></div>';
       ORDER_STAGES.forEach((stage, i) => {
         const state = i < order.stage ? 'completed' : (i === order.stage ? 'active' : '');
         html += '<div class="stage ' + state + '"><div class="stage-icon"><i class="' + stage.icon + '"></i></div><div class="stage-label">' + stage.title + '</div></div>';

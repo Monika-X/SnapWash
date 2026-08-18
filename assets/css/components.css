@@ -546,6 +546,8 @@
 
 @media (max-width: 480px) {
   #dir-toggle { display: none !important; }
+  .auth-toggles #dir-toggle { display: flex !important; }
+  .user-profile #dir-toggle { display: inline-flex !important; }
   .logo-tagline { font-size: 0.5rem; letter-spacing: 0.05em; }
   .logo img { height: 28px !important; }
   .logo { font-size: 1.25rem; gap: 0.35rem; }

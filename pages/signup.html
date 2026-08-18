@@ -6,9 +6,9 @@
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <title>SnapWash | Membership Application</title>
   
-  <link rel="stylesheet" href="../assets/css/variables.css?v=8">
-  <link rel="stylesheet" href="../assets/css/global.css?v=8">
-  <link rel="stylesheet" href="../assets/css/components.css?v=8">
+  <link rel="stylesheet" href="../assets/css/variables.css?v=15">
+  <link rel="stylesheet" href="../assets/css/global.css?v=15">
+  <link rel="stylesheet" href="../assets/css/components.css?v=15">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
   <style>
@@ -68,6 +68,7 @@
     .auth-container {
       display: flex;
       min-height: 100vh;
+      min-height: 100dvh;
     }
 
     /* --- Image panel --- */
@@ -400,8 +401,22 @@
     }
     .sm-close:hover { color: var(--accent); border-color: var(--accent); }
 
+    @media (max-width: 768px) {
+      .auth-form-wrapper { padding: 3.5rem 2rem; }
+      .auth-toggles { top: 1rem; right: 1rem; }
+      [dir="rtl"] .auth-toggles { right: auto; left: 1rem; }
+      .social-modal { padding: 1rem; }
+    }
+
     @media (max-width: 576px) {
       .form-row { grid-template-columns: 1fr; gap: 0; }
+      .auth-form-wrapper { padding: 2.5rem 1.25rem; }
+      .auth-form .logo { margin-bottom: 2rem; }
+      .auth-sub { margin-bottom: 2rem; }
+      .auth-divider { margin: 1.75rem 0; }
+      .auth-social { margin-bottom: 1.75rem; }
+      .auth-perks { margin-top: 2.25rem; padding-top: 1.5rem; gap: 1rem 1.25rem; }
+      .sm-card { padding: 2.5rem 1.5rem; }
     }
 
     @media (min-width: 992px) {
@@ -499,7 +514,7 @@
   </div>
 
   <script src="../assets/js/theme.js"></script>
-  <script src="../assets/js/main.js?v=8"></script>
+  <script src="../assets/js/main.js?v=15"></script>
   <script>
     const socialModal = document.getElementById('social-modal');
     document.querySelectorAll('.auth-social a').forEach(a => {
