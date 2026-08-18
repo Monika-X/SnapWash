@@ -86,6 +86,15 @@ function initMain() {
       if (e.key === 'Escape') closeMobileMenu();
     });
 
+    if (!navLinks.querySelector('.nav-close-btn')) {
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'nav-close-btn';
+      closeBtn.innerHTML = '<i class="ri-close-line"></i>';
+      closeBtn.setAttribute('aria-label', 'Close Menu');
+      closeBtn.addEventListener('click', closeMobileMenu);
+      navLinks.insertBefore(closeBtn, navLinks.firstChild);
+    }
+
     if (!navLinks.querySelector('.mobile-menu-extra')) {
       const extra = document.createElement('div');
       extra.className = 'mobile-menu-extra';

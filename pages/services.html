@@ -6,9 +6,9 @@
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <title>SnapWash | Services</title>
   
-  <link rel="stylesheet" href="../assets/css/variables.css">
-  <link rel="stylesheet" href="../assets/css/global.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/variables.css?v=8">
+  <link rel="stylesheet" href="../assets/css/global.css?v=8">
+  <link rel="stylesheet" href="../assets/css/components.css?v=8">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
   <style>
@@ -448,8 +448,11 @@
     }
 
     @media (max-width: 768px) {
-      .pricing-grid { grid-template-columns: 1fr; }
       .service-img-large { height: 380px; }
+    }
+
+    @media (max-width: 576px) {
+      .pricing-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -465,6 +468,7 @@
           <div class="logo-tagline">Premium Care, Delivered.</div>
         </div>
       </a>
+      
       <div class="nav-links">
         <a href="../index.html" class="nav-link">Home</a>
         <a href="home2.html" class="nav-link">Home2</a>
@@ -472,8 +476,9 @@
         <a href="services.html" class="nav-link active">Services</a>
         <a href="blog.html" class="nav-link">Blog</a>
         <a href="contact.html" class="nav-link">Contact</a>
-        <a href="dashboard.html" class="btn btn-primary mobile-book-now">Book Now</a>
+        <a href="login.html" class="btn btn-primary mobile-book-now">Book Now</a>
       </div>
+      
       <div class="nav-actions">
         <div class="profile-menu">
           <button class="theme-toggle profile-icon" aria-label="My Account" type="button">
@@ -494,11 +499,13 @@
             </a>
           </div>
         </div>
-        <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+          <i class="ri-moon-line"></i>
+        </button>
         <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
-        <a href="dashboard.html" class="btn btn-primary">Book Now</a>
+        <a href="login.html" class="btn btn-primary">Book Now</a>
       </div>
-
+      
       <button class="mobile-menu-btn" aria-label="Menu">
         <i class="ri-menu-3-line"></i>
       </button>
@@ -620,7 +627,7 @@
           <li><i class="ri-check-line"></i> Custom eco-tote with every order</li>
           <li><i class="ri-check-line"></i> 48-hour standard turnaround</li>
         </ul>
-        <a href="dashboard.html" class="btn btn-outline">Book Now</a>
+        <a href="login.html" class="btn btn-outline">Book Now</a>
       </div>
       <div class="card pricing-card featured">
         <span class="pc-tag">Most Popular</span>
@@ -632,7 +639,7 @@
           <li><i class="ri-check-line"></i> Free premium hangers & garment bag</li>
           <li><i class="ri-check-line"></i> Same-day express option</li>
         </ul>
-        <a href="dashboard.html" class="btn btn-accent">Book Now</a>
+        <a href="login.html" class="btn btn-accent">Book Now</a>
       </div>
       <div class="card pricing-card">
         <div class="pc-tier">Finish</div>
@@ -643,7 +650,7 @@
           <li><i class="ri-check-line"></i> Premium wooden hangers included</li>
           <li><i class="ri-check-line"></i> Ready-to-wear on delivery</li>
         </ul>
-        <a href="dashboard.html" class="btn btn-outline">Book Now</a>
+        <a href="login.html" class="btn btn-outline">Book Now</a>
       </div>
       <div class="card pricing-card">
         <div class="pc-tier">White Glove</div>
@@ -708,7 +715,7 @@
         <div class="eyebrow">Begin Today</div>
         <h2>Ready for the <em>SnapWash Standard?</em></h2>
         <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">Schedule your first collection in under a minute. Pickup today, pristine delivery within 48 hours.</p>
-        <a href="dashboard.html" class="btn btn-accent">Book Now</a>
+        <a href="login.html" class="btn btn-accent">Book Now</a>
       </div>
     </div>
   </section>
@@ -788,6 +795,6 @@
   </footer>
 
   <script src="../assets/js/theme.js"></script>
-  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/main.js?v=8"></script>
 </body>
 </html>

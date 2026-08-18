@@ -8,9 +8,9 @@
   <meta name="description" content="Experience the ultimate in garment care. SnapWash offers luxury laundry, dry cleaning, and ironing services with convenient doorstep delivery.">
   
   <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/variables.css">
-  <link rel="stylesheet" href="assets/css/global.css">
-  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/variables.css?v=8">
+  <link rel="stylesheet" href="assets/css/global.css?v=8">
+  <link rel="stylesheet" href="assets/css/components.css?v=8">
   
   <!-- Remix Icons for crisp, premium icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -184,6 +184,10 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 2.5rem;
       margin-top: 4rem;
+      max-width: var(--container-width);
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 2rem;
     }
     .service-card {
       padding: 0;
@@ -499,6 +503,17 @@
     }
 
     @media (max-width: 768px) {
+      .testimonial-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; padding: 0 1rem; }
+      .stats-band { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-title { font-size: 2.6rem; }
+      .hero-actions { flex-direction: column; width: 100%; gap: 1rem; }
+      .hero-actions .btn { width: 100%; text-align: center; }
+      .premium-banner { padding: 2.5rem 1.5rem; margin: 4rem auto; }
+      .section-head h2 { font-size: clamp(1.6rem, 6.5vw, 2.1rem); }
+    }
+
+    @media (max-width: 576px) {
       .services-grid, .testimonial-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -523,7 +538,7 @@
         <a href="pages/services.html" class="nav-link">Services</a>
         <a href="pages/blog.html" class="nav-link">Blog</a>
         <a href="pages/contact.html" class="nav-link">Contact</a>
-        <a href="pages/dashboard.html" class="btn btn-primary mobile-book-now">Book Now</a>
+        <a href="pages/login.html" class="btn btn-primary mobile-book-now">Book Now</a>
       </div>
       
       <div class="nav-actions">
@@ -550,7 +565,7 @@
           <i class="ri-moon-line"></i>
         </button>
         <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
-        <a href="pages/dashboard.html" class="btn btn-primary">Book Now</a>
+        <a href="pages/login.html" class="btn btn-primary">Book Now</a>
       </div>
       
       <button class="mobile-menu-btn" aria-label="Menu">
@@ -585,31 +600,32 @@
   </header>
 
   <!-- Services Section -->
-  <section class="section container reveal">
-    <div class="section-head">
-      <div class="eyebrow center-eyebrow">Our Expertise</div>
-      <h2>Tailored Services, <em>Bespoke Care.</em></h2>
+  <section class="section reveal" style="padding-bottom: 0;">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow center-eyebrow">Our Expertise</div>
+        <h2>Tailored Services, <em>Bespoke Care.</em></h2>
+      </div>
     </div>
-    
     <div class="services-grid">
       <div class="card service-card">
         <div style="overflow: hidden;">
           <img src="assets/images/washfold.jpg" alt="Wash and Fold" class="service-img">
         </div>
         <span class="svc-num">01</span>
-        <div class="service-content">
+        <div class="service-content" style="padding: 1.5rem !important;">
           <h4 class="service-title">Premium Wash & Fold</h4>
           <p class="text-muted">Everyday garments cleaned with eco-friendly detergents and perfectly folded for your convenience.</p>
           <a href="pages/services.html" class="svc-link">Discover More <i class="ri-arrow-right-line"></i></a>
         </div>
       </div>
-      
+
       <div class="card service-card">
         <div style="overflow: hidden;">
           <img src="assets/images/drycleaning.jpg" alt="Dry Cleaning" class="service-img">
         </div>
         <span class="svc-num">02</span>
-        <div class="service-content">
+        <div class="service-content" style="padding: 1.5rem !important;">
           <h4 class="service-title">Executive Dry Cleaning</h4>
           <p class="text-muted">Specialized solvent cleaning for delicate fabrics, suits, and couture pieces ensuring longevity.</p>
           <a href="pages/services.html" class="svc-link">Discover More <i class="ri-arrow-right-line"></i></a>
@@ -878,6 +894,6 @@
 
   <!-- Scripts -->
   <script src="assets/js/theme.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/main.js?v=8"></script>
 </body>
 </html>
