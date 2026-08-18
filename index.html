@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <title>SnapWash | Premium Laundry & Dry Cleaning</title>
   <meta name="description" content="Experience the ultimate in garment care. SnapWash offers luxury laundry, dry cleaning, and ironing services with convenient doorstep delivery.">
   
@@ -74,7 +75,7 @@
     /* Services Section */
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 2.5rem;
       margin-top: 4rem;
     }
@@ -177,7 +178,7 @@
       right: 0;
       width: 50%;
       height: 100%;
-      background: url('assets/images/service_drycleaning_1786960683269.png') no-repeat center/cover;
+      background: url('assets/images/quality.jpg') no-repeat center/cover;
       opacity: 0.2;
       mix-blend-mode: overlay;
     }
@@ -241,7 +242,60 @@
       font-weight: bold;
     }
 
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .feature-card {
+      text-align: center;
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--accent);
+      transition: all var(--transition-normal);
+    }
+
+    .feature-card:hover .feature-icon {
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    /* Stats */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .stat-box h2 {
+      font-size: 3rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-box p {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
     @media (max-width: 992px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
       .hero-title { font-size: 3.5rem; }
       .hero-image-wrapper { position: relative; width: 100%; height: 50vh; right: 0; top: 0; transform: none; margin-top: 3rem; }
       .hero { flex-direction: column; padding-top: 120px; text-align: center; }
@@ -251,6 +305,10 @@
       .process-step { width: 100%; }
       .premium-banner { flex-direction: column; text-align: center; padding: 3rem; }
     }
+
+    @media (max-width: 768px) {
+      .services-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -259,23 +317,30 @@
   <nav class="navbar">
     <div class="container">
       <a href="index.html" class="logo">
-        <i class="ri-drop-fill text-accent"></i>
-        Snap<span>Wash</span>
+        <img src="assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+        <div class="logo-text">
+          <div>Snap<span>Wash</span></div>
+          <div class="logo-tagline">Premium Care, Delivered.</div>
+        </div>
       </a>
       
       <div class="nav-links">
         <a href="index.html" class="nav-link active">Home</a>
-        <a href="pages/services.html" class="nav-link">Services</a>
+        <a href="pages/home2.html" class="nav-link">Home2</a>
         <a href="pages/about.html" class="nav-link">About</a>
-        <a href="pages/blog.html" class="nav-link">Journal</a>
+        <a href="pages/services.html" class="nav-link">Services</a>
+        <a href="pages/blog.html" class="nav-link">Blog</a>
         <a href="pages/contact.html" class="nav-link">Contact</a>
       </div>
       
       <div class="nav-actions">
+        <a href="pages/dashboard.html" class="theme-toggle profile-icon" aria-label="My Account">
+          <i class="ri-user-line"></i>
+        </a>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
           <i class="ri-moon-line"></i>
         </button>
-        <a href="pages/login.html" class="btn btn-outline">Sign In</a>
+        <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
         <a href="pages/dashboard.html" class="btn btn-primary">Book Now</a>
       </div>
       
@@ -296,7 +361,7 @@
       </div>
     </div>
     <div class="hero-image-wrapper">
-      <img src="assets/images/hero_laundry_1786960404630.png" alt="Fresh white towels in a bamboo basket">
+      <img src="assets/images/hero.jpg" alt="Fresh white towels in a bamboo basket">
     </div>
   </header>
 
@@ -310,7 +375,7 @@
     <div class="services-grid">
       <div class="card service-card">
         <div style="overflow: hidden;">
-          <img src="assets/images/service_washfold_1786960910029.png" alt="Wash and Fold" class="service-img">
+          <img src="assets/images/washfold.jpg" alt="Wash and Fold" class="service-img">
         </div>
         <div class="service-content">
           <h4 class="service-title">Premium Wash & Fold</h4>
@@ -321,7 +386,7 @@
       
       <div class="card service-card">
         <div style="overflow: hidden;">
-          <img src="assets/images/service_drycleaning_1786960683269.png" alt="Dry Cleaning" class="service-img">
+          <img src="assets/images/drycleaning.jpg" alt="Dry Cleaning" class="service-img">
         </div>
         <div class="service-content">
           <h4 class="service-title">Executive Dry Cleaning</h4>
@@ -332,12 +397,77 @@
       
       <div class="card service-card">
         <div style="overflow: hidden;">
-          <img src="assets/images/service_ironing_1786960923928.png" alt="Steam Ironing" class="service-img">
+          <img src="assets/images/steampress.jpg" alt="Steam Ironing" class="service-img">
         </div>
         <div class="service-content">
           <h4 class="service-title">Artisan Steam Press</h4>
           <p class="text-muted">Hand-finished crisp pressing for dress shirts and formal wear, delivered on premium hangers.</p>
           <a href="pages/services.html" class="text-accent" style="font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">Discover More <i class="ri-arrow-right-line"></i></a>
+        </div>
+      </div>
+
+      <div class="card service-card">
+        <div style="overflow: hidden;">
+          <img src="assets/images/about-heritage.jpg" alt="Couture Care" class="service-img">
+        </div>
+        <div class="service-content">
+          <h4 class="service-title">Couture Care</h4>
+          <p class="text-muted">Hand-finishing for bespoke tailoring, couture gowns, leather, and suede with archival-grade preservation.</p>
+          <a href="pages/services.html" class="text-accent" style="font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">Discover More <i class="ri-arrow-right-line"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="section container reveal">
+    <div class="text-center">
+      <h2 class="text-accent" style="font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">The SnapWash Difference</h2>
+      <h3 style="font-size: 3rem;">Why Discerning Clients Choose Us</h3>
+    </div>
+    <div class="features-grid">
+      <div class="card feature-card">
+        <div class="feature-icon"><i class="ri-user-star-line"></i></div>
+        <h4>Master Technicians</h4>
+        <p class="text-muted">Every garment is inspected and finished by master cleaners with over two decades of textile expertise.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon"><i class="ri-leaf-line"></i></div>
+        <h4>Plant-Based Detergents</h4>
+        <p class="text-muted">Hypoallergenic, biodegradable formulas that are gentle on fabrics, skin, and the planet.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon"><i class="ri-shield-check-line"></i></div>
+        <h4>Care Guarantee</h4>
+        <p class="text-muted">If a garment doesn't meet our standards, we re-clean it free of charge or refund in full.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon"><i class="ri-time-line"></i></div>
+        <h4>48-Hour Turnaround</h4>
+        <p class="text-muted">Express 24-hour service available for select orders, with real-time tracking from pickup to delivery.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section process-section reveal">
+    <div class="container">
+      <div class="stats-container">
+        <div class="stat-box">
+          <h2>15k+</h2>
+          <p>Garments Restored</p>
+        </div>
+        <div class="stat-box">
+          <h2>4.9</h2>
+          <p>Average Client Rating</p>
+        </div>
+        <div class="stat-box">
+          <h2>100%</h2>
+          <p>Eco-Friendly Process</p>
+        </div>
+        <div class="stat-box">
+          <h2>24/7</h2>
+          <p>Concierge Support</p>
         </div>
       </div>
     </div>
@@ -390,7 +520,7 @@
   <!-- Testimonials Section -->
   <section class="section container reveal">
     <h3 style="font-size: 3rem; text-align: center; margin-bottom: 3rem;">Client Stories</h3>
-    <div class="testimonial-grid">
+    <div class="testimonial-grid" style="grid-template-columns: repeat(4, 1fr);">
       <div class="card testimonial-card">
         <i class="ri-double-quotes-l quote-icon"></i>
         <p class="testimonial-text">"SnapWash completely transformed my wardrobe maintenance. Their attention to detail on my silk dresses is unparalleled. Simply the best service in the city."</p>
@@ -414,59 +544,105 @@
           </div>
         </div>
       </div>
+
+      <div class="card testimonial-card">
+        <i class="ri-double-quotes-l quote-icon"></i>
+        <p class="testimonial-text">"They removed a red-wine stain from my ivory bridal gown that two other cleaners refused to touch. SnapWash is not a laundry service — it's a preservation studio."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">S</div>
+          <div>
+            <h5 style="margin: 0; font-family: var(--font-body); font-weight: 600;">Sofia Laurent</h5>
+            <span class="text-muted" style="font-size: 0.9rem;">Bridal Couture Client</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card testimonial-card">
+        <i class="ri-double-quotes-l quote-icon"></i>
+        <p class="testimonial-text">"As a hotelier, I trust SnapWash with my guests' linens and my personal wardrobe alike. Consistent perfection, every single week for two years running."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">J</div>
+          <div>
+            <h5 style="margin: 0; font-family: var(--font-body); font-weight: 600;">James Whitmore</h5>
+            <span class="text-muted" style="font-size: 0.9rem;">Hotel Owner</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer class="footer" style="position: relative;">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <a href="index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem; display: inline-block;">
-            <i class="ri-drop-fill text-accent"></i> Snap<span class="text-accent">Wash</span>
+          <a href="index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+            <img src="assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+            <div class="logo-text">
+              <div>Snap<span style="color: var(--accent)">Wash</span></div>
+              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+            </div>
           </a>
-          <p style="opacity: 0.8; max-width: 300px; margin-bottom: 2rem;">Redefining garment care through meticulous attention to detail and uncompromising luxury service.</p>
-          <div style="display: flex; gap: 1rem;">
-            <a href="#" style="font-size: 1.5rem; opacity: 0.8;"><i class="ri-instagram-line"></i></a>
-            <a href="#" style="font-size: 1.5rem; opacity: 0.8;"><i class="ri-twitter-x-line"></i></a>
-            <a href="#" style="font-size: 1.5rem; opacity: 0.8;"><i class="ri-linkedin-fill"></i></a>
+          <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+            <a href="#" class="social-icon" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+            <a href="#" class="social-icon" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+            <a href="#" class="social-icon" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
           </div>
         </div>
         
         <div class="footer-col">
-          <h4>Services</h4>
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Services</h4>
           <div class="footer-links">
-            <a href="pages/services.html">Wash & Fold</a>
-            <a href="pages/services.html">Dry Cleaning</a>
-            <a href="pages/services.html">Artisan Ironing</a>
+            <a href="pages/services.html">Luxury Wash & Fold</a>
+            <a href="pages/services.html">Executive Dry Cleaning</a>
+            <a href="pages/services.html">Artisan Steam Press</a>
             <a href="pages/services.html">Couture Care</a>
+            <a href="pages/services.html">Leather & Suede</a>
           </div>
         </div>
         
         <div class="footer-col">
-          <h4>Company</h4>
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Company</h4>
           <div class="footer-links">
-            <a href="pages/about.html">Our Story</a>
-            <a href="pages/blog.html">The Journal</a>
-            <a href="pages/contact.html">Contact Us</a>
-            <a href="pages/sitemap.html">Sitemap</a>
+            <a href="index.html">Home</a>
+            <a href="pages/home2.html">Home 2</a>
+            <a href="pages/about.html">About Us</a>
+            <a href="pages/services.html">Services</a>
+            <a href="pages/blog.html">Journal</a>
+            <a href="pages/contact.html">Contact</a>
           </div>
         </div>
         
         <div class="footer-col">
-          <h4>Legal</h4>
-          <div class="footer-links">
-            <a href="pages/privacy.html">Privacy Policy</a>
-            <a href="pages/terms.html">Terms & Conditions</a>
-          </div>
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">The Private List</h4>
+          <p style="opacity: 0.7; font-size: 0.9rem; line-height: 1.6;">Receive exclusive service previews, private membership invitations, and garment care insights before anyone else.</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault();">
+            <input type="email" class="newsletter-input" placeholder="Your email" required>
+            <button type="submit" class="newsletter-btn">JOIN</button>
+          </form>
         </div>
       </div>
       
       <div class="footer-bottom">
-        <p>&copy; 2026 SnapWash Premium Care. All rights reserved.</p>
-        <p>Designed with elegance.</p>
+        <div>&copy; 2026 SnapWash. All rights reserved. Established 2026, London.</div>
+        <div class="center-dot-wrapper" style="text-align: center;">
+            <div style="display: inline-block; padding: 6px; border: 1px solid rgba(214, 183, 124, 0.3); border-radius: 50%;">
+                <div class="center-dot"></div>
+            </div>
+        </div>
+        <div class="footer-bottom-links">
+          <a href="pages/privacy.html">Privacy Policy</a>
+          <a href="pages/terms.html">Terms & Conditions</a>
+          <a href="pages/sitemap.html">Sitemap</a>
+        </div>
       </div>
     </div>
+    
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
+      <i class="ri-arrow-up-line"></i>
+    </button>
   </footer>
 
   <!-- Scripts -->

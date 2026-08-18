@@ -53,6 +53,9 @@ class ThemeManager {
     } else {
       document.body.classList.remove('rtl-mode');
     }
+    if (this.dirToggleBtn) {
+      this.dirToggleBtn.innerText = dir === 'rtl' ? 'LTR' : 'RTL';
+    }
   }
 
   toggleDir() {
@@ -63,6 +66,12 @@ class ThemeManager {
 }
 
 // Initialize on DOM load
-document.addEventListener('DOMContentLoaded', () => {
+function initThemeManager() {
   window.themeManager = new ThemeManager();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initThemeManager);
+} else {
+  initThemeManager();
+}

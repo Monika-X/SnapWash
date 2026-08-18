@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <title>SnapWash | Contact Us</title>
   
   <link rel="stylesheet" href="../assets/css/variables.css">
@@ -12,9 +13,20 @@
   
   <style>
     .page-header {
-      padding: 150px 0 80px;
+      padding: 220px 0 120px;
       text-align: center;
-      background: linear-gradient(to bottom, var(--surface), var(--bg-color));
+      position: relative;
+      background:
+        linear-gradient(rgba(18, 59, 58, 0.75), rgba(18, 59, 58, 0.6)),
+        url('../assets/images/hero-contact.jpg') center/cover no-repeat;
+    }
+
+    .page-header h1 {
+      color: #ffffff;
+    }
+
+    .page-header .text-muted {
+      color: rgba(255, 255, 255, 0.9);
     }
 
     .contact-wrapper {
@@ -52,6 +64,106 @@
       padding: 2rem 0;
     }
 
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hours-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .hours-card {
+      text-align: center;
+    }
+
+    .hours-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--accent);
+      transition: all var(--transition-normal);
+    }
+
+    .hours-card:hover .hours-icon {
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px dashed var(--surface);
+      font-size: 0.95rem;
+    }
+
+    .hours-row:last-child {
+      border-bottom: none;
+    }
+
+    .hours-row .text-muted {
+      font-weight: 500;
+    }
+
+    .accordion-item {
+      border: 1px solid var(--surface);
+      border-radius: var(--border-radius-md);
+      background: var(--bg-color);
+      margin-bottom: 1rem;
+      overflow: hidden;
+      transition: border-color var(--transition-fast);
+    }
+
+    .accordion-item.active {
+      border-color: var(--accent);
+    }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.5rem 2rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+
+    .accordion-header i {
+      color: var(--accent);
+      font-size: 1.3rem;
+      transition: transform var(--transition-fast);
+    }
+
+    .accordion-item.active .accordion-header i {
+      transform: rotate(45deg);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--transition-normal);
+    }
+
+    .accordion-content p {
+      padding: 0 2rem 1.5rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
     @media (max-width: 992px) {
       .contact-wrapper { grid-template-columns: 1fr; }
     }
@@ -63,18 +175,27 @@
   <nav class="navbar scrolled">
     <div class="container">
       <a href="../index.html" class="logo">
-        <i class="ri-drop-fill text-accent"></i> Snap<span>Wash</span>
+        <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+        <div class="logo-text">
+          <div>Snap<span>Wash</span></div>
+          <div class="logo-tagline">Premium Care, Delivered.</div>
+        </div>
       </a>
       <div class="nav-links">
         <a href="../index.html" class="nav-link">Home</a>
-        <a href="services.html" class="nav-link">Services</a>
+        <a href="home2.html" class="nav-link">Home2</a>
         <a href="about.html" class="nav-link">About</a>
-        <a href="blog.html" class="nav-link">Journal</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="blog.html" class="nav-link">Blog</a>
         <a href="contact.html" class="nav-link active">Contact</a>
       </div>
       <div class="nav-actions">
+        <a href="dashboard.html" class="theme-toggle profile-icon" aria-label="My Account">
+          <i class="ri-user-line"></i>
+        </a>
         <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
-        <a href="dashboard.html" class="btn btn-primary">Dashboard</a>
+        <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
+        <a href="dashboard.html" class="btn btn-primary">Book Now</a>
       </div>
     </div>
   </nav>
@@ -122,38 +243,240 @@
         <h3 style="font-size: 2.5rem; margin-bottom: 1rem;">Send a Message</h3>
         <p class="text-muted" style="margin-bottom: 3rem;">Please fill out the form below and our team will respond promptly.</p>
         
-        <form>
+        <form id="contact-form">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
             <div class="form-group">
               <label class="form-label">Full Name</label>
-              <input type="text" class="form-control" placeholder="Jane Doe">
+              <input type="text" class="form-control" placeholder="Jane Doe" required>
             </div>
             <div class="form-group">
               <label class="form-label">Email Address</label>
-              <input type="email" class="form-control" placeholder="jane@example.com">
+              <input type="email" class="form-control" placeholder="jane@example.com" required>
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Subject</label>
-            <input type="text" class="form-control" placeholder="How can we help?">
+            <input type="text" class="form-control" placeholder="How can we help?" required>
           </div>
           <div class="form-group">
             <label class="form-label">Message</label>
-            <textarea class="form-control" rows="5" placeholder="Write your message here..."></textarea>
+            <textarea class="form-control" rows="5" placeholder="Write your message here..." required></textarea>
           </div>
-          <button type="button" class="btn btn-primary" style="margin-top: 1rem;">Send Message</button>
+          <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Send Message</button>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-bottom">
-        <p>&copy; 2026 SnapWash Premium Care. All rights reserved.</p>
+  <!-- Business Hours -->
+  <section class="section container reveal" style="padding-top: 0;">
+    <div class="text-center" style="margin-bottom: 2rem;">
+      <h2 class="text-accent" style="font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">When to Reach Us</h2>
+      <h3 style="font-size: 3rem;">Boutique & Concierge Hours</h3>
+    </div>
+    <div class="hours-grid">
+      <div class="card hours-card">
+        <div class="hours-icon"><i class="ri-store-2-line"></i></div>
+        <h4>Boutique Atelier</h4>
+        <div style="margin-top: 1.5rem;">
+          <div class="hours-row"><span>Mon – Fri</span><span class="text-muted">8:00 AM – 7:00 PM</span></div>
+          <div class="hours-row"><span>Saturday</span><span class="text-muted">9:00 AM – 5:00 PM</span></div>
+          <div class="hours-row"><span>Sunday</span><span class="text-muted">By Appointment</span></div>
+        </div>
+      </div>
+      <div class="card hours-card">
+        <div class="hours-icon"><i class="ri-customer-service-2-line"></i></div>
+        <h4>Concierge Desk</h4>
+        <div style="margin-top: 1.5rem;">
+          <div class="hours-row"><span>Mon – Fri</span><span class="text-muted">6:00 AM – 11:00 PM</span></div>
+          <div class="hours-row"><span>Saturday</span><span class="text-muted">7:00 AM – 10:00 PM</span></div>
+          <div class="hours-row"><span>Sunday</span><span class="text-muted">8:00 AM – 8:00 PM</span></div>
+        </div>
+      </div>
+      <div class="card hours-card">
+        <div class="hours-icon"><i class="ri-truck-line"></i></div>
+        <h4>Pickup & Delivery</h4>
+        <div style="margin-top: 1.5rem;">
+          <div class="hours-row"><span>Mon – Fri</span><span class="text-muted">7:00 AM – 9:00 PM</span></div>
+          <div class="hours-row"><span>Saturday</span><span class="text-muted">8:00 AM – 6:00 PM</span></div>
+          <div class="hours-row"><span>Express Slots</span><span class="text-muted">Book by 9 AM</span></div>
+        </div>
       </div>
     </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="section container reveal" style="padding-top: 0;">
+    <div class="contact-map">
+      <iframe
+        src="https://maps.google.com/maps?q=Metropolis%20NY%2010001&t=&z=13&ie=UTF8&iwloc=&output=embed"
+        width="100%"
+        height="450"
+        style="border: 0; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-sm); display: block;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="SnapWash Boutique Location"
+      ></iframe>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section container reveal" id="faq">
+    <div class="text-center" style="margin-bottom: 3rem;">
+      <h2 class="text-accent" style="font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Need Answers?</h2>
+      <h3 style="font-size: 3rem;">Frequently Asked Questions</h3>
+    </div>
+
+    <div class="faq-container">
+      <div class="accordion-item">
+        <div class="accordion-header">
+          What is your pickup and delivery schedule?
+          <i class="ri-add-line"></i>
+        </div>
+        <div class="accordion-content">
+          <p>Our concierge offers daily doorstep pickup and delivery in the greater Metropolis area, including early morning and evening windows. Select your preferred slot when booking through your dashboard and we will confirm within minutes.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header">
+          How does your pricing work?
+          <i class="ri-add-line"></i>
+        </div>
+        <div class="accordion-content">
+          <p>Wash & Fold is priced per pound, while Dry Cleaning is priced per item based on garment type. Couture and specialty pieces receive a custom quote after inspection. All prices are confirmed transparently before processing.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header">
+          How long does a typical order take?
+          <i class="ri-add-line"></i>
+        </div>
+        <div class="accordion-content">
+          <p>Standard turnaround is 48 hours from pickup to delivery. Express service is available in as little as 24 hours, and same-day service can be arranged for select orders before 9 AM.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header">
+          What care methods do you use for delicate fabrics?
+          <i class="ri-add-line"></i>
+        </div>
+        <div class="accordion-content">
+          <p>Delicates are handled with specialized silicone-based solvents and hand-finishing techniques. Every garment is assessed by a master technician before processing, and care labels are always respected.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header">
+          Do you offer a satisfaction guarantee?
+          <i class="ri-add-line"></i>
+        </div>
+        <div class="accordion-content">
+          <p>Absolutely. If a garment does not meet our exacting standards, we will re-clean it free of charge or refund the service in full. Your wardrobe's wellbeing is our first priority.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header">
+          How do I become a member?
+          <i class="ri-add-line"></i>
+        </div>
+        <div class="accordion-content">
+          <p>Membership is complimentary for all clients. Join through the signup page to unlock priority scheduling, complimentary wardrobe consultations, and specialized seasonal care.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="section container reveal" style="padding-top: 0;">
+    <div class="premium-banner" style="justify-content: center; text-align: center;">
+      <div class="banner-content" style="max-width: 600px;">
+        <h2>Prefer to Talk in Person?</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">Visit our Metropolis atelier for a complimentary fabric consultation, or book a pickup from the comfort of your home.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="dashboard.html" class="btn btn-accent">Book a Pickup</a>
+          <a href="#faq" style="color: var(--bg-color); font-weight: 600; text-decoration: underline;">Still curious? Read the FAQ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" style="position: relative;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+            <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+            <div class="logo-text">
+              <div>Snap<span style="color: var(--accent)">Wash</span></div>
+              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+            </div>
+          </a>
+          <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+            <a href="#" class="social-icon" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+            <a href="#" class="social-icon" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+            <a href="#" class="social-icon" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Services</h4>
+          <div class="footer-links">
+            <a href="../pages/services.html">Luxury Wash & Fold</a>
+            <a href="../pages/services.html">Executive Dry Cleaning</a>
+            <a href="../pages/services.html">Artisan Steam Press</a>
+            <a href="../pages/services.html">Couture Care</a>
+            <a href="../pages/services.html">Leather & Suede</a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Company</h4>
+          <div class="footer-links">
+            <a href="../index.html">Home</a>
+            <a href="../pages/home2.html">Home 2</a>
+            <a href="../pages/about.html">About Us</a>
+            <a href="../pages/services.html">Services</a>
+            <a href="../pages/blog.html">Journal</a>
+            <a href="../pages/contact.html">Contact</a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">The Private List</h4>
+          <p style="opacity: 0.7; font-size: 0.9rem; line-height: 1.6;">Receive exclusive service previews, private membership invitations, and garment care insights before anyone else.</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault();">
+            <input type="email" class="newsletter-input" placeholder="Your email" required>
+            <button type="submit" class="newsletter-btn">JOIN</button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div>&copy; 2026 SnapWash. All rights reserved. Established 2026, London.</div>
+        <div class="center-dot-wrapper" style="text-align: center;">
+            <div style="display: inline-block; padding: 6px; border: 1px solid rgba(214, 183, 124, 0.3); border-radius: 50%;">
+                <div class="center-dot"></div>
+            </div>
+        </div>
+        <div class="footer-bottom-links">
+          <a href="../pages/privacy.html">Privacy Policy</a>
+          <a href="../pages/terms.html">Terms & Conditions</a>
+          <a href="../pages/sitemap.html">Sitemap</a>
+        </div>
+      </div>
+    </div>
+    
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
+      <i class="ri-arrow-up-line"></i>
+    </button>
   </footer>
 
   <script src="../assets/js/theme.js"></script>

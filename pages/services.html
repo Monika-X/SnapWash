@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <title>SnapWash | Services</title>
   
   <link rel="stylesheet" href="../assets/css/variables.css">
@@ -12,9 +13,20 @@
   
   <style>
     .page-header {
-      padding: 150px 0 80px;
+      padding: 220px 0 120px;
       text-align: center;
-      background: linear-gradient(to bottom, var(--surface), var(--bg-color));
+      position: relative;
+      background:
+        linear-gradient(rgba(18, 59, 58, 0.75), rgba(18, 59, 58, 0.6)),
+        url('../assets/images/hero-services.jpg') center/cover no-repeat;
+    }
+
+    .page-header h1 {
+      color: #ffffff;
+    }
+
+    .page-header .text-muted {
+      color: rgba(255, 255, 255, 0.9);
     }
 
     .service-detail-section {
@@ -67,6 +79,37 @@
       margin: 1rem 0;
     }
 
+    .promise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .promise-card {
+      text-align: center;
+    }
+
+    .promise-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--accent);
+      transition: all var(--transition-normal);
+    }
+
+    .promise-card:hover .promise-icon {
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-5px);
+    }
+
     @media (max-width: 992px) {
       .service-detail-section, .service-detail-section.reverse { grid-template-columns: 1fr; direction: ltr; }
     }
@@ -78,17 +121,26 @@
   <nav class="navbar scrolled">
     <div class="container">
       <a href="../index.html" class="logo">
-        <i class="ri-drop-fill text-accent"></i> Snap<span>Wash</span>
+        <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+        <div class="logo-text">
+          <div>Snap<span>Wash</span></div>
+          <div class="logo-tagline">Premium Care, Delivered.</div>
+        </div>
       </a>
       <div class="nav-links">
         <a href="../index.html" class="nav-link">Home</a>
-        <a href="services.html" class="nav-link active">Services</a>
+        <a href="home2.html" class="nav-link">Home2</a>
         <a href="about.html" class="nav-link">About</a>
-        <a href="blog.html" class="nav-link">Journal</a>
+        <a href="services.html" class="nav-link active">Services</a>
+        <a href="blog.html" class="nav-link">Blog</a>
         <a href="contact.html" class="nav-link">Contact</a>
       </div>
       <div class="nav-actions">
+        <a href="dashboard.html" class="theme-toggle profile-icon" aria-label="My Account">
+          <i class="ri-user-line"></i>
+        </a>
         <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
+        <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
         <a href="dashboard.html" class="btn btn-primary">Book Now</a>
       </div>
     </div>
@@ -106,7 +158,7 @@
     <!-- Service 1 -->
     <div class="service-detail-section reveal">
       <div>
-        <img src="../assets/images/service_washfold_1786960910029.png" class="service-img-large" alt="Wash and Fold">
+        <img src="../assets/images/washfold-detail.jpg" class="service-img-large" alt="Wash and Fold">
       </div>
       <div>
         <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Premium Wash & Fold</h2>
@@ -118,12 +170,36 @@
     <!-- Service 2 -->
     <div class="service-detail-section reverse reveal">
       <div>
-        <img src="../assets/images/service_drycleaning_1786960683269.png" class="service-img-large" alt="Dry Cleaning">
+        <img src="../assets/images/drycleaning-detail.jpg" class="service-img-large" alt="Dry Cleaning">
       </div>
       <div>
         <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Executive Dry Cleaning</h2>
         <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 1.5rem;">The ultimate preservation for your tailored suits, silk blouses, and formal wear. We utilize a gentle, specialized silicone-based solvent that lifts stains without degrading fibers, ensuring your garments maintain their structural integrity and vibrant colors.</p>
         <a href="dashboard.html" class="btn btn-outline">Schedule Collection</a>
+      </div>
+    </div>
+
+    <!-- Service 3 -->
+    <div class="service-detail-section reveal">
+      <div>
+        <img src="../assets/images/steampress.jpg" class="service-img-large" alt="Steam Press">
+      </div>
+      <div>
+        <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Artisan Steam Press</h2>
+        <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 1.5rem;">Crisp, museum-quality pressing for dress shirts, trousers, and formal wear. Our artisans use calibrated steam pressure to set sharp creases and soften stubborn wrinkles without crushing fabric fibers — finished on premium wooden hangers and delivered ready to wear.</p>
+        <a href="dashboard.html" class="btn btn-outline">Schedule Collection</a>
+      </div>
+    </div>
+
+    <!-- Service 4 -->
+    <div class="service-detail-section reverse reveal">
+      <div>
+        <img src="../assets/images/about-heritage.jpg" class="service-img-large" alt="Couture Care">
+      </div>
+      <div>
+        <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Couture Care & Restoration</h2>
+        <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 1.5rem;">For bespoke tailoring, couture gowns, leather, and suede — a white-glove program of stain archaeology, invisible mending, and archival-grade preservation. Each piece is assessed by our master restorer, quoted transparently, and handled with documentation of every treatment step.</p>
+        <a href="dashboard.html" class="btn btn-outline">Request a Quote</a>
       </div>
     </div>
   </div>
@@ -153,13 +229,121 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
+  <!-- Quality Promise -->
+  <section class="section process-section reveal">
     <div class="container">
-      <div class="footer-bottom">
-        <p>&copy; 2026 SnapWash Premium Care. All rights reserved.</p>
+      <div class="text-center" style="margin-bottom: 2rem;">
+        <h2 class="text-accent" style="font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Our Standard</h2>
+        <h3 style="font-size: 3rem;">Every Order, Guaranteed</h3>
+      </div>
+      <div class="promise-grid">
+        <div class="card promise-card">
+          <div class="promise-icon"><i class="ri-search-eye-line"></i></div>
+          <h4>Two-Point Inspection</h4>
+          <p class="text-muted">Every garment is examined before and after treatment by separate technicians.</p>
+        </div>
+        <div class="card promise-card">
+          <div class="promise-icon"><i class="ri-truck-line"></i></div>
+          <h4>Climate-Controlled Transport</h4>
+          <p class="text-muted">Your pieces travel in insulated, garment-safe eco-bags — never crammed, never crushed.</p>
+        </div>
+        <div class="card promise-card">
+          <div class="promise-icon"><i class="ri-shield-check-line"></i></div>
+          <h4>Care Guarantee</h4>
+          <p class="text-muted">If a garment doesn't meet our standards, we re-clean it free or refund in full.</p>
+        </div>
+        <div class="card promise-card">
+          <div class="promise-icon"><i class="ri-secure-payment-line"></i></div>
+          <h4>Transparent Pricing</h4>
+          <p class="text-muted">Confirmed before processing begins. No surprises, ever.</p>
+        </div>
       </div>
     </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="section container reveal">
+    <div class="premium-banner">
+      <div class="banner-content">
+        <h2>Ready for the SnapWash Standard?</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">Schedule your first collection in under a minute. Pickup today, pristine delivery within 48 hours.</p>
+        <a href="dashboard.html" class="btn btn-accent">Book Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" style="position: relative;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+            <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+            <div class="logo-text">
+              <div>Snap<span style="color: var(--accent)">Wash</span></div>
+              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+            </div>
+          </a>
+          <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+            <a href="#" class="social-icon" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+            <a href="#" class="social-icon" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+            <a href="#" class="social-icon" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Services</h4>
+          <div class="footer-links">
+            <a href="../pages/services.html">Luxury Wash & Fold</a>
+            <a href="../pages/services.html">Executive Dry Cleaning</a>
+            <a href="../pages/services.html">Artisan Steam Press</a>
+            <a href="../pages/services.html">Couture Care</a>
+            <a href="../pages/services.html">Leather & Suede</a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Company</h4>
+          <div class="footer-links">
+            <a href="../index.html">Home</a>
+            <a href="../pages/home2.html">Home 2</a>
+            <a href="../pages/about.html">About Us</a>
+            <a href="../pages/services.html">Services</a>
+            <a href="../pages/blog.html">Journal</a>
+            <a href="../pages/contact.html">Contact</a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">The Private List</h4>
+          <p style="opacity: 0.7; font-size: 0.9rem; line-height: 1.6;">Receive exclusive service previews, private membership invitations, and garment care insights before anyone else.</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault();">
+            <input type="email" class="newsletter-input" placeholder="Your email" required>
+            <button type="submit" class="newsletter-btn">JOIN</button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div>&copy; 2026 SnapWash. All rights reserved. Established 2026, London.</div>
+        <div class="center-dot-wrapper" style="text-align: center;">
+            <div style="display: inline-block; padding: 6px; border: 1px solid rgba(214, 183, 124, 0.3); border-radius: 50%;">
+                <div class="center-dot"></div>
+            </div>
+        </div>
+        <div class="footer-bottom-links">
+          <a href="../pages/privacy.html">Privacy Policy</a>
+          <a href="../pages/terms.html">Terms & Conditions</a>
+          <a href="../pages/sitemap.html">Sitemap</a>
+        </div>
+      </div>
+    </div>
+    
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
+      <i class="ri-arrow-up-line"></i>
+    </button>
   </footer>
 
   <script src="../assets/js/theme.js"></script>

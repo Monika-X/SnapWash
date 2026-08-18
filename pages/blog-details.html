@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SnapWash | The Essential Guide to Silk Preservation</title>
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <title>SnapWash | Journal</title>
   
   <link rel="stylesheet" href="../assets/css/variables.css">
   <link rel="stylesheet" href="../assets/css/global.css">
@@ -22,40 +23,342 @@
 
   <nav class="navbar scrolled">
     <div class="container">
-      <a href="../index.html" class="logo"><i class="ri-drop-fill text-accent"></i> Snap<span>Wash</span></a>
-      <div class="nav-links"><a href="blog.html" class="nav-link active">Back to Journal</a></div>
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+        <div class="logo-text">
+          <div>Snap<span>Wash</span></div>
+          <div class="logo-tagline">Premium Care, Delivered.</div>
+        </div>
+      </a>
+      <div class="nav-links"><a href="blog.html" class="nav-link active">Back to Blog</a></div>
+      <div class="nav-actions">
+        <a href="dashboard.html" class="theme-toggle profile-icon" aria-label="My Account">
+          <i class="ri-user-line"></i>
+        </a>
+      </div>
     </div>
   </nav>
 
   <header class="article-header reveal">
     <div class="container" style="max-width: 900px;">
-      <span class="text-accent" style="font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">Fabric Care</span>
-      <h1 style="font-size: 4rem; margin-top: 1rem;">The Essential Guide to Silk Preservation</h1>
+      <span id="post-category" class="text-accent" style="font-weight: 600; text-transform: uppercase; letter-spacing: 2px;"></span>
+      <h1 id="post-title" style="font-size: 4rem; margin-top: 1rem;"></h1>
       <div class="article-meta">
-        <span><i class="ri-calendar-line"></i> Oct 12, 2026</span>
+        <span><i class="ri-calendar-line"></i> <span id="post-date"></span></span>
         <span><i class="ri-user-line"></i> Master Cleaner team</span>
       </div>
     </div>
   </header>
 
   <div class="container reveal">
-    <img src="../assets/images/service_drycleaning_1786960683269.png" class="article-img" alt="Silk Preservation">
+    <img id="post-image" src="" class="article-img" alt="">
     
-    <div class="article-content">
-      <p>Silk is an investment in elegance. Its natural protein fibers provide unparalleled drape and luster, but they also require meticulous care to prevent degradation over time. At SnapWash, we treat silk with the reverence it deserves.</p>
-      
-      <h2>1. The Danger of DIY</h2>
-      <p>While many labels state "hand wash," doing so with standard household detergents strips the fibers of their natural oils. This leads to brittleness and a loss of the signature silk sheen.</p>
-      
-      <h2>2. Our Professional Protocol</h2>
-      <p>We utilize a highly specialized, low-moisture dry cleaning process specifically calibrated for delicate proteins. Our solvents are pH-neutral and incredibly gentle, ensuring that structural integrity remains completely intact.</p>
-      
-      <h2>3. Storage Best Practices</h2>
-      <p>Always store silk in a cool, dark environment. Use breathable cotton garment bags rather than plastic to prevent moisture accumulation, which can lead to fiber-destroying mildew.</p>
-    </div>
+    <div id="post-content" class="article-content"></div>
   </div>
 
-  <footer class="footer" style="margin-top: 5rem;"><div class="container"><p>&copy; 2026 SnapWash.</p></div></footer>
+  <footer class="footer" style="position: relative;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+            <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+            <div class="logo-text">
+              <div>Snap<span style="color: var(--accent)">Wash</span></div>
+              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+            </div>
+          </a>
+          <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+            <a href="#" class="social-icon" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+            <a href="#" class="social-icon" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+            <a href="#" class="social-icon" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Services</h4>
+          <div class="footer-links">
+            <a href="../pages/services.html">Luxury Wash & Fold</a>
+            <a href="../pages/services.html">Executive Dry Cleaning</a>
+            <a href="../pages/services.html">Artisan Steam Press</a>
+            <a href="../pages/services.html">Couture Care</a>
+            <a href="../pages/services.html">Leather & Suede</a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Company</h4>
+          <div class="footer-links">
+            <a href="../index.html">Home</a>
+            <a href="../pages/home2.html">Home 2</a>
+            <a href="../pages/about.html">About Us</a>
+            <a href="../pages/services.html">Services</a>
+            <a href="../pages/blog.html">Journal</a>
+            <a href="../pages/contact.html">Contact</a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">The Private List</h4>
+          <p style="opacity: 0.7; font-size: 0.9rem; line-height: 1.6;">Receive exclusive service previews, private membership invitations, and garment care insights before anyone else.</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault();">
+            <input type="email" class="newsletter-input" placeholder="Your email" required>
+            <button type="submit" class="newsletter-btn">JOIN</button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div>&copy; 2026 SnapWash. All rights reserved. Established 2026, London.</div>
+        <div class="center-dot-wrapper" style="text-align: center;">
+            <div style="display: inline-block; padding: 6px; border: 1px solid rgba(214, 183, 124, 0.3); border-radius: 50%;">
+                <div class="center-dot"></div>
+            </div>
+        </div>
+        <div class="footer-bottom-links">
+          <a href="../pages/privacy.html">Privacy Policy</a>
+          <a href="../pages/terms.html">Terms & Conditions</a>
+          <a href="../pages/sitemap.html">Sitemap</a>
+        </div>
+      </div>
+    </div>
+    
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
+      <i class="ri-arrow-up-line"></i>
+    </button>
+  </footer>
+
   <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    const POSTS = {
+      'silk-preservation': {
+        title: 'The Essential Guide to Silk Preservation',
+        category: 'Fabric Care',
+        date: 'Oct 12, 2026',
+        image: '../assets/images/blog-silk.jpg',
+        intro: 'Silk is an investment in elegance. Its natural protein fibers provide unparalleled drape and luster, but they also require meticulous care to prevent degradation over time. At SnapWash, we treat silk with the reverence it deserves.',
+        sections: [
+          { h: '1. The Danger of DIY', p: 'While many labels state "hand wash," doing so with standard household detergents strips the fibers of their natural oils. This leads to brittleness and a loss of the signature silk sheen.' },
+          { h: '2. Our Professional Protocol', p: 'We utilize a highly specialized, low-moisture dry cleaning process specifically calibrated for delicate proteins. Our solvents are pH-neutral and incredibly gentle, ensuring that structural integrity remains completely intact.' },
+          { h: '3. Storage Best Practices', p: 'Always store silk in a cool, dark environment. Use breathable cotton garment bags rather than plastic to prevent moisture accumulation, which can lead to fiber-destroying mildew.' }
+        ]
+      },
+      'reviving-vintage-garments': {
+        title: 'Reviving Vintage Garments',
+        category: 'Fabric Care',
+        date: 'Oct 05, 2026',
+        image: '../assets/images/blog-vintage.jpg',
+        intro: 'Vintage garments carry history in every stitch, but fragile fibers and decades of wear demand a specialist touch. Our restoration team breathes new life into heirlooms without erasing their character.',
+        sections: [
+          { h: '1. Assessing the Piece', p: 'Every restoration begins with a fiber analysis. We test dye fastness and fabric strength under magnification before choosing a cleaning method, ensuring no hidden weakness is aggravated.' },
+          { h: '2. Gentle Cleaning Techniques', p: 'Vintage pieces rarely tolerate modern machines. We use hand-cleaning methods, mild detergents, and controlled low-moisture processes that lift decades of grime while preserving original stitching and trim.' },
+          { h: '3. Preservation After Restoration', p: 'Once restored, the garment is pressed with low-heat, acid-free tissue, and breathable storage to keep it protected for the next chapter of its life.' }
+        ]
+      },
+      'eco-friendly-solvents': {
+        title: 'Eco-Friendly Solvents: The Future of Clean',
+        category: 'Sustainability',
+        date: 'Sep 28, 2026',
+        image: '../assets/images/blog-eco.jpg',
+        intro: 'The dry cleaning industry is quietly reinventing itself. Plant-based solvents and closed-loop systems now deliver results that rival tradition without the environmental cost.',
+        sections: [
+          { h: '1. Why Traditional Solvents Are Phasing Out', p: 'Legacy solvents have long been effective, but their handling and disposal present real environmental concerns. Forward-thinking cleaners are retiring them in favor of greener chemistry.' },
+          { h: '2. The New Generation of Solvents', p: 'Modern plant-derived solvents are biodegradable, non-toxic, and gentle on delicate fibers. They clean deeply while leaving fabrics softer and free of chemical residue.' },
+          { h: '3. What This Means for Your Wardrobe', p: 'Choosing a cleaner that embraces these solvents means your garments are cared for with the same standards you hold for your home and family — cleaner, safer, and kinder to the planet.' }
+        ]
+      },
+      'pressed-suit': {
+        title: 'The Anatomy of a Perfectly Pressed Suit',
+        category: 'Style',
+        date: 'Sep 15, 2026',
+        image: '../assets/images/blog-suit.jpg',
+        intro: 'A suit is a statement long before you speak. The difference between good and unforgettable often comes down to the press — the discipline of steam, heat, and patience applied by hand.',
+        sections: [
+          { h: '1. Steam Opens the Fabric', p: 'Professional pressing begins with steam, which relaxes wool and blended fibers so creases release without the fabric being crushed. Heat alone flattens; steam refreshes.' },
+          { h: '2. The Sequence of the Press', p: 'Our artisans press shoulders first, then lapels, sleeves, and finally the trousers — each pass following the grain of the fabric to preserve the tailor\u2019s original line.' },
+          { h: '3. The Finishing Details', p: 'The final inspection matters as much as the iron. A perfectly pressed suit has crisp lapel rolls, clean sleeve creases, and a hang that announces confidence.' }
+        ]
+      },
+      'art-of-folding': {
+        title: 'The Art of Folding: Why It Matters',
+        category: 'Laundry Basics',
+        date: 'Sep 02, 2026',
+        image: '../assets/images/washfold.jpg',
+        intro: 'Folding is the quiet science of garment care. Done well, it protects structure, saves space, and keeps your wardrobe ready to wear at a moment\u2019s notice.',
+        sections: [
+          { h: '1. Folding Preserves Structure', p: 'The wrong fold leaves permanent creases in cotton and can stretch knits. Folding along natural seams keeps fabric fibers relaxed and ready.' },
+          { h: '2. The Professional Method', p: 'Our artisans fold each garment to uniform dimensions — flat for knits to prevent stretching, rolled for travel to minimize creasing.' },
+          { h: '3. Organizing Your Drawers', p: 'Consistent folds make drawers stackable and searchable. A disciplined fold turns a chaotic dresser into a personal atelier.' }
+        ]
+      },
+      'care-labels': {
+        title: 'How to Read Care Labels Like a Pro',
+        category: 'Fabric Care',
+        date: 'Aug 24, 2026',
+        image: '../assets/images/blog-labels.jpg',
+        intro: 'Those tiny symbols sewn into your garments are a code that, once cracked, unlocks years of extra life. Here is how the professionals read them at a glance.',
+        sections: [
+          { h: '1. The Universal Symbols', p: 'The wash basin, the triangle, the square, and the iron each carry bars and dots that modify their meaning. A single bar under the basin means permanent press; two means gentle cycle.' },
+          { h: '2. Temperature and Chemicals', p: 'Dots inside symbols indicate heat levels, while the letters P and F inside a circle denote professional cleaning solvents. Understanding them prevents shrinkage and discoloration.' },
+          { h: '3. When Labels Are Wrong', p: 'Labels are a starting point, not gospel. Delicate embellishments, vintage fabrics, and stains sometimes demand a judgment call — which is when a professional eye earns its keep.' }
+        ]
+      },
+      'steam-vs-iron': {
+        title: 'Steam vs. Iron: Which Is Right for Your Wardrobe?',
+        category: 'Style',
+        date: 'Aug 10, 2026',
+        image: '../assets/images/blog-steam.jpg',
+        intro: 'Steam and iron are tools, not rivals. Each is correct in its context — the trick is knowing which one your fabric is asking for.',
+        sections: [
+          { h: '1. Steam: Gentle Refreshment', p: 'Steam relaxes wrinkles without pressure, making it ideal for silks, wools, and anything with a nap or embellishment. It also refreshes odor between wears.' },
+          { h: '2. Iron: Crisp Precision', p: 'An iron delivers the sharp creases and flat panels that formal wear demands — from shirt collars to trouser pleats — on sturdy cottons and linens.' },
+          { h: '3. The Professional Verdict', p: 'When in doubt, steam. When structure is the goal, press. Most wardrobes need both — which is exactly what a full-service cleaner offers.' }
+        ]
+      },
+      'low-water-revolution': {
+        title: 'The Low-Water Revolution in Laundry',
+        category: 'Sustainability',
+        date: 'Jul 28, 2026',
+        image: '../assets/images/blog-lowwater.jpg',
+        intro: 'Water is the unsung resource of every wash cycle. New machines and smarter methods are proving that clean laundry does not require wasteful consumption.',
+        sections: [
+          { h: '1. The New Machine Standard', p: 'High-efficiency machines now sense load size and soil level, dosing water precisely. The result: cleaner garments and dramatically lower consumption.' },
+          { h: '2. Innovation at the Professional Level', p: 'Modern low-moisture cleaning systems use a fraction of the water of traditional laundering while treating the most delicate garments with superior gentleness.' },
+          { h: '3. What You Can Do at Home', p: 'Run full loads, choose eco cycles, and skip the pre-rinse. Small habits compound — and your clothes, your water bill, and the planet all benefit.' }
+        ]
+      },
+      'white-shirts-grey': {
+        title: 'Why White Shirts Turn Grey — and How to Stop It',
+        category: 'Laundry Basics',
+        date: 'Jul 14, 2026',
+        image: '../assets/images/blog-grey.jpg',
+        intro: 'The gradual greying of white shirts is not aging — it is chemistry. Understanding the culprits is the first step to keeping whites brilliant for years.',
+        sections: [
+          { h: '1. The Culprits Behind the Grey', p: 'Hard water minerals, detergent residue, and dyes bleeding from darker garments all deposit onto white fibers, dulling them wash after wash.' },
+          { h: '2. The Professional Whitening Approach', p: 'Controlled oxygen-based brightening restores whites without the fiber damage caused by harsh chlorine. Proper water temperature and pH balance are the foundation.' },
+          { h: '3. Keeping Whites White', p: 'Sort whites strictly, avoid overloading the machine, and address residue buildup with a periodic professional refresh. Brilliance is a habit.' }
+        ]
+      },
+      'room-by-room-playbook': {
+        title: 'A Room-by-Room Laundry Playbook',
+        category: 'Laundry Basics',
+        date: 'Jun 30, 2026',
+        image: '../assets/images/blog-playbook.jpg',
+        intro: 'Every room in your home contributes different fabrics, different soils, and different needs. Treating laundry as a house-wide system removes the guesswork.',
+        sections: [
+          { h: '1. The Bedroom: Bedding and Sleepwear', p: 'Sheets and pillowcases deserve warm-water washes that remove oils and dust mites, while sleepwear should follow the gentlest cycle that still gets them clean.' },
+          { h: '2. The Bathroom: Towels and Linens', p: 'Towels need hot washes and thorough drying to stay fluffy and fresh, but fabric softeners are their enemy — they coat the fibers and kill absorbency.' },
+          { h: '3. The Kitchen and Beyond', p: 'Kitchen linens carry grease and should be pre-treated and washed hot. Everything else — from delicates to heavy linens — follows its own rulebook, best written by a professional.' }
+        ]
+      },
+      'century-old-craft': {
+        title: 'The Century-Old Craft of Textile Care',
+        category: 'Sustainability',
+        date: 'Jun 15, 2026',
+        image: '../assets/images/blog-craft.jpg',
+        intro: 'Garment care is one of humanity\u2019s oldest crafts, evolving from riverside scrubbing to the precision dry cleaning of today. The techniques changed; the care never did.',
+        sections: [
+          { h: '1. From Riverbanks to Steam', p: 'Before machines, textiles were beaten, soaked, and sun-dried. Each innovation — from the washboard to the steam press — was driven by the same goal: preserve the fabric.' },
+          { h: '2. The Birth of Dry Cleaning', p: 'The discovery that solvents could clean without water revolutionized luxury textiles, allowing silks and wools to be refreshed without shrinking or warping.' },
+          { h: '3. Craft in the Modern Age', p: 'Today\u2019s master cleaners combine century-old techniques with modern chemistry, applying judgment and skill that no machine can replace.' }
+        ]
+      },
+      'lace-embroidery': {
+        title: 'How to Care for Delicate Lace and Embroidery',
+        category: 'Fabric Care',
+        date: 'Jun 01, 2026',
+        image: '../assets/images/blog-lace.jpg',
+        intro: 'Heirloom lace and embroidery are made of patience itself. Their intricate threads demand handling that is gentle, deliberate, and informed.',
+        sections: [
+          { h: '1. The Fragility of Fine Threads', p: 'Delicate threads can snag, stretch, or break from the slightest rough handling. Even the label\u2019s instructions can be too aggressive for antique pieces.' },
+          { h: '2. Hand-Washing Done Right', p: 'When hand-washing is appropriate, use cool water, a mild soap, and support the fabric fully with both hands — never wring, twist, or scrub.' },
+          { h: '3. Protection in Storage', p: 'Wrap laces in acid-free tissue and store them flat in breathable boxes. The right storage is half the care.' }
+        ]
+      },
+      'capsule-wardrobe': {
+        title: 'Building a Capsule Wardrobe That Lasts',
+        category: 'Style',
+        date: 'May 20, 2026',
+        image: '../assets/images/blog-capsule.jpg',
+        intro: 'A capsule wardrobe is fewer pieces chosen with intent — and maintained with discipline. Professional care multiplies the life of every investment you make.',
+        sections: [
+          { h: '1. Choosing Pieces That Earn Their Place', p: 'Quality fabrics, timeless cuts, and neutral palettes mean every piece works harder. Each item should earn its spot in your rotation.' },
+          { h: '2. The Care That Compounds Value', p: 'A well-maintained piece lasts years beyond a neglected one. Rotation, correct cleaning, and proper storage keep the capsule performing.' },
+          { h: '3. The Professional Reset', p: 'Seasonal professional cleaning and pressing keep your capsule ready — and help you see your wardrobe with fresh eyes, season after season.' }
+        ]
+      },
+      'cashmere-care': {
+        title: 'Cashmere Care: Softness That Endures',
+        category: 'Fabric Care',
+        date: 'May 06, 2026',
+        image: '../assets/images/blog-cashmere.jpg',
+        intro: 'Cashmere is the luxury of warmth without weight — and its cloud-like softness is a promise you must actively keep. The routine is simple; the consistency matters.',
+        sections: [
+          { h: '1. Washing Without Regret', p: 'Cashmere should be washed sparingly, in cool water with a wool-specific detergent, and dried flat — never hung, never wrung.' },
+          { h: '2. Pilling Is Normal', p: 'Friction creates small pills, and that is the fiber working, not failing. A cashmere comb restores smoothness without damaging the knit.' },
+          { h: '3. Seasonal Storage', p: 'Fold cashmere with cedar and lavender, never on a hanger. The right storage keeps moths away and softness intact.' }
+        ]
+      },
+      'zero-waste-laundry': {
+        title: 'Zero-Waste Laundry: Habits That Help',
+        category: 'Sustainability',
+        date: 'Apr 22, 2026',
+        image: '../assets/images/blog-zerowaste.jpg',
+        intro: 'Laundry produces more waste than we notice — from packaging to microfibers. Small, deliberate changes add up to a dramatically lighter footprint.',
+        sections: [
+          { h: '1. Rethink the Products', p: 'Concentrated, package-free detergents and reusable dryer balls replace single-use plastics and chemical softeners with equal performance.' },
+          { h: '2. Extend the Wear Cycle', p: 'Wash less, spot-clean more, and let fresh air do the rest. Most garments need cleaning far less often than habit suggests.' },
+          { h: '3. Care That Keeps Things Out of Landfills', p: 'A garment that lasts twice as long is half the waste. Professional care, mending, and thoughtful storage are the ultimate zero-waste tools.' }
+        ]
+      },
+      'wardrobe-storage': {
+        title: 'Wardrobe Storage Secrets of the Pros',
+        category: 'Style',
+        date: 'Apr 08, 2026',
+        image: '../assets/images/blog-storage.jpg',
+        intro: 'The way you store a garment determines how long it survives. The right hangers, folds, and climate control can double the lifespan of your finest pieces.',
+        sections: [
+          { h: '1. Hangers That Respect Your Clothes', p: 'Wooden hangers support shoulders without stretching. Knits belong on shelves or folded; suits need hangers wide enough to hold their shape.' },
+          { h: '2. Climate and Protection', p: 'Cool, dry, and dark beats everything. Cedar repels moths naturally, and breathable garment bags keep dust off without trapping moisture.' },
+          { h: '3. The Rotating Wardrobe', p: 'Seasonal rotation gives garments rest, letting fibers recover between wears. What you store well, you wear longer.' }
+        ]
+      },
+      'stain-removal-101': {
+        title: 'Stain Removal 101: Act Fast, Dress Well',
+        category: 'Laundry Basics',
+        date: 'Mar 25, 2026',
+        image: '../assets/images/blog-stain.jpg',
+        intro: 'Every stain is a race against time. The first ten minutes matter more than any product — and knowing what not to do is half the battle.',
+        sections: [
+          { h: '1. Act Fast, Blot — Never Rub', p: 'Blot fresh stains with a clean cloth to lift excess before it sets. Rubbing grinds the stain deeper into the weave and locks it in permanently.' },
+          { h: '2. Match the Remedy to the Stain', p: 'Protein stains call for cold water and enzymes; oils need a solvent break; tannins in coffee and wine respond to careful hot treatment. The wrong remedy sets the stain.' },
+          { h: '3. When to Call the Professionals', p: 'For silk, wool, antique fabrics, or stains that have dried, the professional pre-treatment room wins every time. Some marks are simply beyond home rescue.' }
+        ]
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const post = POSTS[params.get('post')] || POSTS['silk-preservation'];
+
+      document.title = 'SnapWash | ' + post.title;
+      document.getElementById('post-category').textContent = post.category;
+      document.getElementById('post-title').textContent = post.title;
+      document.getElementById('post-date').textContent = post.date;
+
+      const img = document.getElementById('post-image');
+      img.src = post.image;
+      img.alt = post.title;
+
+      const content = document.getElementById('post-content');
+      let html = '<p>' + post.intro + '</p>';
+      post.sections.forEach(section => {
+        html += '<h2>' + section.h + '</h2><p>' + section.p + '</p>';
+      });
+      content.innerHTML = html;
+    });
+  </script>
 </body>
 </html>

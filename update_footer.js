@@ -1,52 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light" dir="ltr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
-  <title>SnapWash | 404 Not Found</title>
-  
-  <link rel="stylesheet" href="../assets/css/variables.css">
-  <link rel="stylesheet" href="../assets/css/global.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
-  
-  <style>
-    .error-container {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-    }
-    
-    .error-code {
-      font-size: 10rem;
-      font-family: var(--font-heading);
-      color: var(--primary);
-      line-height: 1;
-      margin-bottom: 1rem;
-    }
-  </style>
-</head>
-<body>
+const fs = require('fs');
+const path = require('path');
 
-  <div class="error-container reveal">
-    <h1 class="error-code">404</h1>
-    <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Page Not Found</h2>
-    <p class="text-muted" style="max-width: 500px; margin-bottom: 2rem;">The page you are looking for has been misplaced, much like a stray sock. Let's get you back to our impeccably organized homepage.</p>
-    <a href="../index.html" class="btn btn-primary">Return to Homepage</a>
-  </div>
+const baseDir = __dirname;
 
-  <script src="../assets/js/theme.js"></script>
-  <script src="../assets/js/main.js"></script>
-<footer class="footer" style="position: relative;">
+function getFooterHtml(prefix) {
+    return `<footer class="footer" style="position: relative;">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
-            <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+          <a href="${prefix}index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+            <img src="${prefix}assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
             <div class="logo-text">
               <div>Snap<span style="color: var(--accent)">Wash</span></div>
               <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
@@ -64,23 +27,23 @@
         <div class="footer-col">
           <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Services</h4>
           <div class="footer-links">
-            <a href="../pages/services.html">Luxury Wash & Fold</a>
-            <a href="../pages/services.html">Executive Dry Cleaning</a>
-            <a href="../pages/services.html">Artisan Steam Press</a>
-            <a href="../pages/services.html">Couture Care</a>
-            <a href="../pages/services.html">Leather & Suede</a>
+            <a href="${prefix}pages/services.html">Luxury Wash & Fold</a>
+            <a href="${prefix}pages/services.html">Executive Dry Cleaning</a>
+            <a href="${prefix}pages/services.html">Artisan Steam Press</a>
+            <a href="${prefix}pages/services.html">Couture Care</a>
+            <a href="${prefix}pages/services.html">Leather & Suede</a>
           </div>
         </div>
         
         <div class="footer-col">
           <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Company</h4>
           <div class="footer-links">
-            <a href="../index.html">Home</a>
-            <a href="../pages/home2.html">Home 2</a>
-            <a href="../pages/about.html">About Us</a>
-            <a href="../pages/services.html">Services</a>
-            <a href="../pages/blog.html">Journal</a>
-            <a href="../pages/contact.html">Contact</a>
+            <a href="${prefix}index.html">Home</a>
+            <a href="${prefix}pages/home2.html">Home 2</a>
+            <a href="${prefix}pages/about.html">About Us</a>
+            <a href="${prefix}pages/services.html">Services</a>
+            <a href="${prefix}pages/blog.html">Journal</a>
+            <a href="${prefix}pages/contact.html">Contact</a>
           </div>
         </div>
         
@@ -102,9 +65,9 @@
             </div>
         </div>
         <div class="footer-bottom-links">
-          <a href="../pages/privacy.html">Privacy Policy</a>
-          <a href="../pages/terms.html">Terms & Conditions</a>
-          <a href="../pages/sitemap.html">Sitemap</a>
+          <a href="${prefix}pages/privacy.html">Privacy Policy</a>
+          <a href="${prefix}pages/terms.html">Terms & Conditions</a>
+          <a href="${prefix}pages/sitemap.html">Sitemap</a>
         </div>
       </div>
     </div>
@@ -112,6 +75,42 @@
     <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
       <i class="ri-arrow-up-line"></i>
     </button>
-  </footer>
-</body>
-</html>
+  </footer>`;
+}
+
+function processHtmlFile(filepath) {
+    let content = fs.readFileSync(filepath, 'utf-8');
+    
+    const relPath = path.relative(baseDir, filepath);
+    const depth = relPath.split(path.sep).length - 1;
+    const prefix = depth > 0 ? '../'.repeat(depth) : '';
+    
+    const newFooter = getFooterHtml(prefix);
+    
+    // Replace existing footer
+    const footerRegex = /<footer class="footer">[\s\S]*?<\/footer>/i;
+    if (footerRegex.test(content)) {
+        content = content.replace(footerRegex, newFooter);
+    } else {
+        // Just in case it's missing or different, insert before </body>
+        content = content.replace(/<\/body>/, newFooter + '\n</body>');
+    }
+    
+    fs.writeFileSync(filepath, content, 'utf-8');
+}
+
+function walkDir(dir) {
+    const files = fs.readdirSync(dir);
+    for (const file of files) {
+        const fullPath = path.join(dir, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+            if (file === '.git' || file === 'assets' || file === '.vscode') continue;
+            walkDir(fullPath);
+        } else if (fullPath.endsWith('.html')) {
+            processHtmlFile(fullPath);
+        }
+    }
+}
+
+walkDir(baseDir);
+console.log('Updated all footers.');

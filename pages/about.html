@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <title>SnapWash | About Us</title>
   
   <link rel="stylesheet" href="../assets/css/variables.css">
@@ -12,9 +13,20 @@
   
   <style>
     .page-header {
-      padding: 150px 0 80px;
+      padding: 220px 0 120px;
       text-align: center;
-      background: linear-gradient(to bottom, var(--surface), var(--bg-color));
+      position: relative;
+      background:
+        linear-gradient(rgba(18, 59, 58, 0.75), rgba(18, 59, 58, 0.6)),
+        url('../assets/images/hero-about.jpg') center/cover no-repeat;
+    }
+
+    .page-header h1 {
+      color: #ffffff;
+    }
+
+    .page-header .text-muted {
+      color: rgba(255, 255, 255, 0.9);
     }
     
     .story-grid {
@@ -53,9 +65,126 @@
       margin-bottom: 0.5rem;
     }
 
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .value-card {
+      text-align: center;
+    }
+
+    .value-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--accent);
+      transition: all var(--transition-normal);
+    }
+
+    .value-card:hover .value-icon {
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .milestones {
+      position: relative;
+      max-width: 800px;
+      margin: 4rem auto 0;
+      padding-left: 2rem;
+    }
+
+    .milestones::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 8px;
+      width: 2px;
+      height: 100%;
+      background: var(--glass-border);
+    }
+
+    .milestone-item {
+      position: relative;
+      padding: 0 0 3rem 2rem;
+    }
+
+    .milestone-item::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: -2rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 4px solid var(--bg-color);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .milestone-item h4 {
+      font-family: var(--font-body);
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .team-card {
+      text-align: center;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .team-photo {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      object-position: center 20%;
+      transition: transform var(--transition-slow);
+    }
+
+    .team-card:hover .team-photo {
+      transform: scale(1.06);
+    }
+
+    .team-info {
+      padding: 2rem;
+    }
+
+    .team-role {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.75rem;
+    }
+
     @media (max-width: 992px) {
       .story-grid { grid-template-columns: 1fr; }
       .stats-container { flex-direction: column; gap: 3rem; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .team-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -65,18 +194,27 @@
   <nav class="navbar scrolled">
     <div class="container">
       <a href="../index.html" class="logo">
-        <i class="ri-drop-fill text-accent"></i> Snap<span>Wash</span>
+        <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+        <div class="logo-text">
+          <div>Snap<span>Wash</span></div>
+          <div class="logo-tagline">Premium Care, Delivered.</div>
+        </div>
       </a>
       <div class="nav-links">
         <a href="../index.html" class="nav-link">Home</a>
-        <a href="services.html" class="nav-link">Services</a>
+        <a href="home2.html" class="nav-link">Home2</a>
         <a href="about.html" class="nav-link active">About</a>
-        <a href="blog.html" class="nav-link">Journal</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="blog.html" class="nav-link">Blog</a>
         <a href="contact.html" class="nav-link">Contact</a>
       </div>
       <div class="nav-actions">
+        <a href="dashboard.html" class="theme-toggle profile-icon" aria-label="My Account">
+          <i class="ri-user-line"></i>
+        </a>
         <button id="theme-toggle" class="theme-toggle"><i class="ri-moon-line"></i></button>
-        <a href="dashboard.html" class="btn btn-primary">Dashboard</a>
+        <button id="dir-toggle" class="theme-toggle" aria-label="Toggle RTL/LTR" style="font-weight: 600; font-size: 0.8rem; font-family: var(--font-body);">RTL</button>
+        <a href="dashboard.html" class="btn btn-primary">Book Now</a>
       </div>
     </div>
   </nav>
@@ -93,7 +231,7 @@
   <section class="section container reveal">
     <div class="story-grid">
       <div>
-        <img src="../assets/images/service_drycleaning_1786960683269.png" alt="Our Heritage" class="story-img">
+        <img src="../assets/images/about-heritage.jpg" alt="Our Heritage" class="story-img">
       </div>
       <div>
         <h2 class="text-accent" style="font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Our Heritage</h2>
@@ -127,13 +265,193 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-bottom">
-        <p>&copy; 2026 SnapWash Premium Care. All rights reserved.</p>
+  <!-- Our Values -->
+  <section class="section container reveal">
+    <div class="text-center" style="margin-bottom: 2rem;">
+      <h2 class="text-accent" style="font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">What We Stand For</h2>
+      <h3 style="font-size: 3rem;">The Principles Behind the Press</h3>
+    </div>
+    <div class="values-grid">
+      <div class="card value-card">
+        <div class="value-icon"><i class="ri-award-line"></i></div>
+        <h4>Artisan Mastery</h4>
+        <p class="text-muted">Every fold, press, and finish is executed by hand with the discipline of a couture atelier.</p>
+      </div>
+      <div class="card value-card">
+        <div class="value-icon"><i class="ri-leaf-line"></i></div>
+        <h4>Radical Responsibility</h4>
+        <p class="text-muted">Plant-based solvents, climate-controlled transport, and zero single-use plastic in every order.</p>
+      </div>
+      <div class="card value-card">
+        <div class="value-icon"><i class="ri-hand-heart-line"></i></div>
+        <h4>Client Obsession</h4>
+        <p class="text-muted">A dedicated concierge, transparent pricing, and a satisfaction guarantee on every single garment.</p>
+      </div>
+      <div class="card value-card">
+        <div class="value-icon"><i class="ri-hourglass-line"></i></div>
+        <h4>Respect for Time</h4>
+        <p class="text-muted">48-hour promises kept to the minute, because your schedule is as precious as your wardrobe.</p>
       </div>
     </div>
+  </section>
+
+  <!-- Milestones -->
+  <section class="section process-section reveal">
+    <div class="container">
+      <div class="text-center" style="margin-bottom: 2rem;">
+        <h2 class="text-accent" style="font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Our Journey</h2>
+        <h3 style="font-size: 3rem;">Milestones of Craft</h3>
+      </div>
+      <div class="milestones">
+        <div class="milestone-item">
+          <h4>2022 — THE BEGINNING</h4>
+          <p class="text-muted">SnapWash opens as a single atelier in Metropolis with two master technicians and a borrowed van.</p>
+        </div>
+        <div class="milestone-item">
+          <h4>2023 — THE ATELIER NETWORK</h4>
+          <p class="text-muted">Three neighborhood boutiques open, each with dedicated couture and restoration benches.</p>
+        </div>
+        <div class="milestone-item">
+          <h4>2024 — ZERO-WASTE STANDARD</h4>
+          <p class="text-muted">We become the first garment care house in the region to certify a fully biodegradable solvent cycle.</p>
+        </div>
+        <div class="milestone-item">
+          <h4>2025 — THE PRIVATE LIST</h4>
+          <p class="text-muted">Our membership program launches with priority scheduling, wardrobe consultations, and seasonal care.</p>
+        </div>
+        <div class="milestone-item">
+          <h4>2026 — 15,000 GARMENTS RESTORED</h4>
+          <p class="text-muted">A milestone of trust. Every one of them inspected, cleaned, pressed, and delivered with care.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="section container reveal">
+    <div class="text-center" style="margin-bottom: 2rem;">
+      <h2 class="text-accent" style="font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">The Hands Behind the Craft</h2>
+      <h3 style="font-size: 3rem;">Meet the Atelier</h3>
+    </div>
+    <div class="team-grid">
+      <div class="card team-card">
+        <img src="../assets/images/team-vivienne.jpg" alt="Vivienne Ashford" class="team-photo">
+        <div class="team-info">
+          <div class="team-role">Founder & Master Cleaner</div>
+          <h4>Vivienne Ashford</h4>
+          <p class="text-muted">35 years in couture garment care. The standard every atelier aspires to.</p>
+        </div>
+      </div>
+      <div class="card team-card">
+        <img src="../assets/images/team-rafael.jpg" alt="Rafael Moreau" class="team-photo">
+        <div class="team-info">
+          <div class="team-role">Head of Restoration</div>
+          <h4>Rafael Moreau</h4>
+          <p class="text-muted">Specialist in stain archaeology and invisible mending of heirloom pieces.</p>
+        </div>
+      </div>
+      <div class="card team-card">
+        <img src="../assets/images/team-naomi.jpg" alt="Naomi Tanaka" class="team-photo">
+        <div class="team-info">
+          <div class="team-role">Director of Sustainability</div>
+          <h4>Naomi Tanaka</h4>
+          <p class="text-muted">Certified eco-solvent chemist pioneering our zero-waste process.</p>
+        </div>
+      </div>
+      <div class="card team-card">
+        <img src="../assets/images/team-leo.jpg" alt="Leo Hartman" class="team-photo">
+        <div class="team-info">
+          <div class="team-role">Concierge Lead</div>
+          <h4>Leo Hartman</h4>
+          <p class="text-muted">Your single point of contact — from first pickup to final delivery.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="section container reveal">
+    <div class="premium-banner">
+      <div class="banner-content">
+        <h2>Experience the SnapWash Standard.</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">Book your first collection today and feel the difference of true artisan care.</p>
+        <a href="dashboard.html" class="btn btn-accent">Book Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" style="position: relative;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="../index.html" class="logo" style="color: var(--bg-color); margin-bottom: 1.5rem;">
+            <img src="../assets/images/logo.png" alt="SnapWash Logo" style="height: 40px; width: auto; object-fit: contain;">
+            <div class="logo-text">
+              <div>Snap<span style="color: var(--accent)">Wash</span></div>
+              <div class="logo-tagline" style="color: var(--text-muted)">Premium Care, Delivered.</div>
+            </div>
+          </a>
+          <p style="opacity: 0.7; max-width: 300px; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">London's most exclusive destination for premium garment care. A curated sanctuary where every piece is meticulously handled.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+            <a href="#" class="social-icon" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+            <a href="#" class="social-icon" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+            <a href="#" class="social-icon" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Services</h4>
+          <div class="footer-links">
+            <a href="../pages/services.html">Luxury Wash & Fold</a>
+            <a href="../pages/services.html">Executive Dry Cleaning</a>
+            <a href="../pages/services.html">Artisan Steam Press</a>
+            <a href="../pages/services.html">Couture Care</a>
+            <a href="../pages/services.html">Leather & Suede</a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">Company</h4>
+          <div class="footer-links">
+            <a href="../index.html">Home</a>
+            <a href="../pages/home2.html">Home 2</a>
+            <a href="../pages/about.html">About Us</a>
+            <a href="../pages/services.html">Services</a>
+            <a href="../pages/blog.html">Journal</a>
+            <a href="../pages/contact.html">Contact</a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">The Private List</h4>
+          <p style="opacity: 0.7; font-size: 0.9rem; line-height: 1.6;">Receive exclusive service previews, private membership invitations, and garment care insights before anyone else.</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault();">
+            <input type="email" class="newsletter-input" placeholder="Your email" required>
+            <button type="submit" class="newsletter-btn">JOIN</button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div>&copy; 2026 SnapWash. All rights reserved. Established 2026, London.</div>
+        <div class="center-dot-wrapper" style="text-align: center;">
+            <div style="display: inline-block; padding: 6px; border: 1px solid rgba(214, 183, 124, 0.3); border-radius: 50%;">
+                <div class="center-dot"></div>
+            </div>
+        </div>
+        <div class="footer-bottom-links">
+          <a href="../pages/privacy.html">Privacy Policy</a>
+          <a href="../pages/terms.html">Terms & Conditions</a>
+          <a href="../pages/sitemap.html">Sitemap</a>
+        </div>
+      </div>
+    </div>
+    
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
+      <i class="ri-arrow-up-line"></i>
+    </button>
   </footer>
 
   <script src="../assets/js/theme.js"></script>
