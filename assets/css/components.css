@@ -348,6 +348,14 @@
     display: flex;
   }
 
+  /* Group all icons in the corner next to the hamburger */
+  .navbar .container {
+    justify-content: flex-start;
+  }
+  .nav-actions {
+    margin-inline-start: auto;
+  }
+
   /* Premium side drawer */
   .nav-links {
     position: fixed;
