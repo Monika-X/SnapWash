@@ -194,6 +194,10 @@
   z-index: 1001;
 }
 
+.nav-close-btn {
+  display: none;
+}
+
 .mobile-book-now {
   display: none;
 }
