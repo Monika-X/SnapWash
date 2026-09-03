@@ -903,11 +903,26 @@
       { title: 'Delivering', icon: 'ri-home-heart-line' }
     ];
 
-    const ORDERS = [
-      { id: 'SW-8942', stage: 3 },
-      { id: 'SW-8856', stage: 5 },
-      { id: 'SW-8771', stage: 5 }
+    const DEFAULT_ORDERS = [
+      { id:'SW-8942', customer:'Elena Vasquez', email:'elena@example.com', address:'12 Mayfair Lane, London', service:'Dry Cleaning', stage:3, amount:64, payment:'Pending', date:'2026-07-21', slot:'Morning (8 AM – 12 PM)', driver:'Rafael' },
+      { id:'SW-8856', customer:'James Hart', email:'james@example.com', address:'8 Kings Road, Chelsea', service:'Wash & Fold', stage:5, amount:32.5, payment:'Paid', date:'2026-07-14', slot:'Afternoon (12 PM – 4 PM)', driver:'Leo' },
+      { id:'SW-8771', customer:'Amelia Hart', email:'amelia@example.com', address:'22 Portland St, Mayfair', service:'Steam Press', stage:5, amount:48, payment:'Paid', date:'2026-07-02', slot:'Evening (4 PM – 8 PM)', driver:'Leo' }
     ];
+    const STORAGE_KEY = 'snapwash_orders';
+    function loadOrders(){
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('snapwash_admin_orders');
+        if(raw){ const parsed = JSON.parse(raw); if(Array.isArray(parsed) && parsed.length) return parsed; }
+      } catch(e){}
+      return JSON.parse(JSON.stringify(DEFAULT_ORDERS));
+    }
+    let ORDERS = loadOrders();
+    function persistOrders(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(ORDERS));
+      localStorage.setItem('snapwash_admin_orders', JSON.stringify(ORDERS));
+    }
+    // ensure initial persist for first load
+    if(!localStorage.getItem(STORAGE_KEY)) persistOrders();
 
     // --- Out for Delivery notification ---
     let toastTimer = null;
@@ -961,6 +976,96 @@
       document.getElementById('tracking-timeline').style.display = 'none';
     }
 
+    function renderUserOrders(){
+      const list = document.querySelector('.orders-list');
+      if(!list) return;
+      list.innerHTML = ORDERS.map((o, idx) => {
+        const stageLabel = ORDER_STAGES[o.stage]?.title || ORDER_STAGES[0].title;
+        const chipClass = o.stage===5?'delivered' : o.stage===4 ? 'in-progress': o.stage>=1?'in-progress':'pending';
+        const chipText = o.stage===5? 'Delivered' : o.stage===4? 'Out for Delivery' : o.stage===0? 'Scheduled':'In Progress';
+        const meta = o.stage===5? `Delivered · ${o.date}` : o.stage===0? `To be collected · Scheduled for ${new Date(o.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}` : `${o.amount? o.service: 'Order'} · Placed ${o.date} · ETA ${o.date}`;
+        return `<div class="order-row" style="${idx===0 && o.stage===4 ? 'border-color:var(--secondary);':''}">
+            <div>
+              <h4>#${o.id} — ${o.service}</h4>
+              <div class="order-meta">${o.amount ? o.service + ' · ' : ''}${o.date ? (o.stage===5? 'Delivered '+o.date : 'Placed '+o.date): ''} · ${o.slot||''}</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <span class="status-chip ${chipClass}" ${chipClass==='in-progress' && o.stage===4? 'style="background:rgba(42,157,143,0.15);color:var(--success)"':''}>${chipText}</span>
+              <button class="track-btn" onclick="trackOrder(${idx})">Track</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+    function renderUserBilling(){
+      const invList = document.querySelector('.invoice-list');
+      if(!invList) return;
+      invList.innerHTML = ORDERS.map(o => {
+        const invId = o.id.replace('SW-','INV-');
+        const payCls = o.payment==='Paid' ? 'paid' : o.payment==='Pending' ? 'pending' : 'unpaid';
+        return `<div class="invoice-row">
+            <div>
+              <h4>Invoice #${invId}</h4>
+              <div class="invoice-meta">${o.service} · ${o.date}</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 80px 90px; gap: 1.5rem; align-items: center; justify-items: end;">
+              <strong>$${Number(o.amount).toFixed(2)}</strong>
+              <span class="status-chip ${payCls}">${o.payment}</span>
+            </div>
+          </div>`;
+      }).join('');
+    }
+    function updateUserStats(){
+      const active = ORDERS.filter(o=> o.stage<5).length;
+      const garments = ORDERS.length*5 + 32; // demo calc
+      const elActive = document.querySelector('.stat-card h2');
+      if(elActive) elActive.textContent = active;
+      // update overview progress for current active order (first not delivered)
+      const current = ORDERS.find(o=> o.stage<5) || ORDERS[0];
+      if(current){
+        const bar = document.getElementById('order-progress');
+        const title = document.querySelector('#tab-overview .tracking-card h3');
+        if(bar) bar.style.width = (current.stage===5?100: current.stage*20+20)+'%';
+        if(title) title.textContent = 'Current Order #'+current.id;
+        const stages = document.querySelector('#tab-overview .stages-wrapper');
+        if(stages){
+          stages.innerHTML = '<div class="progress-bar" style="width:'+(current.stage===5?100: current.stage*20+20)+'%;" id="order-progress"></div>' + ORDER_STAGES.map((s,i)=>{
+            const state = i < current.stage ? 'completed' : i===current.stage ? 'active' : '';
+            return '<div class="stage '+state+'"><div class="stage-icon"><i class="'+s.icon+'"></i></div><div class="stage-label">'+s.title+'</div></div>';
+          }).join('');
+        }
+      }
+    }
+    // sync across tabs (admin -> user)
+    window.addEventListener('storage', (e)=>{
+      if(e.key===STORAGE_KEY || e.key==='snapwash_admin_orders' || e.key==='snapwash_last_stage_update'){
+        try{
+          const fresh = loadOrders();
+          ORDERS.length = 0; fresh.forEach(o=> ORDERS.push(o));
+          renderUserOrders(); renderUserBilling(); updateUserStats();
+          const tl = document.getElementById('tracking-timeline');
+          if(tl && tl.style.display==='block'){
+          }
+          const justDelivered = ORDERS.find(o=> o.stage===4);
+          if(justDelivered && e.newValue && e.newValue.includes('"stage":4')){
+            showDeliveryToast(justDelivered.id);
+          }
+        }catch(err){}
+      }
+    });
+    // poll fallback (same-tab or missed storage event)
+    let lastOrdersJsonUser = JSON.stringify(ORDERS);
+    setInterval(()=>{
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(raw && raw !== lastOrdersJsonUser){
+          const fresh = JSON.parse(raw);
+          ORDERS.length = 0; fresh.forEach(o=> ORDERS.push(o));
+          lastOrdersJsonUser = raw;
+          renderUserOrders(); renderUserBilling(); updateUserStats();
+        }
+      }catch(e){}
+    }, 1500);
+
     let payBtnRef = null;
 
     function payOutstanding(btn) {
@@ -996,6 +1101,11 @@
         btn.style.backgroundColor = 'var(--success)';
         btn.style.borderColor = 'var(--success)';
         
+        // update data model: mark all unpaid as paid
+        ORDERS.forEach(o=>{ if(o.payment==='Unpaid') o.payment='Paid'; });
+        persistOrders();
+        renderUserBilling();
+        renderUserOrders();
         document.querySelectorAll('.status-chip.unpaid').forEach(chip => {
           chip.className = 'status-chip paid';
           chip.textContent = 'Paid';
@@ -1073,64 +1183,48 @@
 
       // Request notification permission on load
       requestNotifyPermission();
-      // Auto-toast if current overview order is already out for delivery
-      const overviewProgress = document.getElementById('order-progress');
-      if (overviewProgress) {
-        // overview order SW-8942 is stage 3 (Ironing) — demo: simulate reaching Delivering after 8s
-        // Uncomment to auto-demo: setTimeout(() => showDeliveryToast('SW-8942'), 8000);
-      }
+      // Initial render from shared storage (so admin ↔ user are synced)
+      renderUserOrders();
+      renderUserBilling();
+      updateUserStats();
 
-      // Schedule form success
+      // Schedule form success — full working flow synced to admin
       const scheduleForm = document.getElementById('schedule-form');
       scheduleForm?.addEventListener('submit', (e) => {
         e.preventDefault();
         
         const service = document.getElementById('schedule-service').value;
         const dateVal = document.getElementById('pickup-date').value;
+        if(!dateVal){ alert('Please select pickup date'); return; }
         const dateObj = new Date(dateVal);
         const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const slotEl = scheduleForm.querySelectorAll('select')[1];
+        const slot = slotEl ? slotEl.value : 'Morning (8 AM – 12 PM)';
+        const addressInput = scheduleForm.querySelector('input[type="text"]');
+        const address = addressInput && addressInput.value ? addressInput.value : profile.address;
+        const priceMap = { 'Wash & Fold':32.5, 'Dry Cleaning':64, 'Premium Ironing':38, 'Steam Press':38, 'Couture & Leather':96 };
+        const amount = priceMap[service] || (Math.random()*50+30);
         
         const newOrderId = 'SW-' + Math.floor(1000 + Math.random() * 9000);
         const newIndex = ORDERS.length;
-        ORDERS.push({ id: newOrderId, stage: 0 });
-        
-        const newOrderHtml = `
-          <div class="order-row" style="animation: slideUp 0.3s ease; border-color: var(--primary);">
-            <div>
-              <h4>#${newOrderId} — ${service}</h4>
-              <div class="order-meta">To be collected &middot; Scheduled for ${dateStr}</div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-              <span class="status-chip pending" style="background: rgba(214, 183, 124, 0.2); color: var(--accent);">Scheduled</span>
-              <button class="track-btn" onclick="trackOrder(${newIndex})">Track</button>
-            </div>
-          </div>
-        `;
-        
-        document.querySelector('.orders-list').insertAdjacentHTML('afterbegin', newOrderHtml);
-        
-        // Add invoice to Billing History
-        const newInvoiceId = newOrderId.replace('SW-', 'INV-');
-        const randomPrice = (Math.random() * 50 + 30).toFixed(2);
-        const newInvoiceHtml = `
-          <div class="invoice-row" style="animation: slideUp 0.3s ease; border-left: 3px solid var(--accent);">
-            <div>
-              <h4>Invoice #${newInvoiceId}</h4>
-              <div class="invoice-meta">${service} &middot; ${dateStr}</div>
-            </div>
-            <div style="display: grid; grid-template-columns: 80px 90px; gap: 1.5rem; align-items: center; justify-items: end;">
-              <strong>$${randomPrice}</strong>
-              <span class="status-chip pending">Pending</span>
-            </div>
-          </div>
-        `;
-        document.querySelector('.invoice-list').insertAdjacentHTML('afterbegin', newInvoiceHtml);
-
-        // Update stats
-        const activeOrdersEl = document.querySelector('.stat-card h2');
-        if (activeOrdersEl && activeOrdersEl.textContent === '1') {
-          activeOrdersEl.textContent = '2';
-        }
+        const newOrder = {
+          id: newOrderId,
+          customer: profile.name,
+          email: profile.email,
+          address: address,
+          service: service === 'Premium Ironing' ? 'Steam Press' : service,
+          stage: 0,
+          amount: Number(Number(amount).toFixed(2)),
+          payment: 'Pending',
+          date: dateVal,
+          slot: slot,
+          driver: 'Rafael'
+        };
+        ORDERS.unshift(newOrder);
+        persistOrders();
+        renderUserOrders();
+        renderUserBilling();
+        updateUserStats();
         
         // Button Feedback
         const btn = e.target.querySelector('button[type="submit"]');
@@ -1149,24 +1243,24 @@
           if(window.openTab) window.openTab('tracking'); 
         }, 1500);
 
-        // Demo simulation: advance order through stages to Delivering then notify
-        // In production this would be driven by backend webhooks
+        // Demo simulation: advance order through stages to Delivering then notify (persists each step so admin sees it)
         let demoStage = 0;
         const demoInterval = setInterval(() => {
           demoStage++;
-          ORDERS[newIndex].stage = demoStage;
-          // update row status text when reaching Delivering
+          const idx = ORDERS.findIndex(o=> o.id===newOrderId);
+          if(idx>-1){
+            ORDERS[idx].stage = demoStage;
+            if(demoStage===4) ORDERS[idx].payment = ORDERS[idx].payment; // keep pending until delivered
+            if(demoStage===5) ORDERS[idx].payment = 'Paid';
+            persistOrders();
+            renderUserOrders(); renderUserBilling(); updateUserStats();
+          }
           if (demoStage === 4) {
-            const row = document.querySelector('.orders-list .order-row');
-            if (row) {
-              const chip = row.querySelector('.status-chip');
-              if (chip) { chip.textContent = 'Out for Delivery'; chip.className = 'status-chip in-progress'; chip.style.background = 'rgba(42,157,143,0.15)'; chip.style.color = 'var(--success)'; }
-              row.style.borderColor = 'var(--secondary)';
-            }
             showDeliveryToast(newOrderId);
+            // also update admin via storage event (already persisted)
             clearInterval(demoInterval);
           }
-          if (demoStage >= 4) clearInterval(demoInterval);
+          if (demoStage >= 5) clearInterval(demoInterval);
         }, 3000);
       });
     });

@@ -372,7 +372,7 @@
       { id:'couture', name:'Couture & Leather', price:'From £ 28', tat:'72h', desc:'Restoration for delicate fabrics, furs, leather.', img:'hero-services.jpg', revenue: 12 }
     ];
 
-    let orders = JSON.parse(localStorage.getItem('snapwash_admin_orders') || 'null') || [
+    const DEFAULT_ADMIN_ORDERS = [
       { id:'SW-8942', customer:'Elena Vasquez', email:'elena@example.com', address:'12 Mayfair Lane, London', service:'Dry Cleaning', stage:3, amount:64, payment:'Pending', date:'2026-07-21', slot:'Morning (8 AM – 12 PM)', driver:'Rafael' },
       { id:'SW-8856', customer:'James Hart', email:'james@example.com', address:'8 Kings Road, Chelsea', service:'Wash & Fold', stage:5, amount:32.5, payment:'Paid', date:'2026-07-14', slot:'Afternoon (12 PM – 4 PM)', driver:'Leo' },
       { id:'SW-8771', customer:'Amelia Hart', email:'amelia@example.com', address:'22 Portland St, Mayfair', service:'Steam Press', stage:5, amount:48, payment:'Paid', date:'2026-07-02', slot:'Evening (4 PM – 8 PM)', driver:'Leo' },
@@ -382,6 +382,14 @@
       { id:'SW-9055', customer:'Chloe Bennett', email:'chloe@example.com', address:'9 Kensington High St', service:'Steam Press', stage:4, amount:38, payment:'Paid', date:'2026-08-14', slot:'Evening (4 PM – 8 PM)', driver:'Leo' },
       { id:'SW-9062', customer:'Ethan Patel', email:'ethan@example.com', address:'18 Camden High St', service:'Wash & Fold', stage:4, amount:41, payment:'Paid', date:'2026-08-14', slot:'Morning (8 AM – 12 PM)', driver:'Leo' }
     ];
+    function loadAdminOrders(){
+      try{
+        const raw = localStorage.getItem('snapwash_orders') || localStorage.getItem('snapwash_admin_orders');
+        if(raw){ const p = JSON.parse(raw); if(Array.isArray(p) && p.length) return p; }
+      }catch(e){}
+      return JSON.parse(JSON.stringify(DEFAULT_ADMIN_ORDERS));
+    }
+    let orders = loadAdminOrders();
 
     let customers = [
       { name:'Elena Vasquez', email:'elena@example.com', orders:4, lifetime:242, last:'2026-07-21', pref:'Dry Cleaning' },
@@ -394,7 +402,7 @@
       { name:'Ethan Patel', email:'ethan@example.com', orders:3, lifetime:134, last:'2026-08-14', pref:'Wash & Fold' }
     ];
 
-    function save() { localStorage.setItem('snapwash_admin_orders', JSON.stringify(orders)); }
+    function save() { localStorage.setItem('snapwash_admin_orders', JSON.stringify(orders)); localStorage.setItem('snapwash_orders', JSON.stringify(orders)); localStorage.setItem('snapwash_last_stage_update', JSON.stringify({ at: Date.now(), orders })); }
 
     function openTab(name) {
       document.querySelectorAll('.admin-nav-item[data-tab]').forEach(n => n.classList.toggle('active', n.dataset.tab===name));
@@ -589,6 +597,9 @@
       window._toastTimer = setTimeout(()=>{ t.style.transform='translateY(120%)'; t.style.opacity='0'; t.style.visibility='hidden'; }, 3000);
     }
 
+    // ensure shared key exists
+    if(!localStorage.getItem('snapwash_orders')) save();
+
     function renderAll(){
       renderKPIs();
       renderRevenueChart();
@@ -602,6 +613,34 @@
     }
 
     renderAll();
+
+    // sync when user dashboard creates/updates orders (cross-tab)
+    window.addEventListener('storage', (e)=>{
+      if(e.key==='snapwash_orders' || e.key==='snapwash_admin_orders' || e.key==='snapwash_last_stage_update'){
+        try{
+          const fresh = loadAdminOrders();
+          // only update if changed
+          if(JSON.stringify(fresh) !== JSON.stringify(orders)){
+            orders.length = 0; fresh.forEach(o=> orders.push(o));
+            renderAll();
+            toast('Synced from customer dashboard');
+          }
+        }catch(err){}
+      }
+    });
+    // poll as fallback for same-tab updates (localStorage event doesn't fire in same tab)
+    let lastOrdersJson = JSON.stringify(orders);
+    setInterval(()=>{
+      try{
+        const raw = localStorage.getItem('snapwash_orders');
+        if(raw && raw !== lastOrdersJson){
+          const fresh = JSON.parse(raw);
+          orders.length = 0; fresh.forEach(o=> orders.push(o));
+          lastOrdersJson = raw;
+          renderAll();
+        }
+      }catch(e){}
+    }, 1500);
 
     // Demo: auto-notify if any order is out for delivery on load
     document.getElementById('notif-btn').addEventListener('click', ()=>{
