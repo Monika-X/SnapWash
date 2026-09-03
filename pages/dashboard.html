@@ -424,6 +424,61 @@
     }
     .payment-step { display: none; }
     .payment-step.active { display: block; }
+
+    /* Out for Delivery toast */
+    .delivery-toast {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--bg-color);
+      border: 1px solid var(--glass-border);
+      border-left: 4px solid var(--secondary);
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-lg);
+      padding: 1rem 1.25rem;
+      min-width: 320px;
+      max-width: 420px;
+      transform: translateY(120%);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .delivery-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    .toast-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--secondary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+    .toast-body { flex: 1; min-width: 0; }
+    .toast-body strong { display: block; font-size: 0.95rem; color: var(--text-color); }
+    .toast-body span { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+    .toast-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+    .toast-close:hover { color: var(--primary); }
+    @media (max-width: 576px) {
+      .delivery-toast { left: 1rem; right: 1rem; min-width: 0; }
+    }
   </style>
 </head>
 <body>
@@ -459,6 +514,9 @@
         <div class="menu-item" data-tab="profile">
           <i class="ri-user-settings-line"></i> Profile & Settings
         </div>
+        <a href="admin.html" class="menu-item" style="color: var(--accent);">
+          <i class="ri-shield-keyhole-line"></i> Admin Atelier
+        </a>
         <a href="../index.html" class="menu-item" style="margin-top: 2rem; color: var(--error);">
           <i class="ri-logout-box-r-line"></i> Sign Out
         </a>
@@ -714,6 +772,18 @@
             <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
           </form>
         </div>
+        <div class="tracking-card" style="border-left: 4px solid var(--accent);">
+          <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:1rem;">
+              <div style="width:48px; height:48px; border-radius:50%; background: var(--primary); color: var(--bg-color); display:flex; align-items:center; justify-content:center; font-size:1.4rem;"><i class="ri-shield-keyhole-line"></i></div>
+              <div>
+                <h3 style="margin:0;">Admin Atelier</h3>
+                <p class="text-muted" style="margin:0; font-size:0.9rem;">Manage orders, pickups, revenue & staff — linked from your profile</p>
+              </div>
+            </div>
+            <a href="admin.html" class="btn btn-primary" style="white-space:nowrap;"><i class="ri-dashboard-line"></i> Open Admin Dashboard</a>
+          </div>
+        </div>
       </section>
 
       <!-- Payment Modal -->
@@ -773,6 +843,16 @@
     </main>
   </div>
 
+  <!-- Out for Delivery Notification Toast -->
+  <div id="delivery-toast" class="delivery-toast" role="alert" aria-live="polite">
+    <div class="toast-icon"><i class="ri-truck-line"></i></div>
+    <div class="toast-body">
+      <strong>Out for Delivery 🚚</strong>
+      <span id="toast-msg">Your order is on its way!</span>
+    </div>
+    <button class="toast-close" onclick="hideDeliveryToast()" aria-label="Dismiss"><i class="ri-close-line"></i></button>
+  </div>
+
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/main.js?v=15"></script>
   <script>
@@ -829,6 +909,31 @@
       { id: 'SW-8771', stage: 5 }
     ];
 
+    // --- Out for Delivery notification ---
+    let toastTimer = null;
+    function showDeliveryToast(orderId) {
+      const toast = document.getElementById('delivery-toast');
+      const msg = document.getElementById('toast-msg');
+      if (!toast || !msg) return;
+      msg.textContent = 'Your order #' + orderId + ' is out for delivery — arriving shortly!';
+      toast.classList.add('show');
+      // Browser Notification API
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('SnapWash — Out for Delivery 🚚', { body: 'Order #' + orderId + ' is on its way to your doorstep!', icon: '../assets/images/favicon.png' });
+      }
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(hideDeliveryToast, 5000);
+    }
+    function hideDeliveryToast() {
+      const toast = document.getElementById('delivery-toast');
+      if (toast) toast.classList.remove('show');
+    }
+    function requestNotifyPermission() {
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+    }
+
     function trackOrder(index) {
       const order = ORDERS[index];
       const timeline = document.getElementById('tracking-timeline');
@@ -844,6 +949,12 @@
       stagesBox.innerHTML = html;
       timeline.style.display = 'block';
       timeline.scrollIntoView({ behavior: 'smooth' });
+
+      // Notify when order is out for delivery (stage 4 = Delivering)
+      if (order.stage === 4 || order.stage === 5) {
+        // stage 4 = active Delivering, stage 5 = already delivered but was out for delivery
+        setTimeout(() => showDeliveryToast(order.id), 400);
+      }
     }
 
     function closeTimeline() {
@@ -960,6 +1071,15 @@
         setTimeout(() => success.style.display = 'none', 3000); // hide after 3 seconds
       });
 
+      // Request notification permission on load
+      requestNotifyPermission();
+      // Auto-toast if current overview order is already out for delivery
+      const overviewProgress = document.getElementById('order-progress');
+      if (overviewProgress) {
+        // overview order SW-8942 is stage 3 (Ironing) — demo: simulate reaching Delivering after 8s
+        // Uncomment to auto-demo: setTimeout(() => showDeliveryToast('SW-8942'), 8000);
+      }
+
       // Schedule form success
       const scheduleForm = document.getElementById('schedule-form');
       scheduleForm?.addEventListener('submit', (e) => {
@@ -972,7 +1092,7 @@
         
         const newOrderId = 'SW-' + Math.floor(1000 + Math.random() * 9000);
         const newIndex = ORDERS.length;
-        ORDERS.push({ id: newOrderId.replace('SW-', ''), stage: 0 });
+        ORDERS.push({ id: newOrderId, stage: 0 });
         
         const newOrderHtml = `
           <div class="order-row" style="animation: slideUp 0.3s ease; border-color: var(--primary);">
@@ -1028,6 +1148,26 @@
           e.target.reset();
           if(window.openTab) window.openTab('tracking'); 
         }, 1500);
+
+        // Demo simulation: advance order through stages to Delivering then notify
+        // In production this would be driven by backend webhooks
+        let demoStage = 0;
+        const demoInterval = setInterval(() => {
+          demoStage++;
+          ORDERS[newIndex].stage = demoStage;
+          // update row status text when reaching Delivering
+          if (demoStage === 4) {
+            const row = document.querySelector('.orders-list .order-row');
+            if (row) {
+              const chip = row.querySelector('.status-chip');
+              if (chip) { chip.textContent = 'Out for Delivery'; chip.className = 'status-chip in-progress'; chip.style.background = 'rgba(42,157,143,0.15)'; chip.style.color = 'var(--success)'; }
+              row.style.borderColor = 'var(--secondary)';
+            }
+            showDeliveryToast(newOrderId);
+            clearInterval(demoInterval);
+          }
+          if (demoStage >= 4) clearInterval(demoInterval);
+        }, 3000);
       });
     });
   </script>

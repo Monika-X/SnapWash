@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <title>SnapWash | Admin Atelier</title>
+  <link rel="stylesheet" href="../assets/css/variables.css?v=15">
+  <link rel="stylesheet" href="../assets/css/global.css?v=15">
+  <link rel="stylesheet" href="../assets/css/components.css?v=15">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body { background: var(--surface); }
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+    .admin-sidebar {
+      background: var(--bg-color);
+      border-right: 1px solid var(--glass-border);
+      padding: 2rem 1.5rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-sidebar .logo { margin-bottom: 0.5rem; }
+    .admin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--primary);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.7rem;
+      border-radius: 20px;
+      margin-top: 0.75rem;
+    }
+    .admin-nav { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 1; }
+    .admin-nav-item {
+      display: flex; align-items: center; gap: 0.9rem;
+      padding: 0.85rem 1.1rem;
+      border-radius: var(--border-radius-md);
+      color: var(--text-muted);
+      font-weight: 500; font-size: 0.93rem;
+      cursor: pointer; transition: all var(--transition-fast);
+      border-left: 3px solid transparent;
+    }
+    .admin-nav-item:hover { background: var(--surface); color: var(--text-color); }
+    .admin-nav-item.active { background: var(--primary); color: var(--bg-color); border-left-color: var(--accent); }
+    .admin-nav-item i { font-size: 1.2rem; }
+    .admin-nav-item .count {
+      margin-left: auto; background: var(--accent); color: #0C1212;
+      font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 10px;
+    }
+    .admin-nav-item.active .count { background: var(--bg-color); color: var(--primary); }
+    .admin-foot { margin-top: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 0.5rem; }
+    .admin-main { padding: 2.5rem; overflow-y: auto; }
+    .admin-header {
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap;
+    }
+    .admin-header h1 { margin: 0; font-size: 1.9rem; }
+    .admin-header p { margin: 0; color: var(--text-muted); }
+    .header-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .icon-btn {
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--glass-border);
+      background: var(--bg-color); color: var(--text-muted); display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; cursor: pointer; position: relative;
+    }
+    .icon-btn .dot { position: absolute; top: 6px; right: 8px; width: 8px; height: 8px; background: var(--error); border-radius: 50%; }
+    /* Stats */
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;
+    }
+    .stat-grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .a-stat {
+      background: var(--bg-color); border-radius: var(--border-radius-lg); padding: 1.6rem; box-shadow: var(--shadow-sm);
+      border-left: 4px solid transparent;
+    }
+    .a-stat.accent { border-left-color: var(--accent); }
+    .a-stat.success { border-left-color: var(--success); }
+    .a-stat.warn { border-left-color: var(--warning); }
+    .a-stat.info { border-left-color: var(--info); }
+    .a-stat-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+    .a-stat-top i { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+    .a-stat.accent i { background: rgba(214,183,124,0.15); color: var(--accent); }
+    .a-stat.success i { background: rgba(42,157,143,0.12); color: var(--success); }
+    .a-stat.warn i { background: rgba(244,162,97,0.15); color: var(--warning); }
+    .a-stat.info i { background: rgba(69,123,157,0.12); color: var(--info); }
+    .a-stat h3 { margin: 0; font-size: 2rem; }
+    .a-stat label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .a-stat .trend { font-size: 0.82rem; font-weight: 600; margin-top: 0.5rem; display: flex; align-items: center; gap: 0.3rem; }
+    .trend.up { color: var(--success); } .trend.down { color: var(--error); }
+    /* Cards */
+    .card {
+      background: var(--bg-color); border-radius: var(--border-radius-lg); padding: 1.75rem; box-shadow: var(--shadow-sm); margin-bottom: 1.5rem;
+    }
+    .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .card-head h3 { margin: 0; font-size: 1.2rem; }
+    .card-head small { color: var(--text-muted); }
+    /* Tables */
+    .a-table-wrap { overflow-x: auto; }
+    table.a-table { width: 100%; border-collapse: collapse; min-width: 760px; }
+    table.a-table th {
+      text-align: left; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); padding: 0.9rem 1rem; border-bottom: 1px solid var(--glass-border); white-space: nowrap;
+    }
+    table.a-table td { padding: 1rem; border-bottom: 1px solid var(--glass-border); font-size: 0.92rem; }
+    table.a-table tr:last-child td { border-bottom: none; }
+    table.a-table tr:hover td { background: var(--surface); }
+    .customer-cell { display: flex; align-items: center; gap: 0.85rem; }
+    .avatar-sm { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #0C1212; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+    /* Status */
+    .chip { display: inline-block; padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+    .chip.placed { background: rgba(69,123,157,0.12); color: var(--info); }
+    .chip.pickup { background: rgba(69,123,157,0.18); color: var(--info); }
+    .chip.washing { background: rgba(244,162,97,0.15); color: #d67a2a; }
+    .chip.ironing { background: rgba(214,183,124,0.22); color: #9a7a2b; }
+    .chip.delivery { background: rgba(42,157,143,0.15); color: var(--success); animation: pulseChip 1.8s infinite; }
+    .chip.delivered { background: rgba(42,157,143,0.18); color: var(--success); }
+    .chip.paid { background: rgba(42,157,143,0.15); color: var(--success); }
+    .chip.pending { background: rgba(214,183,124,0.2); color: #9a7a2b; }
+    .chip.unpaid { background: rgba(230,57,70,0.12); color: var(--error); }
+    @keyframes pulseChip { 0% { box-shadow: 0 0 0 0 rgba(42,157,143,0.3);} 70%{box-shadow:0 0 0 6px rgba(42,157,143,0);} 100%{box-shadow:0 0 0 0 rgba(42,157,143,0);} }
+    .select-sm {
+      padding: 0.45rem 0.7rem; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--surface);
+      color: var(--text-color); font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    }
+    .btn-sm { padding: 0.45rem 0.9rem; border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; border: 1px solid var(--primary); background: transparent; color: var(--primary); }
+    .btn-sm.primary { background: var(--primary); color: var(--bg-color); border-color: var(--primary); }
+    .btn-sm:hover { opacity: 0.9; }
+    /* Filters */
+    .filter-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.25rem; }
+    .filter-bar input, .filter-bar select {
+      padding: 0.65rem 0.9rem; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--surface); color: var(--text-color); font-size: 0.88rem;
+    }
+    /* Chart */
+    .bar-chart { display: flex; align-items: flex-end; gap: 0.75rem; height: 160px; margin-top: 1rem; }
+    .bar { flex: 1; background: linear-gradient(180deg, var(--accent), var(--primary)); border-radius: 8px 8px 0 0; min-height: 8px; position: relative; transition: height 0.6s ease; }
+    .bar span { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
+    .bar label { position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+    .service-bars { display: flex; flex-direction: column; gap: 0.9rem; }
+    .s-row { display: flex; align-items: center; gap: 1rem; }
+    .s-row label { width: 140px; font-size: 0.85rem; font-weight: 600; }
+    .s-track { flex: 1; height: 10px; background: var(--surface); border-radius: 10px; overflow: hidden; }
+    .s-fill { height: 100%; background: var(--secondary); border-radius: 10px; }
+    .s-row small { width: 40px; text-align: right; font-weight: 700; color: var(--text-muted); font-size: 0.85rem; }
+    /* Tabs */
+    .tab { display: none; animation: fadeIn 0.3s ease; }
+    .tab.active { display: block; }
+    /* Modal */
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1200; opacity: 0; visibility: hidden; transition: all 0.3s; }
+    .modal.show { opacity: 1; visibility: visible; }
+    .modal-box { background: var(--bg-color); border-radius: var(--border-radius-lg); padding: 2rem; width: 90%; max-width: 560px; max-height: 90vh; overflow-y: auto; transform: translateY(16px); transition: transform 0.3s; }
+    .modal.show .modal-box { transform: translateY(0); }
+    .timeline { display: flex; justify-content: space-between; position: relative; margin: 1.5rem 0; }
+    .timeline::before { content: ''; position: absolute; top: 18px; left: 8%; width: 84%; height: 3px; background: var(--surface); }
+    .t-step { text-align: center; position: relative; z-index: 1; flex: 1; }
+    .t-dot { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); border: 3px solid var(--bg-color); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-size: 1rem; color: var(--text-muted); }
+    .t-step.done .t-dot { background: var(--secondary); color: #fff; }
+    .t-step.active .t-dot { background: var(--accent); color: #0C1212; box-shadow: 0 0 0 4px rgba(214,183,124,0.25); }
+    .t-step small { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); }
+    .t-step.active small { color: var(--primary); }
+    /* Sidebar mobile */
+    .admin-menu-btn { display: none; width: 44px; height: 44px; border-radius: 10px; background: var(--primary); color: var(--bg-color); border: none; font-size: 1.3rem; }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 90; }
+    .sidebar-overlay.show { display: block; }
+    @media (max-width: 1100px) {
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .admin-layout { grid-template-columns: 1fr; }
+      .admin-sidebar { position: fixed; left: -300px; top: 0; bottom: 0; z-index: 100; width: 280px; transition: left 0.3s; }
+      .admin-sidebar.open { left: 0; }
+      .admin-menu-btn { display: flex; align-items: center; justify-content: center; }
+    }
+    @media (max-width: 640px) {
+      .stat-grid, .stat-grid-4 { grid-template-columns: 1fr; }
+      .admin-main { padding: 1.5rem 1rem; }
+      .card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <div id="a-overlay" class="sidebar-overlay"></div>
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <a href="../index.html" class="logo" style="display:flex; align-items:center; gap:0.9rem;">
+        <img src="../assets/images/logo.png" alt="SnapWash" style="height:38px; width:auto; object-fit:contain;">
+        <div class="logo-text"><div style="font-family:var(--font-heading); font-size:1.25rem; line-height:1;">Snap<span>Wash</span></div><div class="logo-tagline" style="font-size:0.72rem; color:var(--text-muted);">Premium Care, Delivered.</div></div>
+      </a>
+      <span class="admin-badge"><i class="ri-shield-keyhole-line"></i> Admin Atelier</span>
+
+      <nav class="admin-nav">
+        <div class="admin-nav-item active" data-tab="overview"><i class="ri-dashboard-line"></i> Overview</div>
+        <div class="admin-nav-item" data-tab="orders"><i class="ri-file-list-3-line"></i> Orders <span class="count" id="nav-orders-count">8</span></div>
+        <div class="admin-nav-item" data-tab="pickups"><i class="ri-truck-line"></i> Pickups & Delivery <span class="count" id="nav-pickup-count">3</span></div>
+        <div class="admin-nav-item" data-tab="customers"><i class="ri-team-line"></i> Customers</div>
+        <div class="admin-nav-item" data-tab="revenue"><i class="ri-exchange-dollar-line"></i> Revenue</div>
+        <div class="admin-nav-item" data-tab="services"><i class="ri-shirt-line"></i> Services</div>
+        <div class="admin-nav-item" data-tab="staff"><i class="ri-user-star-line"></i> Staff</div>
+      </nav>
+
+      <div class="admin-foot">
+        <div style="display:flex; align-items:center; gap:0.85rem; padding:0.75rem; background:var(--surface); border-radius:10px;">
+          <div style="width:38px; height:38px; border-radius:50%; background: var(--primary); color: var(--bg-color); display:flex; align-items:center; justify-content:center; font-weight:700;">A</div>
+          <div><div style="font-weight:700; font-size:0.9rem;">Atelier Admin</div><small style="color:var(--text-muted);">admin@snapwash.london</small></div>
+        </div>
+        <a href="dashboard.html" class="admin-nav-item" style="color:var(--secondary);"><i class="ri-user-3-line"></i> Customer View</a>
+        <a href="../index.html" class="admin-nav-item" style="color:var(--error);"><i class="ri-logout-box-r-line"></i> Exit Admin</a>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button id="admin-menu-btn" class="admin-menu-btn" aria-label="Menu"><i class="ri-menu-3-line"></i></button>
+          <div>
+            <h1 id="admin-title">Atelier Overview</h1>
+            <p id="admin-subtitle">Doorstep laundry operations — live today</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" id="notif-btn" aria-label="Notifications"><i class="ri-notification-3-line"></i><span class="dot"></span></button>
+          <button id="theme-toggle" class="icon-btn" aria-label="Theme"><i class="ri-moon-line"></i></button>
+          <button id="dir-toggle" class="icon-btn" style="font-size:0.8rem; font-weight:700;">RTL</button>
+        </div>
+      </header>
+
+      <!-- OVERVIEW -->
+      <section id="tab-overview" class="tab active">
+        <div class="stat-grid stat-grid-4">
+          <div class="a-stat accent"><div class="a-stat-top"><div><label>Today's Orders</label><h3 id="kpi-orders">8</h3></div><i class="ri-shopping-bag-3-line"></i></div><div class="trend up"><i class="ri-arrow-up-line"></i> +12% vs yesterday</div></div>
+          <div class="a-stat warn"><div class="a-stat-top"><div><label>Pending Pickup</label><h3 id="kpi-pickup">3</h3></div><i class="ri-truck-line"></i></div><div class="trend" style="color:var(--warning);">3 doorstep slots today</div></div>
+          <div class="a-stat info"><div class="a-stat-top"><div><label>In Atelier</label><h3 id="kpi-atelier">4</h3></div><i class="ri-drop-line"></i></div><small style="color:var(--text-muted);">Washing • Ironing</small></div>
+          <div class="a-stat success"><div class="a-stat-top"><div><label>Out for Delivery</label><h3 id="kpi-delivery">2</h3></div><i class="ri-home-heart-line"></i></div><div class="trend up"><i class="ri-checkbox-circle-line"></i> 2 en route</div></div>
+        </div>
+        <div class="stat-grid">
+          <div class="a-stat success"><div class="a-stat-top"><div><label>Revenue (MTD)</label><h3>£8,420</h3></div><i class="ri-exchange-dollar-line"></i></div><div class="trend up"><i class="ri-arrow-up-line"></i> +8.4% month</div></div>
+          <div class="a-stat accent"><div class="a-stat-top"><div><label>Active Customers</label><h3>1,284</h3></div><i class="ri-team-line"></i></div><small style="color:var(--text-muted);">42 new this week</small></div>
+          <div class="a-stat"><div class="a-stat-top"><div><label>Avg Rating</label><h3>4.9 <small style="font-size:0.9rem; color:var(--text-muted);">/ 5</small></h3></div><i class="ri-star-line" style="background:rgba(214,183,124,0.15); color:var(--accent); width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:10px;"></i></div><small style="color:var(--text-muted);">Based on 2,341 reviews</small></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1.6fr 1fr; gap:1.5rem;" class="overview-grid">
+          <div class="card">
+            <div class="card-head"><h3>Revenue — Last 7 Days</h3><small>GBP</small></div>
+            <div class="bar-chart" id="revenue-chart"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Service Mix</h3><small>This month</small></div>
+            <div class="service-bars" id="service-mix"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Live Operations</h3><button class="btn-sm" onclick="openTab('orders')">Manage Orders</button></div>
+          <div class="a-table-wrap"><table class="a-table" id="overview-orders-table"><thead><tr><th>Order</th><th>Customer</th><th>Service</th><th>Pickup</th><th>Status</th><th>Amount</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- ORDERS -->
+      <section id="tab-orders" class="tab">
+        <div class="card">
+          <div class="card-head"><h3>All Orders</h3><div style="display:flex; gap:0.5rem;"><button class="btn-sm primary" onclick="addMockOrder()"><i class="ri-add-line"></i> New Order</button><button class="btn-sm" onclick="exportCSV()"><i class="ri-download-line"></i> Export</button></div></div>
+          <div class="filter-bar">
+            <input id="order-search" type="search" placeholder="Search order, customer..." oninput="renderOrders()">
+            <select id="filter-status" onchange="renderOrders()"><option value="">All statuses</option><option>Order Placed</option><option>Picked Up</option><option>Washing</option><option>Ironing</option><option>Out for Delivery</option><option>Delivered</option></select>
+            <select id="filter-service" onchange="renderOrders()"><option value="">All services</option><option>Wash & Fold</option><option>Dry Cleaning</option><option>Steam Press</option><option>Couture & Leather</option></select>
+          </div>
+          <div class="a-table-wrap"><table class="a-table" id="orders-table"><thead><tr><th>Order</th><th>Customer / Address</th><th>Service</th><th>Pickup Slot</th><th>Status</th><th>Total</th><th>Payment</th><th>Action</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- PICKUPS -->
+      <section id="tab-pickups" class="tab">
+        <div class="card">
+          <div class="card-head"><h3>Doorstep Pickups & Deliveries — Today</h3><small id="pickup-date-label"></small></div>
+          <div id="pickup-list" style="display:flex; flex-direction:column; gap:1rem;"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Pickup Calendar (Upcoming)</h3></div>
+          <div class="a-table-wrap"><table class="a-table" id="pickup-table"><thead><tr><th>Date</th><th>Slot</th><th>Customer</th><th>Address</th><th>Service</th><th>Driver</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- CUSTOMERS -->
+      <section id="tab-customers" class="tab">
+        <div class="card">
+          <div class="card-head"><h3>Customers</h3><div class="filter-bar" style="margin:0;"><input id="customer-search" placeholder="Search customer..." oninput="renderCustomers()"></div></div>
+          <div class="a-table-wrap"><table class="a-table" id="customers-table"><thead><tr><th>Customer</th><th>Orders</th><th>Lifetime</th><th>Last Order</th><th>Preferred Service</th><th>Action</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- REVENUE -->
+      <section id="tab-revenue" class="tab">
+        <div class="stat-grid">
+          <div class="a-stat success"><div class="a-stat-top"><div><label>Total Collected</label><h3>£7,940</h3></div><i class="ri-checkbox-circle-line"></i></div><small style="color:var(--text-muted);">94% collection rate</small></div>
+          <div class="a-stat warn"><div class="a-stat-top"><div><label>Outstanding</label><h3>£480</h3></div><i class="ri-error-warning-line"></i></div><small style="color:var(--text-muted);">5 invoices pending</small></div>
+          <div class="a-stat accent"><div class="a-stat-top"><div><label>Avg Order Value</label><h3>£52</h3></div><i class="ri-scales-3-line"></i></div><small style="color:var(--text-muted);">+ £3 vs last month</small></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Invoices & Billing History</h3><button class="btn-sm" onclick="markAllPaid()">Mark all paid</button></div>
+          <div class="a-table-wrap"><table class="a-table" id="revenue-table"><thead><tr><th>Invoice</th><th>Order</th><th>Customer</th><th>Service</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section id="tab-services" class="tab">
+        <div class="card">
+          <div class="card-head"><h3>Service Catalogue</h3><small>Doorstep laundry — edit price / turnaround</small></div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:1.25rem;" id="services-grid"></div>
+        </div>
+      </section>
+
+      <!-- STAFF -->
+      <section id="tab-staff" class="tab">
+        <div class="card">
+          <div class="card-head"><h3>Staff & Couriers</h3><button class="btn-sm primary" onclick="alert('Invite sent (demo)')"><i class="ri-user-add-line"></i> Invite Staff</button></div>
+          <div class="a-table-wrap"><table class="a-table"><thead><tr><th>Staff</th><th>Role</th><th>Today's Jobs</th><th>Status</th><th>Rating</th></tr></thead><tbody>
+            <tr><td><div class="customer-cell"><div class="avatar-sm" style="background:var(--secondary); color:#fff;">R</div><div><strong>Rafael</strong><br><small style="color:var(--text-muted);">Pickups — West End</small></div></div></td><td>Courier</td><td>8 pickups</td><td><span class="chip delivery">On duty</span></td><td>4.9 ★</td></tr>
+            <tr><td><div class="customer-cell"><div class="avatar-sm">N</div><div><strong>Naomi</strong><br><small style="color:var(--text-muted);">Atelier — Finishing</small></div></div></td><td>Press Master</td><td>12 garments</td><td><span class="chip washing">In atelier</span></td><td>5.0 ★</td></tr>
+            <tr><td><div class="customer-cell"><div class="avatar-sm" style="background:var(--primary); color:var(--bg-color);">L</div><div><strong>Leo</strong><br><small style="color:var(--text-muted);">Delivery — Mayfair</small></div></div></td><td>Driver</td><td>6 deliveries</td><td><span class="chip delivery">En route</span></td><td>4.8 ★</td></tr>
+            <tr><td><div class="customer-cell"><div class="avatar-sm" style="background:var(--accent);">V</div><div><strong>Vivienne</strong><br><small style="color:var(--text-muted);">Quality Control</small></div></div></td><td>QC Lead</td><td>14 inspections</td><td><span class="chip placed">On duty</span></td><td>4.9 ★</td></tr>
+          </tbody></table></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Order Detail Modal -->
+  <div id="order-modal" class="modal" onclick="if(event.target===this) closeOrderModal()">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h3 id="m-title" style="margin:0;">Order</h3>
+        <button onclick="closeOrderModal()" style="background:none; border:none; font-size:1.5rem; color:var(--text-muted); cursor:pointer;"><i class="ri-close-line"></i></button>
+      </div>
+      <div id="m-customer" style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;"></div>
+      <div class="timeline" id="m-timeline"></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1.25rem 0; background:var(--surface); padding:1rem; border-radius:10px;">
+        <div><small style="color:var(--text-muted);">Service</small><div id="m-service" style="font-weight:700;"></div></div>
+        <div><small style="color:var(--text-muted);">Amount</small><div id="m-amount" style="font-weight:700;"></div></div>
+        <div><small style="color:var(--text-muted);">Pickup</small><div id="m-pickup" style="font-weight:600; font-size:0.9rem;"></div></div>
+        <div><small style="color:var(--text-muted);">Address</small><div id="m-address" style="font-weight:600; font-size:0.9rem;"></div></div>
+      </div>
+      <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+        <select id="m-status" class="select-sm" style="flex:1;" onchange="updateOrderStatus(currentOrderId, this.value)"></select>
+        <button class="btn-sm primary" onclick="advanceStatus()"><i class="ri-arrow-right-line"></i> Advance Stage</button>
+        <button class="btn-sm" onclick="notifyCustomer()"><i class="ri-notification-3-line"></i> Notify Customer</button>
+      </div>
+      <div id="m-toast" style="display:none; margin-top:1rem; padding:0.75rem 1rem; background:rgba(42,157,143,0.12); color:var(--success); border-radius:8px; font-weight:600; font-size:0.9rem;"></div>
+    </div>
+  </div>
+
+  <div id="admin-toast" style="position:fixed; right:1.5rem; bottom:1.5rem; z-index:1300; background:var(--primary); color:var(--bg-color); padding:1rem 1.25rem; border-radius:12px; box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:0.75rem; transform:translateY(120%); opacity:0; visibility:hidden; transition:all 0.4s;">
+    <i class="ri-checkbox-circle-line" style="font-size:1.3rem; color:var(--accent);"></i><span id="admin-toast-msg" style="font-weight:600; font-size:0.9rem;"></span>
+  </div>
+
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/main.js?v=15"></script>
+  <script>
+    const STAGES = ['Order Placed','Picked Up','Washing','Ironing','Out for Delivery','Delivered'];
+    const STAGE_CHIP = ['placed','pickup','washing','ironing','delivery','delivered'];
+    const SERVICES = [
+      { id:'wash', name:'Wash & Fold', price:'£ 1.90/kg', tat:'48h', desc:'Colour-perfect sorting, optimal temperatures, geometric folding.', img:'washfold.jpg', revenue: 38 },
+      { id:'dry', name:'Dry Cleaning', price:'From £ 12', tat:'48h', desc:'Silicone-based solvents — suits, silks, formal wear.', img:'drycleaning.jpg', revenue: 32 },
+      { id:'press', name:'Steam Press', price:'From £ 4', tat:'24h', desc:'Hand-finished crisp pressing, premium hangers.', img:'steampress.jpg', revenue: 18 },
+      { id:'couture', name:'Couture & Leather', price:'From £ 28', tat:'72h', desc:'Restoration for delicate fabrics, furs, leather.', img:'hero-services.jpg', revenue: 12 }
+    ];
+
+    let orders = JSON.parse(localStorage.getItem('snapwash_admin_orders') || 'null') || [
+      { id:'SW-8942', customer:'Elena Vasquez', email:'elena@example.com', address:'12 Mayfair Lane, London', service:'Dry Cleaning', stage:3, amount:64, payment:'Pending', date:'2026-07-21', slot:'Morning (8 AM – 12 PM)', driver:'Rafael' },
+      { id:'SW-8856', customer:'James Hart', email:'james@example.com', address:'8 Kings Road, Chelsea', service:'Wash & Fold', stage:5, amount:32.5, payment:'Paid', date:'2026-07-14', slot:'Afternoon (12 PM – 4 PM)', driver:'Leo' },
+      { id:'SW-8771', customer:'Amelia Hart', email:'amelia@example.com', address:'22 Portland St, Mayfair', service:'Steam Press', stage:5, amount:48, payment:'Paid', date:'2026-07-02', slot:'Evening (4 PM – 8 PM)', driver:'Leo' },
+      { id:'SW-9021', customer:'Noah Clarke', email:'noah@example.com', address:'14 Soho Square, London', service:'Couture & Leather', stage:0, amount:96, payment:'Unpaid', date:'2026-08-12', slot:'Morning (8 AM – 12 PM)', driver:'Rafael' },
+      { id:'SW-9034', customer:'Sofia Lee', email:'sofia@example.com', address:'5 Notting Hill Gate', service:'Wash & Fold', stage:1, amount:28, payment:'Pending', date:'2026-08-13', slot:'Afternoon (12 PM – 4 PM)', driver:'Rafael' },
+      { id:'SW-9040', customer:'Omar Farouk', email:'omar@example.com', address:'31 Baker Street', service:'Dry Cleaning', stage:2, amount:72, payment:'Pending', date:'2026-08-13', slot:'Morning (8 AM – 12 PM)', driver:'Naomi' },
+      { id:'SW-9055', customer:'Chloe Bennett', email:'chloe@example.com', address:'9 Kensington High St', service:'Steam Press', stage:4, amount:38, payment:'Paid', date:'2026-08-14', slot:'Evening (4 PM – 8 PM)', driver:'Leo' },
+      { id:'SW-9062', customer:'Ethan Patel', email:'ethan@example.com', address:'18 Camden High St', service:'Wash & Fold', stage:4, amount:41, payment:'Paid', date:'2026-08-14', slot:'Morning (8 AM – 12 PM)', driver:'Leo' }
+    ];
+
+    let customers = [
+      { name:'Elena Vasquez', email:'elena@example.com', orders:4, lifetime:242, last:'2026-07-21', pref:'Dry Cleaning' },
+      { name:'James Hart', email:'james@example.com', orders:6, lifetime:189, last:'2026-07-14', pref:'Wash & Fold' },
+      { name:'Amelia Hart', email:'amelia@example.com', orders:2, lifetime:96, last:'2026-07-02', pref:'Steam Press' },
+      { name:'Noah Clarke', email:'noah@example.com', orders:1, lifetime:96, last:'2026-08-12', pref:'Couture & Leather' },
+      { name:'Sofia Lee', email:'sofia@example.com', orders:3, lifetime:112, last:'2026-08-13', pref:'Wash & Fold' },
+      { name:'Omar Farouk', email:'omar@example.com', orders:5, lifetime:310, last:'2026-08-13', pref:'Dry Cleaning' },
+      { name:'Chloe Bennett', email:'chloe@example.com', orders:2, lifetime:86, last:'2026-08-14', pref:'Steam Press' },
+      { name:'Ethan Patel', email:'ethan@example.com', orders:3, lifetime:134, last:'2026-08-14', pref:'Wash & Fold' }
+    ];
+
+    function save() { localStorage.setItem('snapwash_admin_orders', JSON.stringify(orders)); }
+
+    function openTab(name) {
+      document.querySelectorAll('.admin-nav-item[data-tab]').forEach(n => n.classList.toggle('active', n.dataset.tab===name));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-'+name).classList.add('active');
+      const titles = { overview:'Atelier Overview', orders:'Orders', pickups:'Pickups & Delivery', customers:'Customers', revenue:'Revenue', services:'Services', staff:'Staff' };
+      const subs = { overview:'Doorstep laundry operations — live today', orders:'Manage full lifecycle: pickup → wash → delivery', pickups:'Today’s doorstep schedule', customers:'Loyalty & lifetime value', revenue:'Billing history & collections', services:'Catalogue & pricing', staff:'Couriers & atelier team' };
+      document.getElementById('admin-title').textContent = titles[name];
+      document.getElementById('admin-subtitle').textContent = subs[name];
+      window.scrollTo({top:0, behavior:'smooth'});
+      closeSidebar();
+    }
+
+    // Sidebar mobile
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('a-overlay');
+    document.getElementById('admin-menu-btn').addEventListener('click', ()=>{ sidebar.classList.add('open'); overlay.classList.add('show');});
+    function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('show');}
+    overlay.addEventListener('click', closeSidebar);
+    document.querySelectorAll('.admin-nav-item[data-tab]').forEach(el=> el.addEventListener('click', ()=> openTab(el.dataset.tab)));
+
+    function chipForStage(stage){ const cls = STAGE_CHIP[stage]||'placed'; const label = STAGES[stage]||''; return `<span class="chip ${cls}">${label}</span>`; }
+    function payChip(p){ const cls = p==='Paid'?'paid': p==='Pending'?'pending':'unpaid'; return `<span class="chip ${cls}">${p}</span>`; }
+
+    function renderKPIs(){
+      document.getElementById('kpi-orders').textContent = orders.length;
+      document.getElementById('kpi-pickup').textContent = orders.filter(o=> o.stage<=1).length;
+      document.getElementById('kpi-atelier').textContent = orders.filter(o=> o.stage===2||o.stage===3).length;
+      document.getElementById('kpi-delivery').textContent = orders.filter(o=> o.stage===4).length;
+      document.getElementById('nav-orders-count').textContent = orders.length;
+      document.getElementById('nav-pickup-count').textContent = orders.filter(o=> o.stage<=1).length;
+    }
+
+    function renderRevenueChart(){
+      const data = [620, 840, 720, 1100, 950, 1320, 980];
+      const labels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      const max = Math.max(...data);
+      const c = document.getElementById('revenue-chart');
+      c.innerHTML = data.map((v,i)=> `<div class="bar" style="height:${(v/max*100)}%"><span>£${v}</span><label>${labels[i]}</label></div>`).join('');
+    }
+    function renderServiceMix(){
+      const c = document.getElementById('service-mix');
+      c.innerHTML = SERVICES.map(s=> `<div class="s-row"><label>${s.name}</label><div class="s-track"><div class="s-fill" style="width:${s.revenue}%"></div></div><small>${s.revenue}%</small></div>`).join('');
+    }
+
+    function renderOverviewOrders(){
+      const tbody = document.querySelector('#overview-orders-table tbody');
+      const recent = [...orders].sort((a,b)=> b.date.localeCompare(a.date)).slice(0,5);
+      tbody.innerHTML = recent.map(o=> `<tr><td><strong>${o.id}</strong></td><td><div class="customer-cell"><div class="avatar-sm">${o.customer[0]}</div><div><strong>${o.customer}</strong><br><small style="color:var(--text-muted);">${o.email}</small></div></div></td><td>${o.service}</td><td>${o.date}<br><small style="color:var(--text-muted);">${o.slot}</small></td><td>${chipForStage(o.stage)}</td><td><strong>£${o.amount.toFixed(2)}</strong></td></tr>`).join('');
+    }
+
+    function renderOrders(){
+      const q = (document.getElementById('order-search').value||'').toLowerCase();
+      const fs = document.getElementById('filter-status').value;
+      const fsv = document.getElementById('filter-service').value;
+      let list = orders.filter(o=> {
+        if(q && !(o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q) || o.email.toLowerCase().includes(q))) return false;
+        if(fs && STAGES[o.stage]!==fs) return false;
+        if(fsv && o.service!==fsv) return false;
+        return true;
+      });
+      const tbody = document.querySelector('#orders-table tbody');
+      tbody.innerHTML = list.map(o=> `<tr>
+        <td><strong>${o.id}</strong><br><small style="color:var(--text-muted);">${o.date}</small></td>
+        <td><div class="customer-cell"><div class="avatar-sm">${o.customer[0]}</div><div><strong>${o.customer}</strong><br><small style="color:var(--text-muted);">${o.address}</small></div></div></td>
+        <td>${o.service}<br><small style="color:var(--text-muted);">${o.driver}</small></td>
+        <td>${o.slot}<br><small style="color:var(--text-muted);">${o.date}</small></td>
+        <td><select class="select-sm" onchange="updateOrderStatus('${o.id}', this.value)">${STAGES.map((s,i)=> `<option value="${i}" ${i===o.stage?'selected':''}>${s}</option>`).join('')}</select><div style="margin-top:0.4rem;">${chipForStage(o.stage)}</div></td>
+        <td><strong>£${o.amount.toFixed(2)}</strong></td>
+        <td>${payChip(o.payment)}</td>
+        <td><div style="display:flex; gap:0.4rem;"><button class="btn-sm" onclick="openOrder('${o.id}')">View</button>${o.stage===4?`<button class="btn-sm primary" onclick="markDelivered('${o.id}')">Delivered</button>`:''}</div></td>
+      </tr>`).join('') || `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:2rem;">No orders match filters</td></tr>`;
+      renderKPIs();
+    }
+
+    function renderPickups(){
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('pickup-date-label').textContent = new Date().toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric'});
+      const list = orders.filter(o=> o.stage<=4).sort((a,b)=> a.slot.localeCompare(b.slot));
+      const container = document.getElementById('pickup-list');
+      container.innerHTML = list.slice(0,4).map(o=> `
+        <div style="display:flex; align-items:center; gap:1rem; padding:1.1rem 1.25rem; border:1px solid var(--glass-border); border-radius:12px; background:var(--bg-color); border-left:4px solid ${o.stage<=1? 'var(--info)': o.stage===4? 'var(--success)':'var(--warning)'}">
+          <div style="width:44px; height:44px; border-radius:50%; background:${o.stage<=1?'var(--info)': o.stage===4?'var(--success)':'var(--warning)'}; color:#fff; display:flex; align-items:center; justify-content:center;"><i class="${o.stage<=1?'ri-truck-line': o.stage===4?'ri-home-heart-line':'ri-drop-line'}"></i></div>
+          <div style="flex:1; min-width:0;"><strong>${o.id} — ${o.customer}</strong><div style="color:var(--text-muted); font-size:0.85rem;">${o.address} · ${o.slot} · ${o.service}</div></div>
+          <div style="text-align:right;">${chipForStage(o.stage)}<br><small style="color:var(--text-muted);">${o.driver}</small></div>
+        </div>
+      `).join('');
+      const tbody = document.querySelector('#pickup-table tbody');
+      tbody.innerHTML = orders.map(o=> `<tr><td>${o.date}</td><td>${o.slot}</td><td><strong>${o.customer}</strong></td><td style="max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${o.address}</td><td>${o.service}</td><td>${o.driver}</td></tr>`).join('');
+    }
+
+    function renderCustomers(){
+      const q = (document.getElementById('customer-search').value||'').toLowerCase();
+      let list = customers.filter(c=> !q || c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q));
+      const tbody = document.querySelector('#customers-table tbody');
+      tbody.innerHTML = list.map(c=> `<tr><td><div class="customer-cell"><div class="avatar-sm">${c.name[0]}</div><div><strong>${c.name}</strong><br><small style="color:var(--text-muted);">${c.email}</small></div></div></td><td>${c.orders}</td><td>£${c.lifetime}</td><td>${c.last}</td><td>${c.pref}</td><td><button class="btn-sm" onclick="toast('Customer profile — demo')">View</button></td></tr>`).join('');
+    }
+
+    function renderRevenue(){
+      const tbody = document.querySelector('#revenue-table tbody');
+      tbody.innerHTML = orders.map(o=> `<tr><td><strong>INV-${o.id.replace('SW-','')}</strong></td><td>${o.id}</td><td>${o.customer}</td><td>${o.service}</td><td>£${o.amount.toFixed(2)}</td><td>${payChip(o.payment)}</td><td>${o.payment!=='Paid'?`<button class="btn-sm primary" onclick="markPaid('${o.id}')">Mark Paid</button>`:`<small style="color:var(--success);">Collected</small>`}</td></tr>`).join('');
+    }
+
+    function renderServices(){
+      const grid = document.getElementById('services-grid');
+      grid.innerHTML = SERVICES.map(s=> `
+        <div class="card" style="margin:0;">
+          <div style="height:160px; border-radius:10px; overflow:hidden; margin:-1.75rem -1.75rem 1.25rem;">
+            <img src="../assets/images/${s.img}" alt="${s.name}" style="width:100%; height:100%; object-fit:cover; filter:saturate(0.85);">
+          </div>
+          <h3 style="margin-bottom:0.25rem;">${s.name}</h3>
+          <div style="display:flex; gap:1rem; margin-bottom:0.75rem;"><span style="font-weight:700; color:var(--secondary);">${s.price}</span><span style="color:var(--text-muted); font-size:0.85rem;"><i class="ri-time-line"></i> ${s.tat}</span></div>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6; min-height:48px;">${s.desc}</p>
+          <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+            <button class="btn-sm primary" style="flex:1;" onclick="editService('${s.id}')">Edit</button>
+            <button class="btn-sm" onclick="toast('Service ${s.name} — toggled (demo)')">Disable</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let currentOrderId = null;
+    function openOrder(id){
+      const o = orders.find(x=> x.id===id);
+      if(!o) return;
+      currentOrderId = id;
+      document.getElementById('m-title').textContent = o.id + ' — ' + o.service;
+      document.getElementById('m-customer').textContent = o.customer + ' · ' + o.email + ' · ' + o.address;
+      document.getElementById('m-service').textContent = o.service;
+      document.getElementById('m-amount').textContent = '£' + o.amount.toFixed(2) + ' · ' + o.payment;
+      document.getElementById('m-pickup').textContent = o.date + ' · ' + o.slot;
+      document.getElementById('m-address').textContent = o.address + ' (' + o.driver + ')';
+      const sel = document.getElementById('m-status');
+      sel.innerHTML = STAGES.map((s,i)=> `<option value="${i}" ${i===o.stage?'selected':''}>${s}</option>`).join('');
+      const tl = document.getElementById('m-timeline');
+      tl.innerHTML = STAGES.map((s,i)=> {
+        let cls = i < o.stage ? 'done' : i===o.stage ? 'active' : '';
+        return `<div class="t-step ${cls}"><div class="t-dot"><i class="${['ri-check-line','ri-truck-line','ri-drop-line','ri-steam-line','ri-home-heart-line','ri-checkbox-circle-line'][i]}"></i></div><small>${s}</small></div>`;
+      }).join('');
+      document.getElementById('m-toast').style.display='none';
+      document.getElementById('order-modal').classList.add('show');
+    }
+    function closeOrderModal(){ document.getElementById('order-modal').classList.remove('show'); }
+    function updateOrderStatus(id, newStage){
+      const o = orders.find(x=> x.id===id);
+      if(!o) return;
+      o.stage = parseInt(newStage,10);
+      if(o.stage===5) o.payment = 'Paid';
+      save();
+      renderAll();
+      if(currentOrderId===id) openOrder(id);
+      if(o.stage===4) toast('Order ' + id + ' is now Out for Delivery — customer notified');
+      else toast('Order ' + id + ' moved to ' + STAGES[o.stage]);
+      // sync to customer dashboard via localStorage event
+      localStorage.setItem('snapwash_last_stage_update', JSON.stringify({ id, stage:o.stage, at:Date.now() }));
+    }
+    function advanceStatus(){
+      const o = orders.find(x=> x.id===currentOrderId);
+      if(!o || o.stage>=5) return;
+      updateOrderStatus(o.id, o.stage+1);
+    }
+    function notifyCustomer(){
+      const m = document.getElementById('m-toast');
+      m.textContent = 'Notification sent to customer — SMS + email (demo). Stage: ' + STAGES[orders.find(x=>x.id===currentOrderId).stage];
+      m.style.display='block';
+      toast('Customer notified for ' + currentOrderId);
+    }
+    function markDelivered(id){
+      updateOrderStatus(id, 5);
+    }
+    function markPaid(id){
+      const o = orders.find(x=> x.id===id);
+      if(o){ o.payment='Paid'; save(); renderRevenue(); renderOrders(); toast('Invoice ' + id + ' marked paid'); }
+    }
+    function markAllPaid(){ orders.forEach(o=> o.payment='Paid'); save(); renderRevenue(); renderOrders(); toast('All invoices marked paid'); }
+    function addMockOrder(){
+      const names = [['Liam','Wilson'],['Ava','Brown'],['Mia','Johnson']];
+      const [first,last]= names[Math.floor(Math.random()*names.length)];
+      const id = 'SW-' + Math.floor(9000+Math.random()*999);
+      const svc = ['Wash & Fold','Dry Cleaning','Steam Press','Couture & Leather'][Math.floor(Math.random()*4)];
+      const newOrder = { id, customer: first+' '+last, email: first.toLowerCase()+'@example.com', address: Math.floor(10+Math.random()*90)+' Random Street, London', service: svc, stage:0, amount: Math.floor(25+Math.random()*70), payment:'Pending', date: new Date().toISOString().split('T')[0], slot: ['Morning (8 AM – 12 PM)','Afternoon (12 PM – 4 PM)','Evening (4 PM – 8 PM)'][Math.floor(Math.random()*3)], driver:'Rafael' };
+      orders.unshift(newOrder);
+      save(); renderAll(); openTab('orders'); toast('New order ' + id + ' created — pickup scheduled');
+    }
+    function editService(id){ toast('Edit service ' + id + ' — demo modal'); }
+    function exportCSV(){ toast('CSV exported (demo) — ' + orders.length + ' orders'); }
+    function toast(msg){
+      const t = document.getElementById('admin-toast');
+      document.getElementById('admin-toast-msg').textContent = msg;
+      t.style.transform='translateY(0)'; t.style.opacity='1'; t.style.visibility='visible';
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(()=>{ t.style.transform='translateY(120%)'; t.style.opacity='0'; t.style.visibility='hidden'; }, 3000);
+    }
+
+    function renderAll(){
+      renderKPIs();
+      renderRevenueChart();
+      renderServiceMix();
+      renderOverviewOrders();
+      renderOrders();
+      renderPickups();
+      renderCustomers();
+      renderRevenue();
+      renderServices();
+    }
+
+    renderAll();
+
+    // Demo: auto-notify if any order is out for delivery on load
+    document.getElementById('notif-btn').addEventListener('click', ()=>{
+      const out = orders.filter(o=> o.stage===4);
+      if(out.length) toast(out.length + ' orders out for delivery — ' + out.map(o=>o.id).join(', '));
+      else toast('No orders out for delivery right now');
+    });
+  </script>
+</body>
+</html>
