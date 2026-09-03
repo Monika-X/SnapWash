@@ -491,6 +491,13 @@
     font-size: 1.05rem;
   }
   .mme-link:hover { color: var(--accent); }
+  /* My Account already in nav bar (profile icon) — hide duplicate in ham menu at 768/360 */
+  @media (max-width: 768px) {
+    .mobile-menu-extra a.mme-link[href*="dashboard"] { display: none !important; }
+  }
+  @media (max-width: 360px) {
+    .mobile-menu-extra a.mme-link[href*="dashboard"] { display: none !important; }
+  }
   .mme-socials {
     display: flex;
     gap: 0.75rem;

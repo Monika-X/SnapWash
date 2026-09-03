@@ -98,12 +98,10 @@ function initMain() {
     if (!navLinks.querySelector('.mobile-menu-extra')) {
       const extra = document.createElement('div');
       extra.className = 'mobile-menu-extra';
-      const dashLink = location.pathname.includes('/pages/') ? 'dashboard.html' : 'pages/dashboard.html';
       extra.innerHTML =
         '<div class="mme-label">Concierge</div>' +
         '<a class="mme-link" href="tel:+442071234567"><i class="ri-phone-line"></i>+44 20 7123 4567</a>' +
         '<a class="mme-link" href="mailto:concierge@snapwash.com"><i class="ri-mail-line"></i>concierge@snapwash.com</a>' +
-        '<a class="mme-link" href="' + dashLink + '"><i class="ri-user-3-line"></i>My Account</a>' +
         '<div class="mme-socials">' +
         '<a href="#" aria-label="Instagram"><i class="ri-instagram-line"></i></a>' +
         '<a href="#" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>' +
