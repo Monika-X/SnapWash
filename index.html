@@ -194,6 +194,8 @@
       overflow: hidden;
       position: relative;
       background: var(--bg-color);
+      display: flex;
+      flex-direction: column;
     }
     .service-card::after {
       content: '';
@@ -226,7 +228,8 @@
       transition: transform var(--transition-slow);
     }
     .service-card:hover .service-img { transform: scale(1.08); }
-    .service-content { padding: 2rem; }
+    .service-content { padding: 2rem; flex: 1; display: flex; flex-direction: column; }
+    .service-content p { flex: 1; }
     .service-title {
       font-family: var(--font-heading);
       font-size: 1.45rem;
@@ -244,6 +247,8 @@
       gap: 0.5rem;
       text-decoration: none;
       transition: gap 0.3s ease;
+      margin-top: auto;
+      align-self: flex-start;
     }
     .service-card:hover .svc-link { gap: 0.9rem; }
 
