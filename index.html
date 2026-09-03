@@ -488,6 +488,12 @@
     [dir="rtl"] .quote-icon { left: auto; right: 18px; }
     [dir="rtl"] .testimonial-text, [dir="rtl"] .t-stars, [dir="rtl"] .testimonial-author { padding-left: 0; padding-right: 0.2rem; }
 
+    @media (max-width: 1024px) {
+      .hero-content { max-width: 520px; }
+      .hero-title { font-size: clamp(2.8rem, 5vw, 4.2rem); }
+      .hero-subtitle { font-size: 1.05rem; line-height: 1.7; max-width: 42ch; }
+      .hero-image-wrapper { width: 40%; height: 62vh; }
+    }
     /* Responsive */
     @media (max-width: 992px) {
       .services-grid, .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
