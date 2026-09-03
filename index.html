@@ -428,15 +428,17 @@
       gap: 2rem;
       margin-top: 4rem;
     }
-    .testimonial-card { position: relative; }
+    .testimonial-card { position: relative; padding-top: 0.6rem; overflow: hidden; }
     .quote-icon {
       position: absolute;
-      top: -14px;
-      left: 24px;
-      font-size: 3.4rem;
+      top: 14px;
+      left: 18px;
+      font-size: 2.8rem;
       color: var(--accent);
-      opacity: 0.35;
+      opacity: 0.14;
       z-index: 0;
+      line-height: 1;
+      pointer-events: none;
     }
     .testimonial-text {
       position: relative;
@@ -444,21 +446,22 @@
       font-size: 1.02rem;
       font-style: italic;
       line-height: 1.75;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
+      margin-top: 1.8rem;
       color: var(--text-color);
+      padding-left: 0.2rem;
     }
-    .t-stars { color: var(--accent); font-size: 0.8rem; letter-spacing: 0.25em; margin-bottom: 1.5rem; }
-    .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+    .t-stars { color: var(--accent); font-size: 0.8rem; letter-spacing: 0.25em; margin-bottom: 1.25rem; padding-left: 0.2rem; }
+    .testimonial-author { display: flex; align-items: center; gap: 1rem; padding-left: 0.2rem; }
     .author-avatar {
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      background-color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary);
-      font-weight: bold;
+      object-fit: cover;
+      object-position: center top;
+      border: 2px solid rgba(214,183,124,0.35);
+      flex-shrink: 0;
+      background: var(--surface);
     }
     .testimonial-author h5 { font-family: var(--font-heading); font-size: 1.05rem; }
 
@@ -482,6 +485,8 @@
       background: var(--accent);
       flex-shrink: 0;
     }
+    [dir="rtl"] .quote-icon { left: auto; right: 18px; }
+    [dir="rtl"] .testimonial-text, [dir="rtl"] .t-stars, [dir="rtl"] .testimonial-author { padding-left: 0; padding-right: 0.2rem; }
 
     /* Responsive */
     @media (max-width: 992px) {
@@ -774,9 +779,9 @@
       <div class="card testimonial-card">
         <i class="ri-double-quotes-l quote-icon"></i>
         <p class="testimonial-text">"SnapWash completely transformed my wardrobe maintenance. Their attention to detail on my silk dresses is unparalleled. Simply the best service in the city."</p>
-        <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
+        <div class="t-stars">★★★★★</div>
         <div class="testimonial-author">
-          <div class="author-avatar">E</div>
+          <img src="assets/images/team-naomi.jpg" alt="Elena Rostova" class="author-avatar">
           <div>
             <h5 style="margin: 0; font-weight: 600;">Elena Rostova</h5>
             <span class="text-muted" style="font-size: 0.9rem;">Fashion Director</span>
@@ -787,9 +792,9 @@
       <div class="card testimonial-card">
         <i class="ri-double-quotes-l quote-icon"></i>
         <p class="testimonial-text">"The dashboard makes scheduling a breeze. My suits come back impeccably pressed, and the doorstep delivery fits perfectly into my demanding schedule."</p>
-        <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
+        <div class="t-stars">★★★★★</div>
         <div class="testimonial-author">
-          <div class="author-avatar">M</div>
+          <img src="assets/images/team-leo.jpg" alt="Marcus Chen" class="author-avatar">
           <div>
             <h5 style="margin: 0; font-weight: 600;">Marcus Chen</h5>
             <span class="text-muted" style="font-size: 0.9rem;">Corporate Executive</span>
@@ -799,10 +804,10 @@
 
       <div class="card testimonial-card">
         <i class="ri-double-quotes-l quote-icon"></i>
-        <p class="testimonial-text">"They removed a red-wine stain from my ivory bridal gown that two other cleaners refused to touch. SnapWash is not a laundry service â€” it's a preservation studio."</p>
-        <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
+        <p class="testimonial-text">"They removed a red-wine stain from my ivory bridal gown that two other cleaners refused to touch. SnapWash is not a laundry service — it's a preservation studio."</p>
+        <div class="t-stars">★★★★★</div>
         <div class="testimonial-author">
-          <div class="author-avatar">S</div>
+          <img src="assets/images/team-vivienne.jpg" alt="Sofia Laurent" class="author-avatar">
           <div>
             <h5 style="margin: 0; font-weight: 600;">Sofia Laurent</h5>
             <span class="text-muted" style="font-size: 0.9rem;">Bridal Couture Client</span>
@@ -813,9 +818,9 @@
       <div class="card testimonial-card">
         <i class="ri-double-quotes-l quote-icon"></i>
         <p class="testimonial-text">"As a hotelier, I trust SnapWash with my guests' linens and my personal wardrobe alike. Consistent perfection, every single week for two years running."</p>
-        <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
+        <div class="t-stars">★★★★★</div>
         <div class="testimonial-author">
-          <div class="author-avatar">J</div>
+          <img src="assets/images/team-rafael.jpg" alt="James Whitmore" class="author-avatar">
           <div>
             <h5 style="margin: 0; font-weight: 600;">James Whitmore</h5>
             <span class="text-muted" style="font-size: 0.9rem;">Hotel Owner</span>
