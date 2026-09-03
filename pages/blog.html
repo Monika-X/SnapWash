@@ -424,6 +424,21 @@
     .cat-link i { transition: transform 0.3s ease; }
     .category-card:hover .cat-link i { transform: translateX(5px); }
 
+    /* Dark mode - on-image CTA contrast fix */
+    [data-theme="dark"] .post-index {
+      background: rgba(248, 248, 245, 0.96);
+      color: #123B3A;
+      border-color: rgba(18, 59, 58, 0.14);
+    }
+    [data-theme="dark"] .blog-cat {
+      background: rgba(18, 59, 58, 0.94);
+      color: #F8F8F5;
+    }
+    [data-theme="dark"] .featured-badge {
+      background: var(--accent);
+      color: #0F1F1E;
+    }
+
     /* RTL */
     [dir="rtl"] .eyebrow::before { display: none; }
     [dir="rtl"] .eyebrow::after {
