@@ -206,6 +206,17 @@
   display: none;
 }
 
+/* 1024px — tighten desktop nav for proper alignment */
+@media (max-width: 1024px) {
+  .navbar .container { gap: 1rem; }
+  .nav-links { gap: 1.3rem; }
+  .nav-link { font-size: 0.74rem; letter-spacing: 0.11em; }
+  .nav-actions { gap: 0.6rem; }
+  .nav-actions .btn { padding: 0.6rem 1.1rem; font-size: 0.74rem; }
+  .logo { font-size: 1.6rem; gap: 0.4rem; }
+  .logo-tagline { font-size: 0.56rem; }
+}
+
 /* Cards */
 .card {
   background-color: var(--bg-color);
