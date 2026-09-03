@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <title>SnapWash | Book a Pickup</title>
+  <link rel="stylesheet" href="../assets/css/variables.css?v=15">
+  <link rel="stylesheet" href="../assets/css/global.css?v=15">
+  <link rel="stylesheet" href="../assets/css/components.css?v=15">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    .page-header{
+      padding:170px 0 90px; text-align:center;
+      background: linear-gradient(rgba(18,59,58,0.82), rgba(18,59,58,0.65)), url('../assets/images/hero.jpg') center/cover no-repeat;
+    }
+    .page-header h1{ color:#fff; font-family:var(--font-heading); font-size:clamp(2.6rem,5vw,4.2rem); line-height:1.05; }
+    .page-header h1 em{ font-style:italic; color:var(--accent); }
+    .page-header p{ color:rgba(255,255,255,0.9); max-width:52ch; margin:1rem auto 0; font-size:1.1rem; line-height:1.7;}
+    .booking-layout{
+      display:grid; grid-template-columns: 1.55fr 0.85fr; gap:2.5rem; margin:3rem auto 5rem; align-items:start;
+    }
+    .b-card{ background:var(--bg-color); border-radius:var(--border-radius-lg); box-shadow:var(--shadow-sm); padding:2rem; border:1px solid var(--glass-border);}
+    .b-card h3{ margin-bottom:1.25rem; display:flex; align-items:center; gap:0.75rem; }
+    .b-card h3 .step-num{ width:32px; height:32px; border-radius:50%; background:var(--primary); color:var(--bg-color); display:flex; align-items:center; justify-content:center; font-size:0.95rem; font-weight:700;}
+    .service-grid-booking{ display:grid; grid-template-columns: repeat(2,1fr); gap:1rem;}
+    .svc-option{ border:2px solid var(--glass-border); border-radius:12px; padding:1.25rem; cursor:pointer; transition:all 0.25s; background:var(--surface); text-align:left; }
+    .svc-option:hover{ border-color:rgba(214,183,124,0.5); transform:translateY(-2px);}
+    .svc-option.selected{ border-color:var(--accent); background:var(--bg-color); box-shadow:var(--shadow-md); }
+    .svc-option h4{ margin:0 0 0.35rem; font-size:1.05rem; }
+    .svc-option p{ margin:0; color:var(--text-muted); font-size:0.85rem; line-height:1.5;}
+    .svc-option .price{ margin-top:0.6rem; font-weight:700; color:var(--secondary); font-size:0.9rem;}
+    .svc-option.selected .price{ color:var(--accent);}
+    .slot-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:0.75rem;}
+    .slot{ padding:0.9rem 0.5rem; border:1.5px solid var(--glass-border); border-radius:10px; text-align:center; cursor:pointer; transition:all 0.2s; background:var(--surface); }
+    .slot:hover{ border-color:var(--accent);}
+    .slot.selected{ background:var(--primary); color:var(--bg-color); border-color:var(--primary);}
+    .slot small{ display:block; color:var(--text-muted); font-size:0.72rem; margin-top:0.2rem;}
+    .slot.selected small{ color:rgba(255,255,255,0.7);}
+    .field{ display:flex; flex-direction:column; gap:0.45rem; margin-bottom:1.1rem;}
+    .field label{ font-size:0.85rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted);}
+    .field input, .field select, .field textarea{ padding:0.9rem 1rem; border-radius:10px; border:1px solid var(--glass-border); background:var(--surface); color:var(--text-color); font-size:0.95rem;}
+    .field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--accent); background:var(--bg-color);}
+    .qty-row{ display:flex; align-items:center; gap:1rem; margin-bottom:1rem;}
+    .qty-row label{ flex:1; font-weight:600; font-size:0.95rem;}
+    .qty-ctrl{ display:flex; align-items:center; gap:0.5rem; }
+    .qty-ctrl button{ width:36px; height:36px; border-radius:50%; border:1px solid var(--glass-border); background:var(--surface); cursor:pointer; display:flex; align-items:center; justify-content:center;}
+    .qty-ctrl span{ min-width:36px; text-align:center; font-weight:700;}
+    .summary-sticky{ position:sticky; top:100px;}
+    .summary-row{ display:flex; justify-content:space-between; padding:0.7rem 0; border-bottom:1px dashed var(--glass-border); font-size:0.95rem;}
+    .summary-row:last-child{ border:none; font-weight:700; font-size:1.1rem;}
+    .summary-row em{ color:var(--text-muted); font-style:normal; font-size:0.85rem;}
+    .progress-steps{ display:flex; align-items:center; gap:0.5rem; margin-bottom:2rem;}
+    .progress-steps .dot{ width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem; border:2px solid var(--glass-border); color:var(--text-muted); background:var(--surface);}
+    .progress-steps .dot.active{ background:var(--primary); color:var(--bg-color); border-color:var(--primary);}
+    .progress-steps .dot.done{ background:var(--secondary); color:#fff; border-color:var(--secondary);}
+    .progress-steps .line{ flex:1; height:2px; background:var(--surface); }
+    .progress-steps .line.done{ background:var(--secondary);}
+    .success-modal{ position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:1200; opacity:0; visibility:hidden; transition:all 0.3s;}
+    .success-modal.show{ opacity:1; visibility:visible;}
+    .success-box{ background:var(--bg-color); border-radius:16px; padding:2.5rem; max-width:480px; width:90%; text-align:center; transform:translateY(12px); transition:transform 0.3s;}
+    .success-modal.show .success-box{ transform:translateY(0);}
+    @media(max-width:992px){ .booking-layout{ grid-template-columns:1fr; } .summary-sticky{ position:static; } .service-grid-booking{ grid-template-columns:1fr; } .slot-grid{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="SnapWash" style="height:40px; width:auto; object-fit:contain;">
+        <div class="logo-text"><div>Snap<span>Wash</span></div><div class="logo-tagline">Premium Care, Delivered.</div></div>
+      </a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="home2.html" class="nav-link">Home2</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="login.html" class="btn btn-primary mobile-book-now">Login / Sign Up</a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile-menu">
+          <button class="theme-toggle profile-icon" aria-label="My Account" type="button"><i class="ri-user-line"></i></button>
+          <div class="profile-dropdown">
+            <div class="pd-head"><div class="pd-greet">Welcome to</div><div class="pd-name">SnapWash Member</div></div>
+            <a href="dashboard.html" class="pd-link"><i class="ri-dashboard-3-line"></i><span>User Dashboard<small class="pd-sub">Schedule, track & pay</small></span></a>
+            <a href="admin.html" class="pd-link"><i class="ri-shield-keyhole-line"></i><span>Admin Atelier<small class="pd-sub">Orders, revenue & ops</small></span></a>
+          </div>
+        </div>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme"><i class="ri-moon-line"></i></button>
+        <button id="dir-toggle" class="theme-toggle" style="font-weight:600; font-size:0.8rem;">RTL</button>
+        <a href="login.html" class="btn btn-primary">Login / Sign Up</a>
+      </div>
+      <button class="mobile-menu-btn" aria-label="Menu"><i class="ri-menu-3-line"></i></button>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>Book Your <em>Pickup</em></h1>
+      <p>Doorstep collection in 48h. Choose service, pick a slot, track every stage to delivery.</p>
+    </div>
+  </header>
+
+  <div class="container booking-layout">
+    <div>
+      <div class="progress-steps" id="progress-steps">
+        <div class="dot active">1</div><div class="line"></div><div class="dot">2</div><div class="line"></div><div class="dot">3</div>
+      </div>
+
+      <!-- Step 1: Service -->
+      <div class="b-card" id="step1">
+        <h3><span class="step-num">1</span> Select Service</h3>
+        <div class="service-grid-booking" id="service-grid-booking"></div>
+        <div id="service-error" style="display:none; color:var(--error); font-size:0.85rem; margin-top:0.75rem;">Please select a service</div>
+      </div>
+
+      <!-- Step 2: Schedule -->
+      <div class="b-card" id="step2" style="margin-top:1.5rem;">
+        <h3><span class="step-num">2</span> Pickup Schedule</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+          <div class="field"><label>Pickup Date *</label><input type="date" id="b-date" required></div>
+          <div class="field"><label>Phone *</label><input type="tel" id="b-phone" placeholder="+44 7700 900123" required></div>
+        </div>
+        <div class="field"><label>Preferred Slot *</label>
+          <div class="slot-grid" id="slot-grid">
+            <div class="slot" data-slot="Morning (8 AM – 12 PM)">Morning<small>8 AM – 12 PM</small></div>
+            <div class="slot" data-slot="Afternoon (12 PM – 4 PM)">Afternoon<small>12 PM – 4 PM</small></div>
+            <div class="slot" data-slot="Evening (4 PM – 8 PM)">Evening<small>4 PM – 8 PM</small></div>
+          </div>
+        </div>
+        <div class="field"><label>Pickup Address *</label><input type="text" id="b-address" placeholder="e.g. 12 Mayfair Lane, London" required></div>
+        <div class="field"><label>Delivery Address <small style="text-transform:none; letter-spacing:0;">(if different)</small></label><input type="text" id="b-delivery-address" placeholder="Leave blank if same as pickup"></div>
+      </div>
+
+      <!-- Step 3: Garments -->
+      <div class="b-card" id="step3" style="margin-top:1.5rem;">
+        <h3><span class="step-num">3</span> Garment Details</h3>
+        <div id="garment-controls"></div>
+        <div class="field"><label>Special Instructions</label><textarea id="b-notes" rows="3" placeholder="Stains, delicate fabrics, folding preferences..."></textarea></div>
+        <div class="field"><label><input type="checkbox" id="b-express"> Express 24h (+ £12) — available for Wash & Fold / Dry Cleaning</label></div>
+      </div>
+
+      <button id="confirm-btn" class="btn btn-accent" style="width:100%; margin-top:1.5rem; padding:1.1rem; font-size:1.05rem; letter-spacing:0.08em; text-transform:uppercase;"><i class="ri-calendar-check-line"></i> Confirm Booking</button>
+      <p style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-top:0.75rem;"><i class="ri-lock-line"></i> Secure booking · Pay on delivery · Free cancellation before pickup</p>
+    </div>
+
+    <div class="summary-sticky">
+      <div class="b-card">
+        <h3><i class="ri-receipt-line" style="color:var(--accent);"></i> Booking Summary</h3>
+        <div id="summary-service" style="background:var(--surface); padding:1rem; border-radius:10px; margin-bottom:1rem; display:none;"></div>
+        <div id="summary-lines"></div>
+        <div style="margin-top:1.25rem; padding:1rem; background:rgba(214,183,124,0.1); border-radius:10px; display:flex; gap:0.75rem;">
+          <i class="ri-information-line" style="color:var(--accent); margin-top:0.2rem;"></i>
+          <small style="color:var(--text-muted); line-height:1.5;">Live tracking from pickup to <strong style="color:var(--text-color);">Out for Delivery</strong>. You'll be notified when en route.</small>
+        </div>
+        <div style="display:flex; gap:0.75rem; margin-top:1.25rem;">
+          <a href="dashboard.html" class="btn btn-outline" style="flex:1; text-align:center;">View Dashboard</a>
+          <a href="services.html" class="btn btn-primary" style="flex:1; text-align:center; background:var(--primary); color:var(--bg-color);">Services</a>
+        </div>
+      </div>
+      <div class="b-card" style="margin-top:1.5rem; border-left:4px solid var(--secondary);">
+        <h4 style="margin-bottom:0.5rem;"><i class="ri-customer-service-2-line"></i> Need help?</h4>
+        <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6; margin:0;">Concierge 24/7 — <strong>020 7946 0123</strong><br>Or live chat from dashboard.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="success-modal" class="success-modal">
+    <div class="success-box">
+      <div style="width:72px; height:72px; border-radius:50%; background:rgba(42,157,143,0.12); color:var(--success); display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1.25rem;"><i class="ri-checkbox-circle-line"></i></div>
+      <h2 style="margin-bottom:0.5rem;">Pickup Scheduled!</h2>
+      <p style="color:var(--text-muted);" id="success-msg">Order #SW-0000 — Dry Cleaning · Tomorrow 8 AM</p>
+      <div style="background:var(--surface); padding:1rem; border-radius:10px; margin:1.25rem 0; text-align:left; font-size:0.9rem; line-height:1.6;" id="success-details"></div>
+      <div style="display:flex; gap:0.75rem;">
+        <a href="dashboard.html" class="btn btn-primary" style="flex:1;">Track Order</a>
+        <button class="btn btn-outline" style="flex:1;" onclick="document.getElementById('success-modal').classList.remove('show')">Book Another</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" style="position:relative;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col"><a href="../index.html" class="logo" style="color:#F8F8F5; margin-bottom:1.5rem;"><img src="../assets/images/logo.png" alt="SnapWash" style="height:40px;"><div class="logo-text"><div>Snap<span style="color:var(--accent)">Wash</span></div><div class="logo-tagline" style="color:rgba(248,248,245,0.72)">Premium Care, Delivered.</div></div></a><p style="opacity:0.7; max-width:300px; font-size:0.9rem;">London's most exclusive destination for premium garment care.</p></div>
+        <div class="footer-col"><h4>Services</h4><div class="footer-links"><a href="services.html">Wash & Fold</a><a href="services.html">Dry Cleaning</a><a href="services.html">Steam Press</a><a href="services.html">Couture</a></div></div>
+        <div class="footer-col"><h4>Company</h4><div class="footer-links"><a href="../index.html">Home</a><a href="home2.html">Home2</a><a href="about.html">About</a><a href="services.html">Services</a></div></div>
+        <div class="footer-col"><h4>The Private List</h4><form class="newsletter-form" onsubmit="event.preventDefault();"><input type="email" class="newsletter-input" placeholder="Your email" required><button type="submit" class="newsletter-btn">JOIN</button></form></div>
+      </div>
+      <div class="footer-bottom"><div>© 2026 SnapWash. All rights reserved.</div><div class="footer-bottom-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/main.js?v=15"></script>
+  <script>
+    const SERVICES = [
+      { id:'wash', name:'Wash & Fold', price:3.5, unit:'/lb', min:'Min 10 lbs', desc:'Eco detergents, geometric fold, eco-tote.', img:'washfold.jpg', type:'w/kg' },
+      { id:'dry', name:'Dry Cleaning', price:8, unit:'/item', min:'Standard', desc:'Silicone solvent, suit & silk safe.', img:'drycleaning.jpg', type:'items' },
+      { id:'press', name:'Steam Press', price:4.5, unit:'/item', min:'Shirts & formal', desc:'Calibrated steam, wooden hangers.', img:'steampress.jpg', type:'items' },
+      { id:'couture', name:'Couture & Leather', price:0, unit:'Quote', min:'On inspection', desc:'Stain archaeology, archival care.', img:'hero-services.jpg', type:'quote' }
+    ];
+    let selectedService = null;
+    let selectedSlot = null;
+    let qty = { washKg: 10, dry: 5, press: 5 };
+
+    const STORAGE_KEY = 'snapwash_orders';
+    const PROFILE_KEY = 'snapwash_profile';
+
+    function getProfile(){
+      try{ const p = JSON.parse(localStorage.getItem(PROFILE_KEY)); if(p) return p; }catch(e){}
+      return { name:'Elena Vasquez', email:'elena@example.com', phone:'+44 7700 900123', address:'12 Mayfair Lane, London' };
+    }
+
+    function renderServices(){
+      const grid = document.getElementById('service-grid-booking');
+      const params = new URLSearchParams(location.search);
+      const pre = params.get('service');
+      grid.innerHTML = SERVICES.map(s=> `
+        <div class="svc-option ${pre===s.id?'selected':''} ${selectedService===s.id?'selected':''}" data-id="${s.id}" onclick="selectService('${s.id}')">
+          <h4>${s.name}</h4><p>${s.desc}</p><div class="price">${s.price? '$'+s.price+s.unit : 'Quote'} <small style="color:var(--text-muted);">${s.min}</small></div>
+        </div>
+      `).join('');
+      if(pre && !selectedService){ selectService(pre); }
+    }
+    function selectService(id){
+      selectedService = id;
+      document.querySelectorAll('.svc-option').forEach(el=> el.classList.toggle('selected', el.dataset.id===id));
+      document.getElementById('service-error').style.display='none';
+      renderGarmentControls();
+      updateSummary();
+      updateProgress(1);
+    }
+    function renderGarmentControls(){
+      const c = document.getElementById('garment-controls');
+      if(!selectedService){ c.innerHTML = '<p style="color:var(--text-muted);">Select a service first</p>'; return; }
+      const svc = SERVICES.find(s=> s.id===selectedService);
+      if(svc.id==='wash'){
+        c.innerHTML = `<div class="qty-row"><label>Weight (kg) — $3.50/lb (1kg≈2.2lb)</label><div class="qty-ctrl"><button type="button" onclick="chgQty('washKg',-1)"><i class="ri-subtract-line"></i></button><span id="qty-wash">${qty.washKg} kg</span><button type="button" onclick="chgQty('washKg',1)"><i class="ri-add-line"></i></button></div></div>`;
+      } else if(svc.id==='dry' || svc.id==='press'){
+        const key = svc.id==='dry'?'dry':'press';
+        c.innerHTML = `<div class="qty-row"><label>Items — $${svc.price}/item</label><div class="qty-ctrl"><button type="button" onclick="chgQty('${key}',-1)"><i class="ri-subtract-line"></i></button><span id="qty-${key}">${qty[key]}</span><button type="button" onclick="chgQty('${key}',1)"><i class="ri-add-line"></i></button></div></div>`;
+      } else {
+        c.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Couture & Leather — quoted after inspection. Add notes about fabric/leather type in instructions. No upfront charge.</p>`;
+      }
+    }
+    function chgQty(k, d){
+      qty[k] = Math.max(1, qty[k]+d);
+      if(k==='washKg') document.getElementById('qty-wash').textContent = qty[k] + ' kg';
+      else document.getElementById('qty-'+k).textContent = qty[k];
+      updateSummary();
+    }
+
+    document.getElementById('slot-grid').addEventListener('click', e=>{
+      const s = e.target.closest('.slot');
+      if(!s) return;
+      document.querySelectorAll('.slot').forEach(el=> el.classList.remove('selected'));
+      s.classList.add('selected');
+      selectedSlot = s.dataset.slot;
+      updateSummary();
+      updateProgress(2);
+    });
+
+    function calcTotal(){
+      if(!selectedService) return 0;
+      const svc = SERVICES.find(s=> s.id===selectedService);
+      const express = document.getElementById('b-express').checked ? 12 : 0;
+      if(svc.id==='wash') return (qty.washKg*2.2*svc.price) + express;
+      if(svc.id==='dry') return qty.dry*svc.price + express;
+      if(svc.id==='press') return qty.press*svc.price + express;
+      return express;
+    }
+
+    function updateSummary(){
+      const box = document.getElementById('summary-service');
+      const lines = document.getElementById('summary-lines');
+      if(!selectedService){
+        box.style.display='none';
+        lines.innerHTML = '<p style="color:var(--text-muted);">Select a service to see estimate</p>';
+        return;
+      }
+      const svc = SERVICES.find(s=> s.id===selectedService);
+      box.style.display='block';
+      box.innerHTML = `<strong>${svc.name}</strong> — ${svc.desc}<br><small style="color:var(--text-muted);">${svc.price? '$'+svc.price+svc.unit : 'Quote'} · ${svc.min}</small>`;
+      const total = calcTotal();
+      const date = document.getElementById('b-date').value || '—';
+      const slot = selectedSlot || '—';
+      const addr = document.getElementById('b-address').value || '—';
+      lines.innerHTML = `
+        <div class="summary-row"><span>Service</span><strong>${svc.name}</strong></div>
+        <div class="summary-row"><span>Quantity</span><span>${svc.id==='wash'? qty.washKg+' kg' : svc.id==='dry'? qty.dry+' items' : svc.id==='press'? qty.press+' items' : 'Quote'}</span></div>
+        <div class="summary-row"><span>Pickup</span><span>${date} <em>${slot}</em></span></div>
+        <div class="summary-row"><span>Address</span><span style="max-width:160px; text-align:right; overflow:hidden; text-overflow:ellipsis;">${addr}</span></div>
+        ${document.getElementById('b-express').checked? '<div class="summary-row"><span>Express 24h</span><span>+ £12</span></div>' : ''}
+        <div class="summary-row"><span>Total Estimate</span><span>${svc.id==='couture' && total===0? 'Quote' : svc.id==='couture' && total>0? 'Quote + £12' : '$'+total.toFixed(2)}</span></div>
+        <div class="summary-row"><span>ETA</span><span>${svc.id==='couture'?'72h after quote': document.getElementById('b-express').checked? '24h' : '48h'}</span></div>
+      `;
+    }
+
+    function updateProgress(step){
+      const dots = document.querySelectorAll('.progress-steps .dot');
+      const lines = document.querySelectorAll('.progress-steps .line');
+      dots.forEach((d,i)=>{
+        d.classList.remove('active','done');
+        if(i<step) d.classList.add('done');
+        if(i===step) d.classList.add('active');
+        if(step>=2 && i===0) d.classList.add('done');
+        if(step>=3 && i<=1) { d.classList.add('done'); }
+      });
+      lines.forEach((l,i)=> l.classList.toggle('done', i < step-1));
+    }
+
+    // init date min today
+    (function(){
+      const d = document.getElementById('b-date');
+      const today = new Date().toISOString().split('T')[0];
+      d.min = today;
+      d.value = today;
+      const p = getProfile();
+      document.getElementById('b-address').value = p.address;
+      document.getElementById('b-phone').value = p.phone;
+      renderServices();
+      renderGarmentControls();
+      updateSummary();
+      ['b-date','b-address','b-phone','b-express','b-delivery-address','b-notes'].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el) el.addEventListener('input', updateSummary);
+        if(el) el.addEventListener('change', updateSummary);
+      });
+    })();
+
+    document.getElementById('confirm-btn').addEventListener('click', ()=>{
+      const date = document.getElementById('b-date').value;
+      const phone = document.getElementById('b-phone').value.trim();
+      const addr = document.getElementById('b-address').value.trim();
+      if(!selectedService){ document.getElementById('service-error').style.display='block'; document.getElementById('step1').scrollIntoView({behavior:'smooth'}); return; }
+      if(!date){ alert('Select pickup date'); return; }
+      if(!selectedSlot){ alert('Select pickup slot'); return; }
+      if(!addr){ alert('Enter pickup address'); return; }
+      if(!phone){ alert('Enter phone'); return; }
+
+      const svc = SERVICES.find(s=> s.id===selectedService);
+      const svcNameMap = { wash:'Wash & Fold', dry:'Dry Cleaning', press:'Steam Press', couture:'Couture & Leather' };
+      const serviceName = svcNameMap[svc.id];
+      const total = calcTotal();
+      const profile = getProfile();
+      const newId = 'SW-' + Math.floor(1000+Math.random()*9000);
+      const order = {
+        id: newId,
+        customer: profile.name,
+        email: profile.email,
+        address: addr,
+        deliveryAddress: document.getElementById('b-delivery-address').value || addr,
+        phone: phone,
+        service: serviceName,
+        stage: 0,
+        amount: svc.id==='couture' && total===0 ? 0 : Number(total.toFixed(2)),
+        payment: svc.id==='couture' ? 'Quote Pending' : 'Pending',
+        date: date,
+        slot: selectedSlot,
+        driver: 'Rafael',
+        notes: document.getElementById('b-notes').value,
+        qty: svc.id==='wash'? qty.washKg+' kg' : svc.id==='dry'? qty.dry : svc.id==='press'? qty.press : '—',
+        createdAt: new Date().toISOString()
+      };
+      // persist to shared storage (syncs to both dashboards)
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('snapwash_admin_orders');
+        let arr = [];
+        if(raw){ arr = JSON.parse(raw); if(!Array.isArray(arr)) arr=[]; }
+        arr.unshift(order);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+        localStorage.setItem('snapwash_admin_orders', JSON.stringify(arr));
+        localStorage.setItem('snapwash_last_stage_update', JSON.stringify({id:newId, stage:0, at:Date.now()}));
+      }catch(e){}
+
+      // demo auto-advance to simulate live ops (so toast + tracking work)
+      let demoStage=0;
+      const iv = setInterval(()=>{
+        demoStage++;
+        try{
+          const raw2 = localStorage.getItem(STORAGE_KEY);
+          if(raw2){
+            let a = JSON.parse(raw2);
+            const idx = a.findIndex(o=> o.id===newId);
+            if(idx>-1){ a[idx].stage = demoStage; if(demoStage===5) a[idx].payment='Paid'; localStorage.setItem(STORAGE_KEY, JSON.stringify(a)); localStorage.setItem('snapwash_admin_orders', JSON.stringify(a)); }
+          }
+        }catch(e){}
+        if(demoStage>=4) clearInterval(iv);
+      }, 3000);
+
+      document.getElementById('success-msg').textContent = 'Order #' + newId + ' — ' + serviceName + ' · ' + selectedSlot;
+      document.getElementById('success-details').innerHTML = `
+        <div><strong>Pickup:</strong> ${date} · ${selectedSlot}</div>
+        <div><strong>Address:</strong> ${addr}</div>
+        <div><strong>Service:</strong> ${serviceName} ${svc.id!=='couture'? '· $'+total.toFixed(2) : '· Quote'}</div>
+        <div><strong>Stage:</strong> Order Placed → Track live in dashboard</div>
+      `;
+      document.getElementById('success-modal').classList.add('show');
+      // update progress
+      updateProgress(3);
+      // optional auto redirect after 4s
+      // setTimeout(()=> location.href='dashboard.html', 3500);
+    });
+  </script>
+</body>
+</html>
