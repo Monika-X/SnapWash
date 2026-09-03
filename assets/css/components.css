@@ -232,18 +232,25 @@
 }
 
 .footer::before {
-  content: 'SnapWash';
-  position: absolute;
-  right: -1rem;
-  bottom: -3rem;
-  font-family: var(--font-heading);
-  font-size: clamp(8rem, 18vw, 17rem);
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
+  display: none;
+}
+
+.footer .logo,
+.footer .logo-text > div:first-child {
+  color: #F8F8F5 !important;
+}
+.footer .logo-text > div:first-child span {
+  color: var(--accent) !important;
+}
+.footer .logo-tagline {
+  color: rgba(248, 248, 245, 0.72) !important;
+}
+[data-theme="dark"] .footer {
+  background-color: #0f2423;
+}
+[data-theme="dark"] .footer .logo,
+[data-theme="dark"] .footer .logo-text > div:first-child {
+  color: #F8F8F5 !important;
 }
 
 .footer .container {
